@@ -1,0 +1,33 @@
+{
+	"name" 		: "stachebox",
+	"version"   : "1.0.0",
+    "location"  : "http://downloads.ortussolutions.com/ortussolutions/coldbox-modules/stachebox/@build.version@/stachebox-@build.version@.zip",
+	"author" 	: "Jon Clausen <jclausen@ortussolutions.com",
+	"homepage"	: "https://github.com/coldbox-modules/stachebox",
+	"documentation"		: "https://github.com/coldbox-modules/stachebox",
+	"repository"		: { "type" : "git", "url" : "https://github.com/coldbox-modules/stachebox" },
+	"bugs" : "https://github.com/coldbox-modules/stachebox",
+	"shortDescription"	: "A stachebox module for the coldbox platform",
+	"slug"		: "stachebox",
+	"type"		: "modules",
+	"keywords":"elasticsearch,stachebox",
+	"license"			: [
+		{ "type" : "Apache2", "url" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
+	],
+	"contributors"		: [
+		"Jon Clausen <jclausen@ortussolutions.com>"
+	],
+	"dependencies" 	:{
+		"cbelasticsearch":"^2.0.2"
+	},
+	"ignore":[
+        "**/.*",
+        "test-harness"
+    ],
+	"scripts":{
+        "release":"recipe build/release.boxr",
+        "format":"cfformat run models/,test-harness/tests/ --overwrite",
+        "format:watch":"cfformat watch models/,test-harness/tests/",
+        "format:check":"cfformat check models/,test-harness/tests/"
+    }
+}
