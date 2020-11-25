@@ -68,6 +68,12 @@
 			debug : [ "stachebox" ]
 		};
 
+		moduleSettings = {
+			"cbauth" : {
+				"userServiceClass" : "UserService@stachebox"
+			}
+		}
+
 	}
 
 	/**

@@ -20,7 +20,12 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-    this.dependencies 		= [ "cbelasticsearch" ];
+	this.dependencies 		= [ "cbelasticsearch", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
+
+	// App Helpers
+	this.applicationHelper = [
+		"models/mixins/elixirPath.cfm"
+	];
 
     /**
      * Configure Module
@@ -29,26 +34,28 @@ component {
 		var applicationName = server.coldfusion.productname == "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name;
 
         settings = {
-			// Whether to enable the API endpoints to receive log messages
-			"enableAPI" 		: getSystemSetting( "stachebox_ENABLE_API", true ),
-			// Whether to automatically enabled log appenders
-			"enableAppenders" 	: getSystemSetting( "stachebox_ENABLE_APPENDERS", true ),
-			// The type of transmission mode for this module - `direct` or `api`
-			"transmission" 		: getSystemSetting( "stachebox_TRANSMISSION_METHOD", "direct" ),
-			// only used if the transmission setting is `api`
-			"apiUrl" 			: getSystemSetting( "stachebox_API_URL", "" ),
-			// Regex used to whitelist remote addresses allowed to transmit to the API - by default only 127.0.0.1 is allowed to transmit messages to the API
-			"apiWhitelist" 		: getSystemSetting( "stachebox_API_WHITELIST", "127.0.0.1" ),
-			// a user-provided API token - which must match the token configured on the remote API microservice leave empty if using IP whitelisting
-			"apiAuthToken" 		: getSystemSetting( "stachebox_API_TOKEN", "" ),
-			// Min/Max levels for the appender
-			"levelMin" 			: getSystemSetting( "stachebox_LEVEL_MIN", "FATAL" ),
-			"levelMax" 			: getSystemSetting( "stachebox_LEVEL_MAX", "ERROR" ),
-			// A closure, which may be used in the configuration to provide custom information. Will be stored in the `userinfo` key in your stachebox logs
-			"userInfoUDF"       : function(){ return {}; },
-			// A custom prefix for indices used by the module for logging
-			"indexPrefix"       : getSystemSetting( "stachebox_INDEX_PREFIX", ".stachebox-" & lcase( REReplaceNoCase( applicationName, "[^0-9A-Z_]", "_", "all" ) ) )
-        };
+			"settingsIndex" : getSystemSetting( "STACHEBOX_SETTINGS_INDEX", ".stachebox_settings" ),
+			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
+			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
+			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
+			"cbsecurity" : {
+				"userService" : "UserService@stachebox",
+				// Module Relocation when an invalid access is detected, instead of each rule declaring one.
+				"invalidAuthenticationEvent" 	: "stachebox:api/v1/BaseAPIHandler.onAuthenticationFailure",
+				// Default Auhtentication Action: override or redirect when a user has not logged in
+				"defaultAuthenticationAction"	: "override",
+				// Module override event when an invalid access is detected, instead of each rule declaring one.
+				"invalidAuthorizationEvent"		: "stachebox:api/v1/BaseAPIHandler.onAuthorizationFailure",
+				// Default Authorization Action: override or redirect when a user does not have enough permissions to access something
+				"defaultAuthorizationAction"	: "override",
+				// You can define your security rules here
+				"rules"							: [],
+				"jwt" : {
+					"customAuthHeader" : "x-auth-token",
+					"expiration"       : 20,
+				}
+			}
+		};
 
         // Try to look up the release based on a box.json
         if( !isNull( appmapping ) ) {
@@ -70,28 +77,10 @@ component {
         }
 
         interceptors = [
-            //API Security Interceptor
-            { class="stachebox.interceptors.APISecurity" }
+            { class="stachebox.interceptors.Stachebox" },
+            { class="stachebox.interceptors.TokenAuthentication" },
+            { class="stachebox.interceptors.BasicAuthentication" }
 		];
-
-		if( settings.enableAPI ){
-			routes = [
-				// Module Entry Point
-				{
-					pattern = "/api/logs",
-					handler = "API",
-					action = {
-						"HEAD"		: "onInvalidHTTPMethod",
-						"OPTIONS"	: "onInvalidHTTPMethod",
-						"GET"   	: "onInvalidHTTPMethod",
-						"POST"  	: "create",
-						"DELETE"	: "onInvalidHTTPMethod",
-						"PUT"   	: "create",
-						"PATCH" 	: "onInvalidHTTPMethod"
-					}
-				}
-			];
-		}
 
     }
 
@@ -105,33 +94,5 @@ component {
      */
 	function onUnload(){}
 
-	function afterConfigurationLoad(){
-        if( settings.enableAppenders ){
-            loadAppenders();
-        }
-	}
-    /**
-     * Load LogBox Appenders
-     */
-    private function loadAppenders(){
-        // Get config
-		var logBoxConfig 	= logBox.getConfig();
-
-		var appenderProperties = duplicate( settings );
-		appenderProperties.index = settings.indexPrefix;
-
-		logBox.registerAppender(
-            name 		= 'stachebox_appender',
-            class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.stacheboxAppender" : "stachebox.models.logging.APIAppender",
-            properties  = appenderProperties,
-            levelMin 	= logBox.logLevels[ settings.levelMin ],
-            levelMax 	= logBox.logLevels[ settings.levelMax ]
-		);
-
-		var appenders = logBox.getAppendersMap( 'stachebox_appender' );
-    	// Register the appender with the root loggger, and turn the logger on.
-	    var root = logBox.getRootLogger();
-	    root.addAppender( appenders[ 'stachebox_appender' ] );
-    }
 
 }

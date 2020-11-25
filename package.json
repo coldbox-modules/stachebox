@@ -1,0 +1,41 @@
+{
+  "name": "stachebox",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --hide-modules",
+    "watch": "npm run dev -- --watch",
+    "prod": "npm run dev -- -p",
+    "test": "mochapack --require resources/assets/js/tests/setup.js --require ignore-styles --require @babel/register --require jsdom-global/register --recursive resources/assets/js/tests/*.spec.js",
+    "test-watch": "mochapack --watch --require resources/assets/js/tests/setup.js --require ignore-styles --require @babel/register --require jsdom-global/register --recursive resources/assets/js/tests/*.spec.js",
+    "test-modules": "mochapack --require resources/assets/js/tests/setup.js --require ignore-styles --require @babel/register --require jsdom-global/register modules_app/**/resources/assets/js/tests/*.spec.js"
+  },
+  "dependencies": {
+    "coldbox-elixir": "^3.1.6",
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vuetify": "^2.3.19",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.0",
+    "@vue/cli-plugin-router": "^4.5.0",
+    "@vue/cli-plugin-vuex": "^4.5.0",
+    "@vue/cli-service": "^4.5.0",
+    "babel-eslint": "^10.1.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.12.0",
+    "sass": "^1.29.0",
+    "sass-loader": "^8.0.2",
+	"vue-template-compiler": "^2.6.11",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "mocha-webpack": "^2.0.0-beta.0",
+    "mochapack": "^1.1.5",
+    "webpack": "^4.42.1"
+  }
+}
