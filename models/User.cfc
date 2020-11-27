@@ -198,12 +198,16 @@ component
 
     /**
      * Grab an array of roles for the user.
-     * Currently, we only have one role ("StacheboxAdministrator") in public search.
+     * Currently, we only have one role ("StacheboxAdministrator").
      * This is purposely different than the "Administrator" role
      * to avoid conflicting with the internal instance "Administrator" role name.
      */
     public array function getRoles(){
-        var roles = [];
+        var roles = [
+			{
+				"name" : "StacheboxUser"
+			}
+		];
         if ( getIsAdministrator() ){
             ArrayAppend( roles, { "name": "StacheboxAdministrator" });
         }

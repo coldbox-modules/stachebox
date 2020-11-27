@@ -69,6 +69,7 @@ component extends="coldbox.system.EventHandler" {
 			var stime = getTickCount();
 			// param our response object
 			param arguments.prc.response = new cbrestbasehandler.models.Response();
+			arguments.prc.response.setData({});
 			// prepare argument execution
 			var actionArgs = {
 				event : arguments.event,
@@ -160,7 +161,7 @@ component extends="coldbox.system.EventHandler" {
 			var responseData = (
 				arguments.prc.response.getError() ? arguments.prc.response.getDataPacket(
 					reset = this.resetDataOnError
-				) : arguments.prc.response.getDataPacket()
+				) : arguments.prc.response.getDataPacket().data
 			);
 
 			// Magical renderings

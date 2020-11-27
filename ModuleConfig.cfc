@@ -38,14 +38,15 @@ component {
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
+			"isStandalone" : false,
 			"cbsecurity" : {
 				"userService" : "UserService@stachebox",
 				// Module Relocation when an invalid access is detected, instead of each rule declaring one.
-				"invalidAuthenticationEvent" 	: "stachebox:api/v1/BaseAPIHandler.onAuthenticationFailure",
+				"invalidAuthenticationEvent" 	: "stachebox:api.v1.BaseAPIHandler.onAuthenticationFailure",
 				// Default Auhtentication Action: override or redirect when a user has not logged in
 				"defaultAuthenticationAction"	: "override",
 				// Module override event when an invalid access is detected, instead of each rule declaring one.
-				"invalidAuthorizationEvent"		: "stachebox:api/v1/BaseAPIHandler.onAuthorizationFailure",
+				"invalidAuthorizationEvent"		: "stachebox:api.v1.BaseAPIHandler.onAuthorizationFailure",
 				// Default Authorization Action: override or redirect when a user does not have enough permissions to access something
 				"defaultAuthorizationAction"	: "override",
 				// You can define your security rules here
@@ -80,6 +81,34 @@ component {
             { class="stachebox.interceptors.Stachebox" },
             { class="stachebox.interceptors.TokenAuthentication" },
             { class="stachebox.interceptors.BasicAuthentication" }
+		];
+
+		resources = [
+			{
+				resource : "/api/v1/logs",
+				handler : "api.v1.Logs"
+
+			},
+			{
+				resource : "/api/v1/users",
+				handler : "api.v1.Users"
+
+			}
+		];
+
+		routes = [
+			{
+				pattern : "/api/v1/authentication",
+				handler : "api.v1.Authentication",
+				action : {
+					"HEAD" : "check",
+					"POST" : "login",
+					"DELETE" : "logout"
+				}
+			},
+			{ pattern = "/", handler = "Main", action = "index" },
+			// Convention Route
+			{ pattern="(.*?)", handler = "Main", action = "index" }
 		];
 
     }

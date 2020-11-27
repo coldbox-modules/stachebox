@@ -16,3 +16,5 @@ changelog-latest.md
 # log files
 logs/**
 node_modules
+
+includes/**

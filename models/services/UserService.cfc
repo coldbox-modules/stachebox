@@ -54,6 +54,29 @@ component singleton accessors="true" {
             return javaCast( "null", 0);
         }
         return user;
-    }
+	}
+
+
+	/**
+	* Searches user records
+	*/
+	public function search( required struct searchCollection ){
+		param arguments.searchCollection.maxrows = 25;
+		param arguments.searchCollection.startrow = 0;
+		param arguments.searchCollection.includes = "";
+		param arguments.searchCollection.excludes = "";
+
+		var searchBuilder = getSearchBuilder()
+								.new( getUser().getSearchIndexName() );
+
+		searchBuilder.setMaxRows( arguments.searchCollection.maxrows );
+		searchBuilder.setStartRow( arguments.searchCollection.startRow );
+
+		var result = searchBuilder.execute();
+
+		return {
+			"results" : result.getHits().map(  )
+		}
+	}
 
 }

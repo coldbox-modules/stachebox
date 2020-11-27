@@ -1,0 +1,17 @@
+.text-theme {
+	--text-opacity: 1;
+	color: #ebf5ff;
+	color: rgba(21, 156, 191, var(--text-opacity));
+	:hover {
+		color: rgba(21, 156, 191, 0.8);
+	}
+}
+
+.bg-theme {
+	--bg-opacity: 1;
+	background-color: #ebf5ff;
+	background-color: rgba(21, 156, 191, var(--bg-opacity));
+	:hover {
+		background-color: rgba(21, 156, 191, 0.8);
+	}
+}

@@ -69,6 +69,9 @@
 		};
 
 		moduleSettings = {
+			"cbsecurity" : {
+				"userService" : "UserService@stachebox"
+			},
 			"cbauth" : {
 				"userServiceClass" : "UserService@stachebox"
 			}

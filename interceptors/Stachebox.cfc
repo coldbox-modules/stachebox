@@ -37,7 +37,12 @@ component{
 	}
 
 	function ensureDefaultAdminUser(){
-		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService ) && len( variables.moduleSettings.adminEmail ) ){
+		if(
+			findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
+			&&
+			len( variables.moduleSettings.adminEmail )
+			&& isNull( getInstance( "User@stachebox" ).findByEmail( variables.moduleSettings.adminEmail ) )
+		){
 			var logoFile = expandPath( '/stachebox/resources/assets/images/stachebox-icon.png' );
 			var adminUser = getInstance( "User@stachebox" )
 										.new(
@@ -46,9 +51,10 @@ component{
 												"lastName"  : "Admin",
 												"email"     : variables.moduleSettings.adminEmail,
 												"password"  : variables.moduleSettings.adminPassword,
-												"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#"
+												"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#",
+												"isAdministrator" : true
 											}
-										).save();
+										).encryptPassword().save();
 		}
 	}
 }

@@ -1,7 +1,19 @@
 const elixir = require("coldbox-elixir");
+const fs = require('fs-extra');
 
 elixir.config.mergeConfig({
-    plugins: [],
+	plugins: [
+		{
+			// Copy static images over after emit
+			apply: (compiler) => {
+				compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+					fs.copySync('resources/assets/images/stachebox-icon.png', 'includes/images/stachebox-icon.png')
+					fs.copySync('resources/assets/images/stachebox-logo.png', 'includes/images/stachebox-logo.png')
+					fs.copySync('resources/assets/images/stachebox-logo-h.png', 'includes/images/stachebox-logo-h.png')
+				})
+			}
+		}
+	],
 	// pack all of our images and fonts in as base64 to prevent URL pathing issues
 	module: {
 		rules: [
