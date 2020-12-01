@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import authAPI from "../api/authentication";
 import usersAPI from "../api/users";
+import logsAPI from "../api/logs";
 
 Vue.use(Vuex);
 
@@ -53,6 +54,12 @@ export default new Vuex.Store({
 							reject( response );
 						} )
 			} );
+		},
+		fetchLogs : ( context, params = {} ) => {
+			return logsAPI.list( params, context.state.authToken )
+		},
+		fetchLogEntry : ( context, id, params= {} ) => {
+			return logsAPI.fetch( id, params, context.state.authToken )
 		}
 	}
 });

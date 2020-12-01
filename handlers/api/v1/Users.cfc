@@ -37,7 +37,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// ( DELETE ) /api/v1/users/:id
-	function delete( event, rc, prc ){
+	function delete( event, rc, prc ) secured="Stachebox:Administrator"{
 		getInstance( "User@stachebox" )
 				.getOrFail( rc.id )
 				.delete();

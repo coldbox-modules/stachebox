@@ -106,10 +106,7 @@ component extends="coldbox.system.EventHandler" {
 			// Log Exception
 			log.error(
 				"Error calling #arguments.event.getCurrentEvent()#: #e.message# #e.detail#",
-				{
-					"_stacktrace" : e.stacktrace,
-					"httpData"    : getHTTPRequestData()
-				}
+				{ "exception" : e }
 			);
 
 			// Setup General Error Response
@@ -244,8 +241,7 @@ component extends="coldbox.system.EventHandler" {
 		log.error(
 			"Error in base handler (#arguments.faultAction#): #arguments.exception.message# #arguments.exception.detail#",
 			{
-				"_stacktrace" : arguments.exception.stacktrace,
-				"httpData"    : getHTTPRequestData()
+				"exception" : e
 			}
 		);
 
@@ -351,7 +347,7 @@ component extends="coldbox.system.EventHandler" {
 		if ( log.canDebug() ) {
 			log.debug(
 				"Record not found in execution of (#arguments.event.getCurrentEvent()#)",
-				arguments.exception.extendedInfo
+				arguments.exception.extendedInfo ?: ""
 			);
 		}
 

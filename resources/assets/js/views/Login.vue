@@ -15,6 +15,7 @@
             type="email"
             class="form-input rounded-none mt-1 block w-full focus:border-teal-600"
             v-model="email"
+			tabindex="1"
           />
         </label>
 
@@ -24,6 +25,7 @@
             type="password"
             class="form-input rounded-none mt-1 block w-full focus:border-teal-600"
             v-model="password"
+			tabindex="2"
           />
         </label>
 
@@ -42,6 +44,7 @@
           <button
             type="submit"
             class="py-2 px-4 text-center bg-theme w-full text-white text-sm"
+			tabindex="3"
           >
             Sign in
           </button>

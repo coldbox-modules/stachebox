@@ -13,6 +13,8 @@ import Modal from "@/views/Modal.vue";
 import Card from "@/views/Card.vue";
 import Blank from "@/views/Blank.vue";
 import NotFound from "@/views/NotFound.vue";
+import LogEntry from "@/views/LogEntry.vue";
+import ApplicationLogs from "@/views/ApplicationLogs.vue";
 
 import store from "@/store/index";
 
@@ -34,29 +36,14 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/forms",
-    name: "Forms",
-    component: Forms,
+    path: "/logs/entry/:id",
+    name: "LogEntry",
+    component: LogEntry,
   },
   {
-    path: "/cards",
-    name: "Cards",
-    component: Card,
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-  },
-  {
-    path: "/ui-elements",
-    name: "UIElements",
-    component: UIElements,
-  },
-  {
-    path: "/directory",
-    name: "Directory",
-    component: Modal,
+    path: "/logs/application/:id",
+    name: "ApplicationLogs",
+    component: ApplicationLogs,
   },
   {
     path: "/profile",

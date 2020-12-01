@@ -1,0 +1,31 @@
+{
+    "request" : "/presentations/logstash-monitorama-2013/images/kibana-search.png",
+      "agent" : "\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36\"",
+     "offset" : 325,
+       "auth" : "-",
+      "ident" : "-",
+       "verb" : "GET",
+ "prospector" : {
+    "type" : "log"
+},
+ "input" : {
+    "type" : "log"
+},
+     "source" : "/path/to/file/logstash-tutorial.log",
+    "message" : "83.149.9.216 - - [04/Jan/2015:05:13:42 +0000] \"GET /presentations/logstash-monitorama-2013/images/kibana-search.png HTTP/1.1\" 200 203023 \"http://semicomplete.com/presentations/logstash-monitorama-2013/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36\"",
+       "tags" : ["beats_input_codec_plain_applied"],
+   "referrer" : "\"http://semicomplete.com/presentations/logstash-monitorama-2013/\"",
+ "@timestamp" : 2017-11-09T02:51:12.416Z,
+   "response" : "200",
+      "bytes" : "203023",
+   "clientip" : "83.149.9.216",
+   "@version" : "1",
+       "beat" : {
+        "name" : "My-MacBook-Pro.local",
+    "hostname" : "My-MacBook-Pro.local",
+     "version" : "6.0.0"
+},
+       "host" : "My-MacBook-Pro.local",
+"httpversion" : "1.1",
+  "timestamp" : "04/Jan/2015:05:13:42 +0000"
+}

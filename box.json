@@ -24,7 +24,8 @@
         "cbrestbasehandler":"^1.0.0",
 		"JSONToRC":"^1.0.0",
 		"cbvalidation":"^2.3.0+143",
-		"BCrypt":"^3.0.1+34"
+		"BCrypt":"^3.0.1+34",
+		"logstash":"^1.0.1+23"
 	},
 	"ignore":[
         "**/.*",

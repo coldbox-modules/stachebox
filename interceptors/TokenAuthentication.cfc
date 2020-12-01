@@ -1,6 +1,6 @@
 component{
 	function preProcess( event, interceptData ){
-		if( !auth.check() && len( event.getHttpHeader( "x-auth-token", "" ) ) || len( event.getHttpHeader( "Authorization", "" ) ) ){
+		if( !auth().check() && ( len( event.getHttpHeader( "x-auth-token", "" ) ) || len( event.getHttpHeader( "Authorization", "" ) ) ) ){
 			try{
 				jwtAuth().authenticate();
 				auth().login( prc.oCurrentUser );

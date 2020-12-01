@@ -9,7 +9,7 @@ component {
     this.title 				= "stachebox";
     this.author 			= "Ortus Solutions";
     this.webURL 			= "https://github.com/coldbox-modules/stachebox";
-    this.description 		= "A stachebox module for the Coldbox Platform";
+    this.description 		= "A Logstash and Bug Management Platform for Coldbox";
 
     // Model Namespace
 	this.modelNamespace		= "stachebox";
@@ -20,7 +20,7 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-	this.dependencies 		= [ "cbelasticsearch", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
+	this.dependencies 		= [ "cbelasticsearch", "logstash", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
 
 	// App Helpers
 	this.applicationHelper = [
@@ -36,6 +36,7 @@ component {
         settings = {
 			"settingsIndex" : getSystemSetting( "STACHEBOX_SETTINGS_INDEX", ".stachebox_settings" ),
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
+			"logIndexPattern" : "logstash-*",
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
 			"isStandalone" : false,
@@ -116,7 +117,21 @@ component {
     /**
      * Fired when the module is registered and activated.
      */
-    function onLoad(){}
+    function onLoad(){
+		// Append any persisted settings
+		application.wirebox.getInstance( "SearchBuilder@cbelasticsearch" )
+					.new( settings.settingsIndex )
+					.setQuery( { "match_all" : {} })
+					.execute()
+					.getHits()
+					.each( function( doc ){
+						var setting = doc.getMemento();
+						if( structKeyExists( setting, "key" ) ){
+							settings[ setting.key ] = settings[ setting.value ];
+						}
+					} )
+
+	}
 
     /**
      * Fired when the module is unregistered and unloaded
