@@ -43,7 +43,7 @@
 					<tr>
 						<th class="w-1/3 align-top">Message:</th>
 						<td class="w-2/3">
-							<code class="language-javastacktrace">{{ entry.message }}</code>
+							<code class="text-yellow-600 text-xs">{{ entry.message }}</code>
 						</td>
 					</tr>
 				</tbody>
@@ -232,6 +232,14 @@
 					<pre v-else><code class="language-javastacktrace">{{entry.stacktrace}}</code></pre>
 				</tab>
 
+				<tab v-if="multipleOccurrences" name="Occurrences">
+					<entry-list
+						v-if="occurrences"
+						:logs="occurrences.results"
+						:pagination="occurrencePagination"
+						:displayOccurrences="false"
+					></entry-list>
+				</tab>
 
 
 			</tabs>
@@ -248,11 +256,13 @@ import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-javastacktrace';
 import Tab from "../../components/Tab";
 import Tabs from "../../components/Tabs";
+import EntryList from './EntryList.vue';
 
 export default {
 	components : {
 		Tab,
-		Tabs
+		Tabs,
+		EntryList
 	},
 	props : {
 		entry : {
@@ -260,10 +270,26 @@ export default {
 			required : true
 		}
 	},
+	computed : {
+		multipleOccurrences(){
+			return this.entry.stachebox.signature && this.entry.occurrences && this.entry.occurrences > 1;
+		},
+		occurrencePagination(){
+			if( !this.occurrences ) return null;
+			return {
+				page : 1,
+				pages : 1,
+				maxRows : this.occurrences.limit,
+				startRow : this.occurrences.start,
+				total : this.occurrences.total
+			};
+		}
+	},
 	data(){
 		return {
 			dayjs : dayjs,
-			activeTab : 0
+			activeTab : 0,
+			occurrences : null
 		}
 	},
 	methods : {
@@ -271,6 +297,10 @@ export default {
 	},
 	mounted() {
 		Prism.highlightAll()
+		if( this.multipleOccurrences ){
+			this.$store.dispatch( "fetchLogs", { "stachebox.signature" : this.entry.stachebox.signature, sortOrder : "timestamp DESC" } )
+				.then( ( result ) => this.occurrences = result.data )
+		}
 	}
 
 }

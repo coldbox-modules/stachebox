@@ -63,7 +63,7 @@
           <div
             class="inline-flex max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden ml-3"
           >
-            <div class="flex justify-center items-center w-12 bg-yellow-500">
+            <div class="flex justify-center items-center w-12 bg-yellow-600">
               <svg
                 class="h-6 w-6 fill-current text-white"
                 viewBox="0 0 40 40"
@@ -77,7 +77,7 @@
 
             <div class="-mx-3 py-2 px-4">
               <div class="mx-3">
-                <span class="text-yellow-500 font-semibold">Warning</span>
+                <span class="text-yellow-600 font-semibold">Warning</span>
                 <p class="text-gray-600 text-sm">Image size is too large.</p>
               </div>
             </div>

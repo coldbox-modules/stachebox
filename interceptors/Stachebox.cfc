@@ -5,6 +5,7 @@ component{
 	function postModuleLoad( event, interceptData ){
 		if( interceptData.moduleName == "stachebox" ){
 			ensureSettingsIndex()
+				.applyCustomSettings()
 				.ensureUserIndex()
 				.ensureDefaultAdminUser();
 		}
@@ -18,6 +19,24 @@ component{
 					properties=new stachebox.models.config.indices.Settings().getConfig()
 				).save();
 		}
+
+		var defaults = [
+			{ "name" : "applicationAliases", "value" : '{}' },
+			{ "name" : "logIndexPattern", "value" : variables.moduleSettings.logIndexPattern },
+			{ "name" : "neverExpose", "value" : "password|cookie|JSessionID|CFIDE" }
+		];
+
+		var searchBuilder = getInstance( "SearchBuilder@cbelasticsearch" ).new( variables.moduleSettings.settingsIndex );
+		var uuidLib = createobject("java", "java.util.UUID");
+		defaults.each( function( setting ){
+			searchBuilder.setQuery( { "term" : { "#setting.name#" : setting.value } } );
+			if( !searchBuilder.count() ){
+				setting[ "id" ] = uuidLib.randomUUID().toString();
+				getInstance( "Document@cbelasticsearch" )
+					.new( index = variables.moduleSettings.settingsIndex, properties = setting )
+					.save();
+			}
+		} );
 
 		return this;
 	}
@@ -56,5 +75,21 @@ component{
 											}
 										).encryptPassword().save();
 		}
+	}
+
+	function applyCustomSettings(){
+		var searchBuilder = getInstance( "SearchBuilder@cbelasticsearch" ).new( variables.moduleSettings.settingsIndex ).setQuery( { "match_all" : {} } );
+		searchBuilder.setMaxRows( searchBuilder.count() );
+
+		searchBuilder.execute().getHits().each( function( doc ){
+			var memento = doc.getMemento();
+			if( isJSON( memento.value ) ){
+				memento.value = deserializeJSON( memento.value );
+			}
+			variables.moduleSettings[ memento.name ] = memento.value;
+		} );
+
+		return this;
+
 	}
 }

@@ -50,6 +50,7 @@ component {
 				"invalidAuthorizationEvent"		: "stachebox:api.v1.BaseAPIHandler.onAuthorizationFailure",
 				// Default Authorization Action: override or redirect when a user does not have enough permissions to access something
 				"defaultAuthorizationAction"	: "override",
+				"validator" : "JWTService@cbsecurity",
 				// You can define your security rules here
 				"rules"							: [],
 				"jwt" : {
@@ -86,11 +87,6 @@ component {
 
 		resources = [
 			{
-				resource : "/api/v1/logs",
-				handler : "api.v1.Logs"
-
-			},
-			{
 				resource : "/api/v1/users",
 				handler : "api.v1.Users"
 
@@ -98,6 +94,37 @@ component {
 		];
 
 		routes = [
+			{
+				pattern : "/api/v1/logs/suppress/:field/:id",
+				handler : "api.v1.Logs",
+				action : {
+					"DELETE" : "suppress"
+				}
+			},
+			{
+				pattern : '/api/v1/logs/:id',
+				handler : "api.v1.Logs",
+				action : {
+					"HEAD" : "show",
+					"GET" : "show",
+					"PUT" : "update",
+					"PATCH" : "update",
+					"DELETE" : "delete",
+					"POST" : "onInvalidHTTPMethod"
+				}
+			},
+			{
+				pattern : '/api/v1/logs',
+				handler : "api.v1.Logs",
+				action : {
+					"POST" : "create",
+					"GET" : "index",
+					"HEAD" : "index",
+					"PUT" : "onInvalidHTTPMethod",
+					"PATCH" : "onInvalidHTTPMethod",
+					"DELETE" : "onInvalidHTTPMethod"
+				}
+			},
 			{
 				pattern : "/api/v1/authentication",
 				handler : "api.v1.Authentication",

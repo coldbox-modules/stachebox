@@ -5,16 +5,13 @@ import auth from "../api/authentication";
 Vue.use( VueRouter );
 
 import Dashboard from "@/views/Dashboard.vue";
-import Forms from "@/views/Forms.vue";
-import Tables from "@/views/Tables.vue";
-import UIElements from "@/views/UIElements.vue";
 import Login from "@/views/Login.vue";
-import Modal from "@/views/Modal.vue";
-import Card from "@/views/Card.vue";
 import Blank from "@/views/Blank.vue";
 import NotFound from "@/views/NotFound.vue";
 import LogEntry from "@/views/LogEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
+import LogSearch from "@/views/LogSearch.vue";
+import Settings from "@/views/Settings.vue";
 
 import store from "@/store/index";
 
@@ -46,6 +43,19 @@ const routes = [
     component: ApplicationLogs,
   },
   {
+    path: "/logs/search",
+    name: "LogSearch",
+    component: LogSearch,
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+	component: Settings,
+	meta : {
+		permission : "Administer:Settings"
+	}
+  },
+  {
     path: "/profile",
     name: "Profile",
     component: Blank,
@@ -60,12 +70,23 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+
 	if (to.name !== 'Login') {
 		auth.check()
 			.then( ( response ) => {
 				store.commit( "processLoginSuccess", response );
-				store.dispatch( "fetchAuthUser" )
-				next();
+				store.dispatch( "fetchAuthUser" ).then(
+					() => {
+						if( !store.state.navAggregations ){
+							store.dispatch( "fetchNavAggregations" );
+						}
+						if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
+							next( '/permission-denied' );
+						} else {
+							next();
+						}
+					}
+				);
 			} )
 			.catch(() => { next({ name: "Login" }); });
 	} else {

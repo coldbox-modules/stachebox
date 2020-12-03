@@ -15,9 +15,11 @@ Vue.component("empty-layout", Empty);
 import Dashboard from "./layouts/DashboardLayout";
 Vue.component("dashboard-layout", Dashboard);
 
+import VTooltip from "v-tooltip";
+Vue.use( VTooltip );
+
 // String prototype extensions
 import '@/extensions/String';
-
 
 Vue.config.productionTip = false;
 

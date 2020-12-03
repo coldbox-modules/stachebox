@@ -5,7 +5,7 @@ component extends="BaseAPIHandler" secured{
 	// ( GET ) /api/v1/logs
 	function index( event, rc, prc ){
 
-		var searchResult = getInstance( "SearchService@stachebox" ).search( rc );
+		var searchResult = getInstance( "LogSearchService@stachebox" ).search( rc );
 		searchResult.results = searchResult.results.map( function( item ){ return expandEntry( item ); } );
 
 		prc.response.setData( searchResult );
@@ -73,9 +73,49 @@ component extends="BaseAPIHandler" secured{
 		prc.response.setData( expandEntry( entry.getMemento() ) );
 	}
 
+	// ( DELETE ) /api/v1/logs/suppress/:field/:id
+	function suppress( event, rc, prc ){
+		if( rc.field == 'signature' ){
+			rc.field = "stachebox.signature";
+		}
+
+		var updateResult = getInstance( "Client@cbelasticsearch" )
+			.updateByQuery(
+				getInstance( "SearchBuilder@cbElasticsearch" )
+						.new( variables.moduleSettings.logIndexPattern )
+						.filterTerm(
+							rc.field,
+							rc.id
+						),
+				{
+					"lang" : "painless",
+					"source" : "if( ctx._source.stachebox == null ) ctx._source.stachebox = new HashMap(); ctx._source.stachebox.isSuppressed = true"
+				},
+				true
+			);
+		if( !updateResult.failures.len() ){
+			prc.response.setStatusCode( status.NO_CONTENT );
+		} else {
+			prc.response.setError( true )
+						.setMessages(
+							updateResult.failures
+						)
+						.setStatusCode( STATUS.INTERNAL_ERROR );
+		}
+
+	}
+
 	// ( DELETE ) /api/v1/logs/:id
 	function delete( event, rc, prc ) secured="Stachebox:Administrator"{
-		var entry = getInstance( "Client@cbelasticsearch" ).get( rc.id, variables.moduleSettings.logIndexPattern );
+		var entry = getInstance( "SearchBuilder@cbElasticsearch" )
+							.new( variables.moduleSettings.logIndexPattern )
+							.term( "_id", rc.id )
+							.setMaxRows( 1 )
+							.execute()
+							.getHits()
+							.reduce( function( acc, doc ){
+								return doc;
+							} );
 
 		if( isNull( entry ) ){
 			return onEntityNotFoundException( argumentCollection=arguments );

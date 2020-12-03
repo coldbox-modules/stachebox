@@ -13,6 +13,13 @@ component {
 		param searchCollection.maxRows = 25;
 		param searchCollection.startRow = 0;
 
+		if( searchCollection.keyExists( "page" ) ){
+			searchCollection.page = javacast( "int", searchCollection.page );
+			searchCollection.startRow =  ( searchCollection.page * searchCollection.maxRows ) - searchCollection.maxRows;
+		} else {
+			searchCollection.page = arguments.searchCollection.maxRows && arguments.searchCollection.startRow ? ceiling( (  arguments.searchCollection.maxRows / arguments.searchCollection.startRow ) + 1 ) : 1
+		}
+
 		var builder = searchBuilder()
 						.new( searchCollection.index )
 						.setMaxRows( searchCollection.maxRows )
@@ -20,39 +27,60 @@ component {
 						.sort( searchCollection.sortOrder );
 
 		applyCommonSearchArgs( builder, arguments.searchCollection );
-		if( arguments.searchCollection.keyExists( "aggregationGroup" ) ){
-			builder.setMaxRows( 0 );
-			applyGroupedAggregations( builder, arguments.searchCollection );
-		} else if( arguments.includeAggregations ){
-			applyCommonAggregations( builder, arguments.searchCollection );
-		}
 
 
 		if( structIsEmpty( builder.getQuery() ) ){
 			builder.setQuery( { "match_all" : {} } );
 		}
 
-		var searchResults = builder.execute();
-
-		if( arguments.searchCollection.keyExists( "aggregationGroup" ) ){
-			var results = searchResults.getAggregations().groupedResults.buckets.reduce( function( acc, bucket ){
-				var last = bucket.last_ocurrence.hits.hits[ 1 ]._source;
-				last[ "id" ] = bucket.last_ocurrence.hits.hits[ 1 ]._id;
-				last[ "occurrences" ] = bucket.last_ocurrence.hits.total.value;
-				acc.append( last );
-				return acc;
-			}, [] );
-		} else {
-			var results = searchResults.getHits().map( function( doc ){ doc.getMemento()[ "id"] = doc.getId(); return doc.getMemento(); } );
+		if( searchCollection.keyExists( "page" ) ){
+			builder.setStartRow( ( searchCollection.page * searchCollection.maxRows ) - searchCollection.maxRows );
 		}
 
+		if( arguments.searchCollection.keyExists( "collapse" ) ){
+			builder.collapseToField( field=searchCollection.collapse, includeOccurrences=true );
+		} else if( arguments.includeAggregations ){
+			applyCommonAggregations( builder, arguments.searchCollection );
+		}
+
+		var searchResults = builder.execute();
+
+		if( searchCollection.keyExists( "collapse" ) ){
+		}
+
+		var results = searchResults.getHits().map(
+			function( doc ){
+				var docMemento = doc.getMemento();
+				docMemento[ "id"] = doc.getId();
+				if( searchCollection.keyExists( "collapse" ) ){
+					var occurrences = searchResults.getCollapsedOccurrences();
+					var nestedPath = docMemento;
+					var fieldValue = listToArray( searchCollection.collapse, "." ).reduce( function( result ,path ){
+						if( nestedPath.keyExists( path ) && isSimpleValue( nestedPath[ path ] ) ){
+							result = nestedPath[ path ];
+						} else if( nestedPath.keyExists( path ) ){
+							nestedPath = nestedPath[ path ];
+						}
+						return result;
+					}, '' );
+					docMemento[ "occurrences" ] = occurrences.keyExists( fieldValue ) ? occurrences[ fieldValue ] : 1;
+				}
+				return docMemento;
+			} );
+
+		var recordCount = arguments.searchCollection.keyExists( "collapse" ) ? searchResults.getCollapsedCount() : searchResults.getHitCount();
 
 		return {
-				"total" : searchResults.getHitCount(),
-				"start" : arguments.searchCollection.startRow,
-				"limit" : arguments.searchCollection.maxrows,
+				"pagination" : {
+					"total" : recordCount,
+					"page" : searchCollection.page,
+					"pages" : arguments.searchCollection.maxRows ? ceiling( recordCount / arguments.searchCollection.maxRows ) : 0,
+					"startRow" : builder.getStartRow(),
+					"maxRows" : javacast( "int", arguments.searchCollection.maxrows )
+				},
+				"debug" : searchResults.getCollapsedOccurrences(),
 				"results" : results,
-				"aggregations" : !arguments.searchCollection.keyExists( "aggregationGroup" ) && arguments.includeAggregations && !isNull( searchResults.getAggregations() )
+				"aggregations" : !arguments.searchCollection.keyExists( "collapse" ) && arguments.includeAggregations && !isNull( searchResults.getAggregations() )
 									? searchResults.getAggregations().reduce( function( result, key, value ){
 										result[ key ] = parseAggregationData( value );
 										return result;
@@ -121,7 +149,7 @@ component {
 		var groupAggregations = {
 			"groupedResults": {
 				"terms": {
-					"field": "#searchCollection.aggregationGroup#"
+					"field": "#searchCollection.collapse#"
 				},
 				"aggs": {
 					"limitResults": {
@@ -158,6 +186,15 @@ component {
 		if( arguments.searchCollection.keyExists( "query" ) ){
 			arguments.searchCollection.setQuery( arguments.searchCollection.query );
 		} else {
+
+			if( !searchCollection.keyExists( "stachebox.isSuppressed" ) ){
+				searchCollection[ "stachebox.isSuppressed" ] = false;
+			}
+
+			if( structKeyExists( searchCollection, "search" ) ){
+				applyDynamicSearchArgs( builder, searchCollection );
+			}
+
 			var termFilters = [  "type", "application", "release", "level", "category", "appendername", "event.name", "route", "routed_url", "layout", "module", "view", "environment", "stachebox.signature", "stachebox.isSuppressed" ];
 
 			termFilters.each( function( term ){
@@ -188,6 +225,34 @@ component {
 				);
 			}
 		}
+
+	}
+
+	function applyDynamicSearchArgs( required SearchBuilder builder, required struct searchCollection ){
+		if( !searchCollection.keyExists( "search" ) ) return;
+		var searchString = ""
+		listToArray( searchCollection.search, "+" )
+							.each( function( item ){
+								var scopedArgs = listToArray( item, ":" );
+								if( len( scopedArgs ) == 1 ){
+									searchString &= " " & item;
+								} else {
+									searchCollection[ scopedArgs[ 1 ] ] = scopedArgs[ 2 ]
+								}
+							} );
+		// Note the `^` boosts the field by the following multiplier
+		var matchText = [
+			"message^10",
+			"stacktrace",
+			"frames"
+		];
+
+		search.multiMatch(
+			matchText,
+			trim( searchString ),
+			20.00
+		);
+
 
 	}
 

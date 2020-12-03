@@ -25,8 +25,7 @@ component extends="BaseAPIHandler"{
 	// ( DELETE ) /stachebox/api/v1/authentication
 	function logout( event, rc, prc ){
 		auth().logout();
-		// @TODO: Determine if we need to use this too
-		// jwtAuth().logout();
+		jwtAuth().logout();
 		prc.response.setStatusCode( STATUS.NO_CONTENT );
 	}
 }

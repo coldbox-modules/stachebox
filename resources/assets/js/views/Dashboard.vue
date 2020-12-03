@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3 class="text-gray-700 text-3xl font-medium">Dashboard</h3>
-
-    <div class="mt-4" v-if="recentLogs">
+    <div class="mt-4" v-if="aggregations">
       <div class="flex flex-wrap -mx-6">
         <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
           <div
@@ -13,7 +11,7 @@
             </div>
 
             <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">{{recentLogs.total}}</h4>
+              <h4 class="text-2xl font-semibold text-gray-700">{{aggregations.logCount}}</h4>
               <div class="text-gray-500">Log Entries</div>
             </div>
           </div>
@@ -58,17 +56,25 @@
 
     <div class="mt-8"></div>
 
-    <div class="flex flex-col mt-8" v-if="recentLogs">
+    <div class="flex flex-col mt-8" v-if="applications">
+		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">Recent Entries by Application</h3>
       <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+
         <div
           class="align-middle inline-block min-w-full"
         >
-          <entry-list
-		  	v-for="(group, index) in Object.keys( groupedLogs )"
-			:key="index"
-			:application="group"
-			:logs="groupedLogs[ group ]"
-		  ></entry-list>
+		<template
+			v-for="(application, index) in applications"
+		>
+			<h4 :key="application" class="text-theme text-lg font-medium mt-5 pb-o">{{application.toTitleCase()}}</h4>
+			<entry-list
+				wrapper-class="mt-5"
+				:key="index"
+				:initialFilters='{ sortOrder : "timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
+				:displayApplication="false"
+			></entry-list>
+		</template>
+
         </div>
       </div>
     </div>
@@ -78,54 +84,32 @@
 <script>
 import Stachebox from "@/errors/Stachebox";
 import EntryList from "@/components/entries/EntryList";
+import { mapState } from "vuex";
 export default {
   components : {
 	  EntryList
   },
-  props : {},
-  data(){
-	  return {
-		  recentLogs : null
-	  }
-  },
   computed : {
+	  ...mapState( {
+		  aggregations : state => state.navAggregations
+	  } ),
 	  applicationCount(){
-		  return this.recentLogs && this.recentLogs.aggregations.applications ? Object.keys( this.recentLogs.aggregations.applications ).length : 0
+		  return this.aggregations && this.aggregations.applications ? Object.keys( this.aggregations.applications ).length : 0
 	  },
 	  typeCount(){
-		  return this.recentLogs && this.recentLogs.aggregations.types ? Object.keys( this.recentLogs.aggregations.types ).length : 0
+		  return this.aggregations && this.aggregations.types ? Object.keys( this.aggregations.types ).length : 0
 	  },
-	  groupedLogs(){
-		  return this.recentLogs
-					  ? this.recentLogs.results.reduce( ( acc, entry ) => {
-						  if( !entry.application ){
-							  if( !acc.unknown ){
-								acc.unknown = [];
-							  }
-							  acc.unnknown.push( entry );
-						  } else {
-							  if( !acc[ entry.application ] ) acc[ entry.application ] = [];
-							  acc[ entry.application ].push( entry)
-						  }
-						  return acc;
-					  }, {} )
-					  : null
-	  }
-  },
-  methods : {
-	  fetchRecent(){
-		  this.$store.dispatch( "fetchLogs", { sortOrder : "timestamp DESC", aggregationGroup : "stachebox.signature" } )
-		  	.then( ( result ) => this.recentLogs = result.data )
+	  applications(){
+		  return this.aggregations ? Object.keys( this.aggregations.applications ) : null;
 	  }
   },
   created(){
-	  this.fetchRecent();
+	  var self = this;
+	//   setInterval( function(){
+	// 	  let errMsg  = 'Boom #' + Math.floor( Math.random() * Math.floor(1000) );
+	// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( errMsg ) );
+	//   }, 5000)
+  }
 
-
-
-
-	// new Stachebox( { token : this.$store.state.authToken } ).log( new Error('BOOM Chacka Wow Wow') );
-
-}
 };
 </script>

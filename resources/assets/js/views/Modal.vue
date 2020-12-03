@@ -84,8 +84,3 @@
 <script>
 export default{}
 </script>
-<style>
-.modal {
-  transition: opacity 0.25s ease;
-}
-</style>

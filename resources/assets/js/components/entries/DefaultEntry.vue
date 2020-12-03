@@ -43,7 +43,7 @@
 					<tr class="border-b">
 						<th class="w-1/3 align-top">Message:</th>
 						<td class="w-2/3">
-							<code class="language-javastacktrace">{{ entry.message }}</code>
+							<code class="text-yellow-600 text-xs">{{ entry.message }}</code>
 						</td>
 					</tr>
 				</tbody>
