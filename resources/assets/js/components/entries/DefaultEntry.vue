@@ -17,6 +17,10 @@
 						<td class="w-2/3">{{ entry.release || 'N/A' }}</td>
 					</tr>
 					<tr class="border-b">
+						<th class="w-1/3 align-top">Environment:</th>
+						<td class="w-2/3">{{ entry.environment || 'N/A' }}</td>
+					</tr>
+					<tr class="border-b">
 						<th class="w-1/3 align-top">Level:</th>
 						<td class="w-2/3">{{entry.level || 'N/A'}} <span v-if="entry.severity">( Severity {{entry.severity}} )</span></td>
 					</tr>
@@ -77,7 +81,7 @@
 				</tab>
 				<tab name="Event Details" v-if="entry.event && Object.keys( entry.event ).length">
 					<!-- Coldbox Event Information -->
-					<table v-if="entry.event.environment" class="text-left table-fixed border-collapse">
+					<table v-if="entry.event.name" class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr class="border-b">
 								<th class="w-1/3 align-top">Environment:</th>

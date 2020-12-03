@@ -39,7 +39,7 @@
 				</tr>
 			</thead>
 
-			<tbody class="bg-white">
+			<tbody class="bg-white" v-if="logs.length">
 				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }">
 				<td
 					v-if="displayApplication"
@@ -82,12 +82,20 @@
 				<td
 					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
 				>
-					<a @click="suppress( entry )" class="text-teal-600 hover:text-teal-900">
+					<a @click="suppress( entry )" v-tooltip="'Suppress this entry and its occurrences, to date, from future log results'" class="text-teal-600 hover:text-teal-900">
 						<fa-icon icon="eye-slash"></fa-icon>
 					</a>
 				</td>
 				</tr>
 			</tbody>
+			<tbody v-else class="bg-white">
+				<tr>
+					<td :colspan="currentColspan" class="px-3 py-2 border-b border-gray-200 text-lg text-center text-gray-500">
+						<em>No records matched your search criteria</em>
+					</td>
+				</tr>
+			</tbody>
+
 		</table>
 		<pagination v-if="pagination" :pagination="pagination" @update-maxrows="updateMax" @paginate="paginate"></pagination>
 		<div v-if="!logs" class="mt-4 text-center items-center">
@@ -148,6 +156,15 @@ export default {
 		  isSyncing : false,
 		  displayFilters : false
 		};
+	},
+	computed : {
+
+		currentColspan(){
+			let colspan = 4;
+			if( this.displayOccurrences ) colspan++;
+			if( this.displayApplication ) colspan++;
+			return colspan;
+		}
 	},
 	methods : {
 		fetchLogs(){

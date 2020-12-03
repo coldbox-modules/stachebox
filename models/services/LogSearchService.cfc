@@ -2,7 +2,7 @@ component {
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 
-	this.timestampFormatter = createObject( "java", "java.text.SimpleDateFormat" ).init( "yyyy-MM-dd'T'HH:mm:ssXXX" );
+	variables.timestampFormatter = createObject( "java", "java.text.SimpleDateFormat" ).init( "yyyy-MM-dd'T'HH:mm:ssXXX" );
 
 	function search(
 		required struct searchCollection,
@@ -207,9 +207,9 @@ component {
 
 				param searchCollection.maxDate = now();
 				searchCollection.minDate = parseDateTime( searchCollection.minDate );
-				seaerchCollection.maxDate = parseDateTime( searchCollection.maxDate );
+				searchCollection.maxDate = parseDateTime( searchCollection.maxDate );
 
-				search.dateMatch(
+				builder.dateMatch(
                     name = "timestamp",
                     start = variables.timestampFormatter.format( searchCollection.minDate ),
                     end = variables.timestampFormatter.format( searchCollection.maxDate ),
@@ -218,7 +218,7 @@ component {
 
 			} else if( searchCollection.keyExists( "maxDate" ) && len( searchCollection.maxDate ) ){
 				searchCollection.maxDate = parseDateTime( searchCollection.maxDate );
-				search.dateMatch(
+				builder.dateMatch(
                     name = "timestamp",
                     end = variables.timestampFormatter.format( searchCollection.maxDate ),
                     boost = 20

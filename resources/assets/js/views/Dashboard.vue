@@ -66,7 +66,7 @@
 		<template
 			v-for="(application, index) in applications"
 		>
-			<h4 :key="application" class="text-theme text-lg font-medium mt-5 pb-o">{{application.toTitleCase()}}</h4>
+			<h4 :key="application" class="text-theme text-lg font-medium mt-5 pb-o"><router-link :to="`/logs/application/${application}`">{{application.toTitleCase()}}</router-link></h4>
 			<entry-list
 				wrapper-class="mt-5"
 				:key="index"

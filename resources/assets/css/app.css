@@ -7,6 +7,7 @@
 @import "@tailwindcss/typography/dist/typography"; */
 @import "@tailwindcss/ui/dist/tailwind-ui";
 @import "prismjs/themes/prism.css";
+@import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker";
 @import "inc/_styles";
 @import "inc/_entry";
 @import "inc/_tooltip";
