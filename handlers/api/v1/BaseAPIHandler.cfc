@@ -241,7 +241,7 @@ component extends="coldbox.system.EventHandler" {
 		log.error(
 			"Error in base handler (#arguments.faultAction#): #arguments.exception.message# #arguments.exception.detail#",
 			{
-				"exception" : e
+				"exception" : arguments.exception
 			}
 		);
 

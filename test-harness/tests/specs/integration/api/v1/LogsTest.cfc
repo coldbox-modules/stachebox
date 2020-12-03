@@ -62,6 +62,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 											.save();
 
 		variables.authService = getWirebox().getInstance( "AuthenticationService@cbauth" );
+		variables.jwtService = getWirebox().getInstance( "JWTService@cbsecurity" );
 		sleep( 1000 );
 
 
@@ -124,6 +125,17 @@ component extends="tests.resources.BaseAPITestHelper"{
 
 				var testEventArgs = newEventArgs( "GET" );
 
+				prepareMock( testEventArgs.event );
+
+				var token = jwtService.fromUser( testUser );
+
+				testEventArgs.event.$( method = "getHTTPHeader", callback = function( string name ) {
+					if ( arguments.name == "Authorization" ){
+						return "Bearer " & token;
+					}
+					return "";
+				} );
+
 				var event = execute(
 					route="/stachebox/api/v1/logs",
 					eventArgs=testEventArgs,
@@ -165,6 +177,17 @@ component extends="tests.resources.BaseAPITestHelper"{
 				expect( len( logId ) ).toBeGT( 0 );
 
 				var testEventArgs = newEventArgs( "GET" );
+
+				prepareMock( testEventArgs.event );
+
+				var token = jwtService.fromUser( testUser );
+
+				testEventArgs.event.$( method = "getHTTPHeader", callback = function( string name ) {
+					if ( arguments.name == "Authorization" ){
+						return "Bearer " & token;
+					}
+					return "";
+				} );
 
 				var event = execute(
 					route="/stachebox/api/v1/logs/#logId#",
