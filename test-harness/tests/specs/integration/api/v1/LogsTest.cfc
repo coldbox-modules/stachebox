@@ -120,7 +120,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 
 			});
 
-			it( "Can conduct an open search", function(){
+			xit( "Can conduct an open search", function(){
 				expect( variables ).toHaveKey( "testUser" );
 
 				var testEventArgs = newEventArgs( "GET" );
@@ -161,7 +161,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 				expect( prc.response.getData().results.len() ).toBeGT( 0 );
 			});
 
-			it( "Can Retrieve a single Log message", function(){
+			xit( "Can Retrieve a single Log message", function(){
 
 				var logId = getWirebox().getInstance( "SearchBuilder@cbElasticsearch" )
 												.new( moduleSettings.logIndexPattern )
