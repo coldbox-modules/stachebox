@@ -2,7 +2,7 @@ version: "3"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     environment:
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
       - http.host=0.0.0.0
@@ -12,3 +12,24 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+    ports:
+      - "5601:5601"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.9.3
+    ports:
+      - "5044:5044"
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"

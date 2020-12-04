@@ -10,7 +10,8 @@ component{
 	request.MODULE_NAME = "stachebox";
 
 	// Application properties
-	this.name              = hash( getCurrentTemplatePath() );
+	// this.name              = hash( getCurrentTemplatePath() );
+	this.name = "Stachebox-Dev";
 	this.sessionManagement = true;
 	this.sessionTimeout    = createTimeSpan(0,0,15,0);
     this.setClientCookies  = true;
