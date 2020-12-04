@@ -18,7 +18,7 @@ branches:
   - development
   - master
 
-dist: bionic
+dist: xenial
 
 sudo: required
 
@@ -37,12 +37,11 @@ before_install:
     /etc/apt/sources.list.d/commandbox.list
 
 install:
-  # Install Commandbox
-  - sudo apt-get update && sudo apt-get --assume-yes install rsync jq commandbox
   # Install nodejs
-  - curl -sL https://deb.nodesource.com/setup | sudo bash -
-  - sudo apt-get update && apt-get install -y nodejs npm
-  # - supd apt-get install -y npm
+  - sudo apt update && apt install -y nodejs npm
+  # Install Commandbox
+  - sudo apt update && sudo apt -y install rsync jq commandbox
+  # - supd apt install -y npm
   # Install CommandBox Supporting Librarires
   - box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
   # Compile assets
