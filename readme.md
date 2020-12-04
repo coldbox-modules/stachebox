@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/coldbox-modules/stachebox.svg?branch=development)](https://travis-ci.org/coldbox-modules/stachebox)
 
-# Welcome to the stachebox Module
+# StacheBox - The Log and Bug Management Platform for the Coldbox Framework
 
 This module provides a common interface for sending stachebox logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-ony module, which connects to a separate instance running this module as a microservice.
 
