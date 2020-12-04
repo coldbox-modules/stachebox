@@ -56,7 +56,7 @@ component {
 				"rules"							: [],
 				"jwt" : {
 					"customAuthHeader" : "x-auth-token",
-					"expiration"       : 20,
+					"expiration"       : 20
 				}
 			}
 		};

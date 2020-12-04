@@ -75,7 +75,7 @@
 			"cbauth" : {
 				"userServiceClass" : "UserService@stachebox"
 			}
-		}
+		};
 
 	}
 
