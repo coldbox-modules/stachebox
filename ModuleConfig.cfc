@@ -144,21 +144,7 @@ component {
     /**
      * Fired when the module is registered and activated.
      */
-    function onLoad(){
-		// Append any persisted settings
-		application.wirebox.getInstance( "SearchBuilder@cbelasticsearch" )
-					.new( settings.settingsIndex )
-					.setQuery( { "match_all" : {} })
-					.execute()
-					.getHits()
-					.each( function( doc ){
-						var setting = doc.getMemento();
-						if( structKeyExists( setting, "key" ) ){
-							settings[ setting.key ] = settings[ setting.value ];
-						}
-					} )
-
-	}
+    function onLoad(){}
 
     /**
      * Fired when the module is unregistered and unloaded
