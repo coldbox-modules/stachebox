@@ -21,6 +21,8 @@ branches:
   - development
   - master
 
+dist: bionic
+
 sudo: required
 
 before_script:
