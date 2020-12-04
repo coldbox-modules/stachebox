@@ -38,9 +38,9 @@ before_install:
 
 install:
   # Install nodejs
-  - sudo apt -y update && sudo apt -y upgrade &&
+  - sudo apt -y update && sudo apt -y upgrade
   - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-  - sudo apt install -y nodejs npm
+  - sudo apt -y update && sudo apt install -y nodejs npm
   - node -v && npm -v
   # Install Commandbox
   - sudo apt update && sudo apt -y install rsync jq commandbox
