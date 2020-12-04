@@ -82,7 +82,6 @@ component {
 
         interceptors = [
             { class="stachebox.interceptors.Stachebox" },
-            { class="stachebox.interceptors.TokenAuthentication" },
             { class="stachebox.interceptors.BasicAuthentication" }
 		];
 
