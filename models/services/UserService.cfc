@@ -76,7 +76,7 @@ component singleton accessors="true" {
 
 		return {
 			"results" : result.getHits().map(  )
-		}
+		};
 	}
 
 }
