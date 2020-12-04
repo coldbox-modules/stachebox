@@ -27,7 +27,9 @@ component{
             ".artifacts",
             ".tmp",
             "build",
-            "test-harness",
+			"test-harness",
+			"node_modules",
+			"resources",
             ".DS_Store",
             ".git"
         ];
@@ -137,11 +139,6 @@ component{
         // Copy source
         print.blueLine( "Copying source to build folder..." ).toConsole();
 		copy( variables.cwd, variables.projectBuildDir );
-
-		directoryDelete( "#variables.projectBuildDir#/build", true );
-		directoryDelete( "#variables.projectBuildDir#/test-harness", true );
-		directoryDelete( "#variables.projectBuildDir#/resources", true );
-		directoryDelete( "#variables.projectBuildDir#/node_modules", true );
 
         // Create build ID
         fileWrite( "#variables.projectBuildDir#/#projectName#-#version#+#buildID#", "Built with love on #dateTimeFormat( now(), "full")#" );
