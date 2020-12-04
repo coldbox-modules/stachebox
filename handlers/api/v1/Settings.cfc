@@ -14,7 +14,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 		prc.response.setData(
 			searchBuilder.execute().getHits().map( function(){
 				return expandDoc( entry ).getMemento();
-			}
+			} )
 		);
 
 	}
