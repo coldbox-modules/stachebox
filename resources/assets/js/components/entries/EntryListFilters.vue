@@ -124,7 +124,7 @@ export default {
 	},
 	computed : {
 		...mapState({
-			applications : ( state ) => Object.keys( state.navAggregations.applications )
+			applications : ( state ) => state.navAggregations ? Object.keys( state.navAggregations.applications ) : []
 		})
 	},
 	methods: {

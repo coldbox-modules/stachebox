@@ -12,6 +12,8 @@
           class="form-input rounded-none block w-32 sm:w-64 py-2 px-2 pl-10 pr-4 focus:border-teal-600"
           type="text"
           placeholder="Search"
+		  v-model="searchText"
+		  @keyup.enter="sendToSearchPage"
         />
       </div>
     </div>
@@ -67,7 +69,8 @@ export default {
 	data(){
 		return {
 			dropdownOpen : false,
-			isOpen : false
+			isOpen : false,
+			searchText : ''
 		}
 	},
 	computed : {
@@ -81,6 +84,13 @@ export default {
 						.finally(
 							() => this.$router.push( { name : "Login" } )
 						)
+		},
+		sendToSearchPage( e ){
+			if( this.$route.name != 'LogSearch' ){
+				this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
+			} else {
+				window.Event.$emit( "on-search-filter-change", { search : this.searchText } )
+			}
 		}
 	}
 };

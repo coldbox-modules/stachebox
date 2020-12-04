@@ -24,6 +24,7 @@ component {
 						.new( searchCollection.index )
 						.setMaxRows( searchCollection.maxRows )
 						.setStartRow( searchCollection.startRow )
+						.sort( "_score DESC" )
 						.sort( searchCollection.sortOrder );
 
 		applyCommonSearchArgs( builder, arguments.searchCollection );

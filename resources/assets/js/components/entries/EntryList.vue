@@ -235,6 +235,7 @@ export default {
 	},
 	mounted(){
 		this.fetchLogs();
+		window.Event.$on( "on-search-filter-change", this.updateFilters );
 	}
 }
 </script>
