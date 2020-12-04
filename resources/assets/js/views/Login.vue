@@ -56,6 +56,7 @@
 
 <script>
 import authAPI from "../api/authentication";
+import { mapState } from "vuex";
 
 export default {
 	name : "login",
@@ -68,7 +69,9 @@ export default {
 		}
 	},
 	computed : {
-		baseHref(){ return this.$router.options.base }
+		...mapState({
+			baseHref : ( state ) => state.globals.stachebox.baseHref
+		})
 	},
 	methods:{
 		login(){

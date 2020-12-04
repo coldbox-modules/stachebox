@@ -14,12 +14,14 @@
 		<!--- View Port --->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="#elixirPath( "css/app.css" )#"/>
-		<base href="/stachebox">
 	</head>
 
 	<body class="bg-gray-800 font-sans leading-normal tracking-normal">
 		<div id="app"></div>
 		<!-- dynamic assets -->
+		<script type="application/javascript">
+			window.globalData = #getInstance( "Util@cbelasticsearch" ).toJSON( prc.globalData )#;
+		</script>
 		<script type="application/javascript" src="#elixirPath( "js/runtime.js" )#"></script>
 		<script type="application/javascript" src="#elixirPath( "js/vendor.js" )#"></script>
 		<script type="application/javascript" src="#elixirPath( "js/app.js" )#"></script>

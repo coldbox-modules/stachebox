@@ -144,12 +144,63 @@ component {
     /**
      * Fired when the module is registered and activated.
      */
-    function onLoad(){}
+    function onLoad(){
+
+		if( settings.isStandalone ){
+			scopeRoutingToRoot();
+		}
+
+	}
 
     /**
      * Fired when the module is unregistered and unloaded
      */
 	function onUnload(){}
+
+
+	/**
+	*  Sets the module as the main application
+	*  Snipped and morphed from contentbox-ui:ModuleConfig.cfc:onLoad()
+	*/
+	private function scopeRoutingToRoot(){
+		// Get ses handle
+		try{
+			//Coldbox 5
+			var ses = controller.getInterceptorService().getInterceptor('SES',true);
+		} catch( any e ){
+			var ses = controller.getRoutingService().getRouter();
+		}
+
+		// get parent routes so we can re-mix them later
+		var parentRoutes 		= ses.getRoutes();
+		var newRoutes			= [];
+
+		// iterate and only keep module routing
+		for(var x=1; x lte arrayLen(parentRoutes); x++){
+			if( parentRoutes[ x ].pattern NEQ ":handler/" AND
+			    parentRoutes[ x ].pattern NEQ ":handler/:action/" ){
+				arrayAppend(newRoutes, parentRoutes[ x ]);
+			}
+		}
+		// override new cleaned routes
+		ses.setRoutes( newRoutes );
+
+		// Add routes manually to take over parent routes
+		for(var x=1; x LTE arrayLen( variables.routes ); x++){
+			// append module location to it so the route is now system wide
+			var args = duplicate( variables.routes[ x ] );
+			// Check if handler defined
+			if( structKeyExists(args,"handler" ) ){
+				args.handler = "stachebox:#args.handler#";
+			}
+			// add it as main application route.
+			ses.addRoute(argumentCollection=args);
+		}
+
+		// change the default event of the entire app
+		controller.setSetting( "DefaultEvent","stachebox:index" );
+
+	}
 
 
 }

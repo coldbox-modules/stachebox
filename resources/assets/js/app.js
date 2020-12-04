@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
 import store from './store';
+import router from './router';
 import VueTailwind from 'vue-tailwind';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -32,8 +32,8 @@ Vue.filter( "truncate", function ( text, stop, clamp ) {
 window.Event = new Vue();
 
 new Vue({
-	router,
 	store,
+	router,
 	VueTailwind,
 	render: h => h(App)
 }).$mount('#app')

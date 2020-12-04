@@ -11,7 +11,8 @@ export default new Vuex.Store({
 		authId: null,
 		authToken: null,
 		authUser : null,
-		navAggregations : null
+		navAggregations : null,
+		globals : window ? window.globalData : {}
 	},
 	getters:{
 		hasPermission: ( state,getters ) => ( permission ) =>{

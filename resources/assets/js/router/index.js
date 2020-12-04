@@ -65,7 +65,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/stachebox',
+  base: store.state.globalData && store.state.globalData.stachebox.isStandalone ? '' : '/stachebox',
   routes
 })
 

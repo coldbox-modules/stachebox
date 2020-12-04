@@ -12,9 +12,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
 	computed : {
-		baseHref(){ return this.$router.options.base }
+		...mapState({
+			baseHref : ( state ) => state.globals.stachebox.baseHref
+		})
 	}
 }
 </script>

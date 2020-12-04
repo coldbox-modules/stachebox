@@ -15,7 +15,7 @@
       <div class="flex items-center justify-center pt-4 bg-gray-100 border-b-2">
         <div class="flex items-center">
 
-		  <router-link to="Dashboard">
+		  <router-link :to="{ name : 'Dashboard'}">
 			  <img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" width="200px"/>
 		  </router-link>
 
@@ -81,9 +81,9 @@ export default{
 		}),
 		...mapState({
 			authToken : ( state ) => state.authToken,
-			aggregations : ( state ) => state.navAggregations
-		}),
-		baseHref(){ return this.$router.options.base }
+			aggregations : ( state ) => state.navAggregations,
+			baseHref : ( state ) => state.globals.stachebox.baseHref
+		})
 	}
 }
 

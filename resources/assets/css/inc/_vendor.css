@@ -1,0 +1,8 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+/* @import "@tailwindcss/custom-forms/dist/custom-forms";
+@import "@tailwindcss/typography/dist/typography"; */
+@import "@tailwindcss/ui/dist/tailwind-ui";
+@import "prismjs/themes/prism.css";
+@import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker";

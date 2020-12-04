@@ -92,4 +92,13 @@ component{
 		return this;
 
 	}
+
+	function onRequestCapture( event, rc, prc ){
+		prc.globalData = {
+			"stachebox" : {
+				"baseHref" : event.getModuleRoot( "stachebox" ),
+				"isStandalone" : getModuleSettings( "stachebox", "isStandalone", false )
+			}
+		};
+	}
 }
