@@ -238,10 +238,10 @@
 
 				<tab v-if="multipleOccurrences" name="Occurrences">
 					<entry-list
-						v-if="occurrences"
-						:logs="occurrences.results"
-						:pagination="occurrencePagination"
+						v-if="multipleOccurrences"
+						:initialFilters='{ "stachebox.signature" : entry.stachebox.signature, sortOrder : "timestamp DESC" }'
 						:displayOccurrences="false"
+						:displayApplication="false"
 					></entry-list>
 				</tab>
 
@@ -277,7 +277,6 @@ export default {
 		return {
 			dayjs : dayjs,
 			activeTab : 0,
-			occurrences : null
 		}
 	},
 	computed : {
@@ -285,17 +284,7 @@ export default {
 			return this.entry.frames ? this.entry.frames.reverse() : []
 		},
 		multipleOccurrences(){
-			return this.entry.stachebox.signature && this.entry.occurrences && this.entry.occurrences > 1;
-		},
-		occurrencePagination(){
-			if( !this.occurrences ) return null;
-			return {
-				page : 1,
-				pages : 1,
-				maxRows : this.occurrences.limit,
-				startRow : this.occurrences.start,
-				total : this.occurrences.total
-			};
+			return this.entry.occurrences && this.entry.occurrences > 1;
 		}
 	},
 	methods : {
@@ -306,10 +295,6 @@ export default {
 	},
 	mounted() {
 		Prism.highlightAll();
-		if( this.multipleOccurrences ){
-			this.$store.dispatch( "fetchLogs", { "stachebox.signature" : this.entry.stachebox.signature, sortOrder : "timestamp DESC" } )
-				.then( ( result ) => this.occurrences = result.data )
-		}
 	}
 
 }
