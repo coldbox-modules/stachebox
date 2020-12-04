@@ -40,7 +40,7 @@ before_install:
 install:
   - sudo apt update
   # Install Java
-  sudo apt-get install openjdk-13-jre
+  - sudo apt-get install openjdk-13-jre
   # Check node
   - node -v && npm -v
   # Install Commandbox
