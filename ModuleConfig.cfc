@@ -37,6 +37,7 @@ component {
 			"settingsIndex" : getSystemSetting( "STACHEBOX_SETTINGS_INDEX", ".stachebox_settings" ),
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
 			"logIndexPattern" : "logstash-*",
+			"beatIndexPattern" : "filebeat-*",
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
 			"isStandalone" : false,
