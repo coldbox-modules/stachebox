@@ -122,21 +122,21 @@ deploy:
     upload-dir: coldbox-modules/$MODULE_ID/$TARGET_VERSION
     acl: public_read
 
-  # Github Release only on Master
-  - provider: releases
-    api_key: ${GITHUB_TOKEN}
-    on:
-      branch:
-        - master
-      condition: "$ENGINE = lucee@5"
-    skip_cleanup: true
-    edge: true
-    file_glob: true
-    file: $TRAVIS_BUILD_DIR/.artifacts/$MODULE_ID/**/*
-    release_notes_file: $TRAVIS_BUILD_DIR/changelog-latest.md
-    name: v${TRAVIS_TAG}
-    tag_name: v${TRAVIS_TAG}
-    overwrite: true
+  # # Github Release only on Master
+  # - provider: releases
+  #   api_key: ${GITHUB_TOKEN}
+  #   on:
+  #     branch:
+  #       - master
+  #     condition: "$ENGINE = lucee@5"
+  #   skip_cleanup: true
+  #   edge: true
+  #   file_glob: true
+  #   file: $TRAVIS_BUILD_DIR/.artifacts/$MODULE_ID/**/*
+  #   release_notes_file: $TRAVIS_BUILD_DIR/changelog-latest.md
+  #   name: v${TRAVIS_TAG}
+  #   tag_name: v${TRAVIS_TAG}
+  #   overwrite: true
 
 # Once API Docs and Binaries are deployed to S3 Publish to ForgeBox
 after_deploy:
