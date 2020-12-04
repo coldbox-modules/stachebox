@@ -18,7 +18,7 @@ branches:
   - development
   - master
 
-dist: xenial
+dist: bionic
 
 sudo: required
 
@@ -39,6 +39,7 @@ before_install:
 install:
   # Install nodejs
   - sudo apt update && sudo apt install -y nodejs npm
+  - node -v && npm -v
   # Install Commandbox
   - sudo apt update && sudo apt -y install rsync jq commandbox
   # - supd apt install -y npm
