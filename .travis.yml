@@ -21,7 +21,7 @@ branches:
   - development
   - master
 
-dist: bionic
+dist: focal
 
 sudo: required
 
@@ -41,8 +41,7 @@ before_install:
 
 install:
   - sudo apt update
-  # Install Java
-  - sudo apt-get install openjdk-13-jre && export JAVA_HOME=/usr/lib/jvm/openjdk-13-jdk && export PATH=$PATH:$JAVA_HOME/bin
+  - sudo apt-get install openjdk-13-jdk
   - java --version
   # Check node
   - node -v && npm -v
