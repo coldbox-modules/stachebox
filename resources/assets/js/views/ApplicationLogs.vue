@@ -33,8 +33,14 @@ export default{
 	watch : {
 		applicationName : function( oldApp, newApp  ){
 			if( oldApp != newApp ){
-				this.$set( this, "searchResult", null );
-				this.fetchLogs();
+				window.Event.$emit(
+					"on-search-filter-change",
+					{
+						application : this.$route.params.id,
+						sortOrder : "timestamp DESC",
+						collapse : "stachebox.signature"
+					}
+				);
 			}
 		}
 	}
