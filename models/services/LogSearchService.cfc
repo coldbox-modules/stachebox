@@ -45,9 +45,6 @@ component {
 
 		var searchResults = builder.execute();
 
-		if( searchCollection.keyExists( "collapse" ) ){
-		}
-
 		var results = searchResults.getHits().map(
 			function( doc ){
 				var docMemento = doc.getMemento();
@@ -230,13 +227,10 @@ component {
 
 	function applyDynamicSearchArgs( required SearchBuilder builder, required struct searchCollection ){
 		if( !searchCollection.keyExists( "search" ) ) return;
-		var searchString = ""
 		listToArray( searchCollection.search, "+" )
 							.each( function( item ){
 								var scopedArgs = listToArray( item, ":" );
-								if( len( scopedArgs ) == 1 ){
-									searchString &= " " & item;
-								} else {
+								if( len( scopedArgs ) > 1 ){
 									searchCollection[ scopedArgs[ 1 ] ] = scopedArgs[ 2 ]
 								}
 							} );
@@ -247,9 +241,9 @@ component {
 			"frames"
 		];
 
-		search.multiMatch(
+		arguments.builder.multiMatch(
 			matchText,
-			trim( searchString ),
+			trim( searchCollection.search ),
 			20.00
 		);
 
