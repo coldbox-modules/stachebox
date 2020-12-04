@@ -18,7 +18,7 @@ branches:
   - development
   - master
 
-dist: bionic
+dist: focal
 
 sudo: required
 
