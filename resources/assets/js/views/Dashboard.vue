@@ -72,6 +72,8 @@
 				:key="index"
 				:initialFilters='{ sortOrder : "timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
 				:displayApplication="false"
+				:loaderMessage="`Fetching recent log data for application: ${application}. Please stand by...`"
+				:emptyStateMessage="`No new log data for application: ${application}`"
 			></entry-list>
 		</template>
 
@@ -106,15 +108,16 @@ export default {
   },
   created(){
 	  var self = this;
-	//   setInterval( function(){
-	// 	  // javascript error
-	// 	  let errMsg  = 'Boom goes the UI #' + Math.floor( Math.random() * Math.floor(1000) );
-	// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( errMsg ) );
-	// 	  // Add a grouped error
-	// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( "Boom goes the javascript" ) );
-	// 	  // cfml error
-	// 	  self.$store.dispatch( "fetchLogs", { minDate : "I am not a date" } );
-	//   }, 5000)
+
+		//   setInterval( function(){
+		// 	  // javascript error
+		// 	  let errMsg  = 'Boom goes the UI #' + Math.floor( Math.random() * Math.floor(1000) );
+		// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( errMsg ) );
+		// 	  // Add a grouped error
+		// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( "Boom goes the javascript" ) );
+		// 	  // cfml error
+		// 	  self.$store.dispatch( "fetchLogs", { minDate : "I am not a date" } );
+		//   }, 1000)
 
   }
 

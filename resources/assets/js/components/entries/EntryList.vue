@@ -91,7 +91,7 @@
 			<tbody v-else class="bg-white">
 				<tr>
 					<td :colspan="currentColspan" class="px-3 py-2 border-b border-gray-200 text-lg text-center text-gray-500">
-						<em>No records matched your search criteria</em>
+						<em>{{emptyStateMessage}}</em>
 					</td>
 				</tr>
 			</tbody>
@@ -143,6 +143,10 @@ export default {
 		loaderMessage : {
 			type : String,
 			default : "Loading log data. Please wait..."
+		},
+		emptyStateMessage : {
+			type : String,
+			default : "No records matched your search criteria"
 		}
 	},
 	data(){
