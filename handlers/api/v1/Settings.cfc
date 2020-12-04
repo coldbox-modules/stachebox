@@ -12,8 +12,9 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 		searchBuilder.setMaxRows( searchBuilder.count() );
 
 		prc.response.setData(
-			searchBuilder.execute().getHits().map(
-				return expandDoc( entry ).getMemento()
+			searchBuilder.execute().getHits().map( function(){
+				return expandDoc( entry ).getMemento();
+			}
 		);
 
 	}
