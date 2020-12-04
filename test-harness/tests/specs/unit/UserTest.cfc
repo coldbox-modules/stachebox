@@ -24,7 +24,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 					.execute()
 					.getHits()
 					.each( function( doc ){
-						doc.delete()
+						doc.delete();
 					} );
 
 
