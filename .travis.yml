@@ -1,4 +1,7 @@
-language: java
+language: node_js
+
+node_js:
+  - 13
 
 notifications:
   slack:
@@ -35,13 +38,13 @@ before_install:
     /etc/apt/sources.list.d/commandbox.list
 
 install:
-  # Install nodejs
-  - sudo apt -y update && sudo apt -y upgrade
-  - curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-  - sudo apt -y update && sudo apt install -y nodejs
+  - sudo apt update
+  # Install Java
+  sudo apt-get install openjdk-13-jre
+  # Check node
   - node -v && npm -v
   # Install Commandbox
-  - sudo apt update && sudo apt -y install rsync jq commandbox
+  - sudo apt -y install rsync jq commandbox
   # - supd apt install -y npm
   # Install CommandBox Supporting Librarires
   - box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
