@@ -38,7 +38,7 @@ before_install:
 
 install:
   # Install nodejs
-  - sudo apt update && apt install -y nodejs npm
+  - sudo apt update && sudo apt install -y nodejs npm
   # Install Commandbox
   - sudo apt update && sudo apt -y install rsync jq commandbox
   # - supd apt install -y npm
