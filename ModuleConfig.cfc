@@ -34,13 +34,21 @@ component {
 		var applicationName = server.coldfusion.productname == "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name;
 
         settings = {
+			// The index to be used to store the module settings overrides
 			"settingsIndex" : getSystemSetting( "STACHEBOX_SETTINGS_INDEX", ".stachebox_settings" ),
+			// The index used to to manage user accounts ( if using the StacheBox users service for cbSecurity and cbAuth )
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
+			// A default index pattern for logstash logs ( e.g. application exceptions). May be overriden in the UI settings admin
 			"logIndexPattern" : "logstash-*",
+			// A default index pattern for filebeat logs ( e.g. server log files/entries ). May be overriden in the UI settings admin
 			"beatIndexPattern" : "filebeat-*",
+			// An initial admin email address. When present, it will create the initial login.
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
+			// An initial admin password to login
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
+			// Whether to promote the module UI to the root URLS of the application
 			"isStandalone" : false,
+			// The cbSecurity configuration overrides for this module
 			"cbsecurity" : {
 				"userService" : "UserService@stachebox",
 				// Module Relocation when an invalid access is detected, instead of each rule declaring one.
@@ -58,6 +66,10 @@ component {
 					"customAuthHeader" : "x-auth-token",
 					"expiration"       : 20
 				}
+			},
+			// the cbauth overrides for this module
+			"cbauth" : {
+				"userServiceClass" : "UserService@stachebox"
 			}
 		};
 
