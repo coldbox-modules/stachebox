@@ -1,7 +1,7 @@
 Contributing
 =============
 
-Follow these steps to get started hacking on CBElasticsearch.
+Follow these steps to get started hacking on StacheBox.
 
 1. Clone the module - `git clone git@github.com:coldbox-modules/stachebox.git`
 3. Start a new Elasticsearch instance ( from the root of the project ) - `docker-compose up -d --build`
