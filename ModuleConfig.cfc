@@ -41,7 +41,7 @@ component {
 			// A default index pattern for logstash logs ( e.g. application exceptions). May be overriden in the UI settings admin
 			"logIndexPattern" : "logstash-*",
 			// A default index pattern for filebeat logs ( e.g. server log files/entries ). May be overriden in the UI settings admin
-			"beatIndexPattern" : "filebeat-*",
+			"beatsIndexPattern" : "filebeat-*",
 			// An initial admin email address. When present, it will create the initial login.
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			// An initial admin password to login
@@ -97,10 +97,21 @@ component {
             { class="stachebox.interceptors.BasicAuthentication" }
 		];
 
+		interceptorSettings = {
+			customInterceptionPoints = [
+				"onStacheboxSettingUpdate"
+			]
+		};
+
 		resources = [
 			{
 				resource : "/api/v1/users",
 				handler : "api.v1.Users"
+
+			},
+			{
+				resource : "/api/v1/settings",
+				handler : "api.v1.Settings"
 
 			}
 		];

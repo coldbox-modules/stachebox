@@ -12,7 +12,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 		searchBuilder.setMaxRows( searchBuilder.count() );
 
 		prc.response.setData(
-			searchBuilder.execute().getHits().map( function(){
+			searchBuilder.execute().getHits().map( function( entry ){
 				return expandDoc( entry ).getMemento();
 			} )
 		);
@@ -73,6 +73,8 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 				).save() ).getMemento()
 		);
 
+		announceInterception( "onStacheboxSettingUpdate", { setting : prc.response.getData() } );
+
 
 	}
 
@@ -87,7 +89,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 
 		entry.getMemento().value = isSimpleValue( rc.value ) ? rc.value : ESUtil.toJSON( rc.value ) ;
 
-		prc.response.setData( expandDoc( entry.save().getMemento() ) );
+		prc.response.setData( expandDoc( entry.save() ).getMemento() );
 	}
 
 

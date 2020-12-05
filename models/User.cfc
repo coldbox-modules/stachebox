@@ -19,7 +19,7 @@ component
     property name="password" type="string" default="";
 	property name="resetToken" type="string" default="";
 
-	property name="moduleSettings" persistent="false" inject="coldbox:modulesettings:stachebox";
+	property name="moduleSettings" persistent="false" inject="coldbox:moduleSettings:stachebox";
 
 
     this.constraints = {

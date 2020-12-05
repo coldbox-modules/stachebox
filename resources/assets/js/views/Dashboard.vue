@@ -109,6 +109,7 @@ export default {
   created(){
 	  var self = this;
 
+		//   Error log generation
 		//   setInterval( function(){
 		// 	  // javascript error
 		// 	  let errMsg  = 'Boom goes the UI #' + Math.floor( Math.random() * Math.floor(1000) );
