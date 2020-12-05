@@ -1,0 +1,12 @@
+{
+    "gitbook": "3.2.3",
+    "title": "StacheBox",
+    "author": "Ortus Solutions",
+    "description": "The Bug and Logging Management Platform for the Coldbox Framewor",
+    "language": "en",
+    "root": "./resources/docs",
+    "structure": {
+        "readme": "Introduction.md",
+        "summary": "Summary.md"
+    }
+}

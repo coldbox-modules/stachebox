@@ -1,0 +1,11 @@
+# Github pages configuration
+title: StacheBox
+description: The Bug and Logging Management Platform for the Coldbox Framework
+logo: /_assets/images/stachebox-logo-h.png
+
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+theme: jekyll-theme-cayman
