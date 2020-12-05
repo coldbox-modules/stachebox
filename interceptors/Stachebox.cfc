@@ -1,6 +1,8 @@
 component{
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 	property name="searchClient" inject="Client@cbelasticsearch";
+	property name="wirebox" inject="wirebox";
+	property name="moduleService" inject="coldbox:ModuleService";
 
 	function postModuleLoad( event, interceptData ){
 		if( interceptData.moduleName == "stachebox" ){
@@ -20,9 +22,12 @@ component{
 				).save();
 		}
 
+
+
 		var defaults = [
 			{ "name" : "applicationAliases", "value" : '{}' },
 			{ "name" : "logIndexPattern", "value" : variables.moduleSettings.logIndexPattern },
+			{ "name" : "beatsIndexPattern", "value" : variables.moduleSettings.beatsIndexPattern },
 			{ "name" : "neverExpose", "value" : "password|cookie|JSessionID|CFIDE" }
 		];
 
@@ -97,8 +102,21 @@ component{
 		prc.globalData = {
 			"stachebox" : {
 				"baseHref" : event.getModuleRoot( "stachebox" ),
-				"isStandalone" : getModuleSettings( "stachebox", "isStandalone", false )
+				"isStandalone" : getModuleSettings( "stachebox", "isStandalone", false ),
+				"logIndexPattern" : getModuleSettings( "stachebox", "logIndexPattern" ),
+				"beatsIndexPattern" : getModuleSettings( "stachebox", "beatsIndexPattern" )
 			}
 		};
+	}
+
+	function onStacheboxSettingUpdate( event, interceptData ){
+		lock type="exclusive" scope="application"{
+			variables.moduleSettings[ interceptData.setting.name ] = interceptData.setting.value;
+			var allModuleSettings = getSetting( "moduleSettings" );
+			structAppend( allModuleSettings.stachebox, variables.moduleSettings, true );
+			setSetting( "moduleSettings", allModuleSettings );
+			variables.wirebox.clearSingletons();
+			variables.moduleService.reload( "stachebox" );
+		}
 	}
 }
