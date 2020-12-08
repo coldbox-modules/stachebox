@@ -12,6 +12,8 @@ import LogEntry from "@/views/LogEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
 import LogSearch from "@/views/LogSearch.vue";
 import Settings from "@/views/Settings.vue";
+import UserDirectory from "@/views/UserDirectory.vue";
+import UserForm from "@/views/UserForm.vue";
 
 import store from "@/store/index";
 
@@ -56,9 +58,33 @@ const routes = [
 	}
   },
   {
-    path: "/profile",
+    path: "/directory",
+    name: "Directory",
+    component: UserDirectory,
+  },
+  {
+    path: "/users/edit/:id",
+    name: "EditUser",
+	component: UserForm,
+	meta : {
+		permission : "Edit:User"
+	}
+  },
+  {
+    path: "/users/create",
+    name: "NewUser",
+	component: UserForm,
+	meta : {
+		permission : "Administer:Users"
+	}
+  },
+  {
+    path: "/profile/:id",
     name: "Profile",
-    component: Blank,
+    component: UserForm,
+	meta : {
+		permission : "Edit:User"
+	}
   },
   { path: '*', component: NotFound }
 ];
@@ -80,7 +106,14 @@ router.beforeEach((to, from, next) => {
 						if( !store.state.navAggregations ){
 							store.dispatch( "fetchNavAggregations" );
 						}
-						if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
+						if( to.meta && to.meta.permission && to.meta.permission == "Edit:User" ){
+							if( store.getters.hasPermission( to.meta.permission ) || to.params.id === store.state.authId ){
+								next();
+							} else {
+								next( "/permission-denied" );
+							}
+						}
+						else if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
 							next( '/permission-denied' );
 						} else {
 							next();

@@ -37,7 +37,7 @@
 					name="maxRows"
 					v-model="pagination.maxRows"
 					@change="setMaxRows"
-					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-none"
+					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-none"
 				>
 					<option v-for="qty in maxRowOptions" :key="qty" :value="qty">{{qty}}</option>
 				</select>

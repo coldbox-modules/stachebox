@@ -55,7 +55,7 @@
 
                 <input
                   type="text"
-                  class="form-input w-full px-12 py-2 appearance-none rounded-md focus:border-teal-600"
+                  class="form-input w-full px-12 py-2 appearance-none rounded-md focus:border-cyan-600"
                 />
               </div>
             </div>
@@ -67,7 +67,7 @@
                 Cancel
               </button>
               <button
-                class="px-3 py-1 bg-teal-600 text-white rounded-md text-sm hover:bg-teal-500 focus:outline-none"
+                class="px-3 py-1 bg-cyan-600 text-white rounded-md text-sm hover:bg-cyan-500 focus:outline-none"
               >
                 Save
               </button>
@@ -91,7 +91,7 @@
               <div>
                 <label class="text-gray-700" for="username">Username</label>
                 <input
-                  class="form-input w-full mt-2 rounded-md focus:border-teal-600"
+                  class="form-input w-full mt-2 rounded-md focus:border-cyan-600"
                   type="text"
                   v-model="user.username"
                 />
@@ -102,7 +102,7 @@
                   >Email Address</label
                 >
                 <input
-                  class="form-input w-full mt-2 rounded-md focus:border-teal-600"
+                  class="form-input w-full mt-2 rounded-md focus:border-cyan-600"
                   type="email"
                   v-model="user.email"
                 />
@@ -111,7 +111,7 @@
               <div>
                 <label class="text-gray-700" for="password">Password</label>
                 <input
-                  class="form-input w-full mt-2 rounded-md focus:border-teal-600"
+                  class="form-input w-full mt-2 rounded-md focus:border-cyan-600"
                   type="password"
                   v-model="user.password"
                 />
@@ -122,7 +122,7 @@
                   >Password Confirmation</label
                 >
                 <input
-                  class="form-input w-full mt-2 rounded-md focus:border-teal-600"
+                  class="form-input w-full mt-2 rounded-md focus:border-cyan-600"
                   type="password"
                   v-model="user.confirm"
                 />

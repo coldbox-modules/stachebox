@@ -13,9 +13,9 @@ export const finalAPI = {
 	apiInstance : defaultAPI,
 	fetch :( id, params, token ) => defaultAPI.get( '/' + id, { params : params, headers : { 'Authorization' : 'Bearer ' + token } } ),
 	list :( params, token ) => defaultAPI.get( '', { params : params, headers : { 'Authorization' : 'Bearer ' + token } } ),
-	update : ( params, token ) => defaultAPI.put( '/' + id,  { data : JSON.stringify( params ), headers : { 'Authorization' : 'Bearer ' + token } }  ),
+	update : ( params, token ) => defaultAPI.put( '/' + params.id, JSON.stringify( params ), { headers : { 'Authorization' : 'Bearer ' + token } }  ),
 	suppress : ( field, id , token ) => defaultAPI.delete( `/suppress/${field}/${id}`,  { headers : { 'Authorization' : 'Bearer ' + token } }  ),
-	patch : ( params, token ) => defaultAPI.patch( '/' + id,  { data : JSON.stringify( params ), headers : { 'Authorization' : 'Bearer ' + token } }  ),
+	patch : ( params, token ) => defaultAPI.patch( '/' + params.id,  JSON.stringify( params ), { headers : { 'Authorization' : 'Bearer ' + token } }  ),
 	delete : ( params, token ) => defaultAPI.put( '/' + id  ),
 };
 

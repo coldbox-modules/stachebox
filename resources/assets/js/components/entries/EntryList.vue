@@ -82,7 +82,7 @@
 				<td
 					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
 				>
-					<a @click="suppress( entry )" v-tooltip="'Suppress this entry and its occurrences, to date, from future log results'" class="text-teal-600 hover:text-teal-900">
+					<a @click="suppress( entry )" v-tooltip="'Suppress this entry and its occurrences, to date, from future log results'" class="text-cyan-600 hover:text-cyan-900">
 						<fa-icon icon="eye-slash"></fa-icon>
 					</a>
 				</td>
