@@ -9,7 +9,7 @@
         </span>
 
         <input
-          class="form-input rounded-none block w-32 sm:w-64 py-2 px-2 pl-10 pr-4 focus:border-teal-600"
+          class="form-input rounded-none block w-32 sm:w-64 py-2 px-2 pl-10 pr-4 focus:border-cyan-600"
           type="text"
           placeholder="Search"
 		  v-model="searchText"
@@ -43,17 +43,17 @@
           class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20"
         >
 			<router-link
-				:to="{ name : 'Profile' }"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-600 hover:text-white"
+				:to="`/profile/${user.id}`"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
 			>Profile</router-link>
 
 			<router-link
 				:to="{name : 'Directory'}"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-600 hover:text-white"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
 			>Directory</router-link>
 			<a
 				@click="logout"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-600 hover:text-white"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
 			>
 				Log out
 			</a>

@@ -6,19 +6,19 @@
 				<tr class="border-b">
 					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Logstash Log Index Pattern: <a v-tooltip="'The index pattern to search for application-provided log entries'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
 					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-teal-600" v-model="settings.logIndexPattern.value"/>
+						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.logIndexPattern.value"/>
 					</td>
 				</tr>
 				<tr class="border-b">
 					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Filebeats Log Index Pattern: <a v-tooltip="'The index pattern to search for filebeat ( e.g. machine ) log entries'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
 					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-teal-600" v-model="settings.beatsIndexPattern.value"/>
+						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.beatsIndexPattern.value"/>
 					</td>
 				</tr>
 				<tr class="border-b">
 					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Omit from entry data: <a v-tooltip="'Regex pattern which denotes any fields which should be omitted from log API output'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
 					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-teal-600" v-model="settings.neverExpose.value"/>
+						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.neverExpose.value"/>
 					</td>
 				</tr>
 				<tr>

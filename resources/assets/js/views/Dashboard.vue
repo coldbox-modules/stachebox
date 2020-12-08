@@ -6,7 +6,7 @@
           <div
             class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white"
           >
-            <div class="p-3 rounded-full bg-teal-600 bg-opacity-75">
+            <div class="p-3 rounded-full bg-cyan-600 bg-opacity-75">
 				<fa-icon class="text-white h-9" size="2x" icon="list" fixed-width />
             </div>
 

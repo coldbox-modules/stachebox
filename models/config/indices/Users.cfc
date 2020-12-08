@@ -15,10 +15,10 @@ component accessors="true"{
                 "properties": {
                     "isActive": { "type": "boolean" },
                     "isAdministrator": { "type": "boolean" },
-                    "firstName": { "type": "text" },
-                    "lastName": { "type": "text" },
+                    "firstName": { "type": "keyword" },
+                    "lastName": { "type": "keyword" },
                     "email": { "type": "keyword" },
-					"title": { "type": "text" },
+					"title": { "type": "keyword" },
 					"avatar" : { "type" : "binary" },
                     "password": {
                         "type": "text",
