@@ -1,6 +1,7 @@
 component extends="BaseAPIHandler" secured{
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
+	variables.timestampFormatter = createObject( "java", "java.text.SimpleDateFormat" ).init( "yyyy-MM-dd'T'HH:mm:ssXXX" );
 
 	// ( GET ) /api/v1/logs
 	function index( event, rc, prc ){
@@ -143,6 +144,8 @@ component extends="BaseAPIHandler" secured{
 				}
 			}
 		);
+
+		arguments.entry[ "@timestamp" ] = variables.timestampFormatter.format( parseDateTime( arguments.entry[ "@timestamp" ] ) )
 
 		return arguments.entry;
 	}

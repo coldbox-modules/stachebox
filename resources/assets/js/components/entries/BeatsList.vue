@@ -1,6 +1,6 @@
 <template>
 	<div :class="wrapperClass">
-		<beats-list-filters v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters"></beats-list-filters>
+		<beats-list-filters v-show="displayFilters" :filterSet="filterSet" :searchFilters="searchFilters" @apply-filter="updateFilters"></beats-list-filters>
 		<table class="min-w-full" style="table-layout:fixed" v-if="logs">
 			<thead>
 				<tr>
@@ -49,7 +49,7 @@
 						style="width: 175px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-					{{ dayjs( entry['@timestamp' ] ).format('DD/MM/YYYY HH:mm') }}
+					{{ dayjs( entry['@timestamp' ] ).format('MM/DD/YYYY HH:mm') }}
 					</td>
 					<td
 						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
@@ -121,6 +121,10 @@ export default {
 		displayDataset : {
 			type : Boolean,
 			default : true
+		},
+		filterSet : {
+			type : String,
+			default : "dataset"
 		},
 		wrapperClass : {
 			type : String,

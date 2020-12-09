@@ -14,11 +14,9 @@
     >
       <div class="flex items-center justify-center pt-4 pb-6 bg-gray-100 border-b-2">
         <div class="flex items-center">
-
 		  <router-link :to="{ name : 'Dashboard'}">
 			  <img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" width="200px"/>
 		  </router-link>
-
         </div>
       </div>
 
@@ -58,6 +56,18 @@
 				<fa-icon icon="heartbeat" fixed-width/>
 				<span class="mx-4">{{dataset |  datasetName | truncate( 15 ) }}</span>
 			</router-link>
+			<template v-if="this.aggregations && this.aggregations.inputTypes && Object.keys( this.aggregations.inputTypes ).length">
+				<router-link
+					v-for="(type) in Object.keys( this.aggregations.inputTypes )"
+					:key="type"
+					class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
+					:class="[$route.name === 'DatasetLogs' && $route.params.id == type ? activeClass : inactiveClass]"
+					:to="`/logs/type/${type}`"
+				>
+					<fa-icon icon="heartbeat" fixed-width/>
+					<span class="mx-4">All {{type.toTitleCase() }} Entries</span>
+				</router-link>
+			</template>
 		</template>
 
 		<template v-if="hasPermission( 'Administer:Settings' )">

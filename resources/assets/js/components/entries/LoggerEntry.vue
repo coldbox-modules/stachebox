@@ -154,7 +154,7 @@
 				</tbody>
 			</table>
 
-			<div class="entry-detail mt-20" v-if="entry.extrainfo || entry.event || entry.snapshot || entry.stacktrace">
+			<div class="entry-detail mt-20">
 				<h2 class="text-3xl font-medium text-gray-500">
 					<fa-icon icon="search" fixed-width />
 					Entry Detail

@@ -12,6 +12,7 @@ import LogEntry from "@/views/LogEntry.vue";
 import BeatsEntry from "@/views/BeatsEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
 import DatasetLogs from "@/views/DatasetLogs.vue";
+import BeatsLogs from "@/views/BeatsLogs.vue";
 import LogSearch from "@/views/LogSearch.vue";
 import Settings from "@/views/Settings.vue";
 import UserDirectory from "@/views/UserDirectory.vue";
@@ -55,6 +56,11 @@ const routes = [
     path: "/logs/dataset/:id",
     name: "DatasetLogs",
     component: DatasetLogs,
+  },
+  {
+    path: "/logs/type/:id",
+    name: "BeatsLogs",
+    component: BeatsLogs,
   },
   {
     path: "/logs/search",
