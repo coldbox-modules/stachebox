@@ -72,6 +72,15 @@
 				<span class="mx-4">Settings</span>
 			</router-link>
 
+			<router-link
+			class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
+			:class="[$route.name === 'Directory' ? activeClass : inactiveClass]"
+			:to="{ name : 'Directory' }"
+			>
+				<fa-icon icon="users" fixed-width/>
+				<span class="mx-4">Users</span>
+			</router-link>
+
 		</template>
 
       </nav>

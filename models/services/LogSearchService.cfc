@@ -189,7 +189,7 @@ component {
 				searchCollection[ "stachebox.isSuppressed" ] = false;
 			}
 
-			if( structKeyExists( searchCollection, "search" ) ){
+			if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 				applyDynamicSearchArgs( builder, searchCollection );
 			}
 
