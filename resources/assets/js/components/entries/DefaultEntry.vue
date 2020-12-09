@@ -5,7 +5,7 @@
 			<!----------------------------------------------------------------------------------------->
 			<!--- Top Left Exception Area --->
 			<!----------------------------------------------------------------------------------------->
-			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="bomb" fixed-width /> Exception Information</h2>
+			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="bomb" fixed-width /> Log Entry Information</h2>
 			<table class="text-left table-fixed border-collapse mt-5">
 				<tbody>
 					<tr class="border-b" v-if="entry.application">

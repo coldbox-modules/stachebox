@@ -9,7 +9,9 @@ import Login from "@/views/Login.vue";
 import Blank from "@/views/Blank.vue";
 import NotFound from "@/views/NotFound.vue";
 import LogEntry from "@/views/LogEntry.vue";
+import BeatsEntry from "@/views/BeatsEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
+import DatasetLogs from "@/views/DatasetLogs.vue";
 import LogSearch from "@/views/LogSearch.vue";
 import Settings from "@/views/Settings.vue";
 import UserDirectory from "@/views/UserDirectory.vue";
@@ -40,9 +42,19 @@ const routes = [
     component: LogEntry,
   },
   {
+    path: "/beats/entry/:id",
+    name: "BeatsEntry",
+    component: BeatsEntry,
+  },
+  {
     path: "/logs/application/:id",
     name: "ApplicationLogs",
     component: ApplicationLogs,
+  },
+  {
+    path: "/logs/dataset/:id",
+    name: "DatasetLogs",
+    component: DatasetLogs,
   },
   {
     path: "/logs/search",
