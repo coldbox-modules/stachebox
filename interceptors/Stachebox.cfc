@@ -116,21 +116,29 @@ component{
 		var mapping = new cbelasticsearch.models.logging.LogstashAppender( name="sample" ).getIndexConfig();
 		structDelete( mapping, "settings" )
 
-		getInstance( "IndexBuilder@cbelasticsearch" ).new(
-            name=variables.moduleSettings.logIndexPattern,
-            properties=mapping
-		).save();
+		try{
+			getInstance( "IndexBuilder@cbelasticsearch" ).new(
+				name=variables.moduleSettings.logIndexPattern,
+				properties=mapping
+			).save();
+		} catch( cbElasticsearch.native.index_not_found_exception e ){
+			log.warn( "No indices exist with the logstash index pattern of `#variables.moduleSettings.logIndexPattern#`. Mapping updates could not proceed" );
+		} catch( any e ){ rethrow; }
 
-		getInstance( "IndexBuilder@cbelasticsearch" ).new(
-			name=variables.moduleSettings.beatsIndexPattern,
-			properties = {
-				"mappings" : {
-					"properties" :{
-						"stachebox" : mapping.mappings.properties.stachebox
+		try{
+			getInstance( "IndexBuilder@cbelasticsearch" ).new(
+				name=variables.moduleSettings.beatsIndexPattern,
+				properties = {
+					"mappings" : {
+						"properties" :{
+							"stachebox" : mapping.mappings.properties.stachebox
+						}
 					}
 				}
-			}
-		).save();
+			).save();
+		} catch( cbElasticsearch.native.index_not_found_exception e ){
+			log.warn( "No indices exist with the filebeat index pattern of `#variables.moduleSettings.beatsIndexPattern#`. Mapping updates could not proceed" );
+		} catch( any e ){ rethrow; }
 
 	}
 
