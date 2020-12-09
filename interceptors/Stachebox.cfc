@@ -110,7 +110,7 @@ component{
 	}
 
 	function onStacheboxSettingUpdate( event, interceptData ){
-		lock type="exclusive" scope="application"{
+		lock scope="application" type="exclusive" throwontimeout="true" timeout="20"{
 			variables.moduleSettings[ interceptData.setting.name ] = interceptData.setting.value;
 			var allModuleSettings = getSetting( "moduleSettings" );
 			structAppend( allModuleSettings.stachebox, variables.moduleSettings, true );
