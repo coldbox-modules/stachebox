@@ -90,6 +90,10 @@ component {
 
 	function parseAggregationData( required struct aggData ){
 
+		if( !aggData.keyExists( "buckets" ) ){
+			return aggData;
+		}
+
 		return aggData.buckets.reduce( function( acc, val ){
 			acc[ val.key ] = {
 				"count" : val.doc_count
@@ -125,7 +129,7 @@ component {
 				applyDynamicSearchArgs( builder, searchCollection );
 			}
 
-			var termFilters = [  "input.type","agent.hostname", "url.original", "host.hostname", "http.request.method", "http.response.status_code", "event.kind", "event.outcome", "event.dataset", "event.module" ];
+			var termFilters = [  "input.type","agent.hostname", "url.original", "host.hostname", "http.request.method", "http.response.status_code", "event.kind", "event.type", "event.outcome", "event.dataset", "event.module" ];
 
 			termFilters.each( function( term ){
 				if( searchCollection.keyExists( term ) && len( searchCollection[ term ] ) ){
@@ -198,6 +202,23 @@ component {
 							}
 
 						}
+					}
+				},
+				"ungrouped" : {
+					"missing" : { "field" : "event.dataset" }
+				},
+				"inputTypes" : {
+					"terms" : {
+                        "field" : "input.type",
+                        "size" : 20000,
+                        "order" : { "_key" : "asc" }
+					}
+				},
+				"hostnames" : {
+					"terms" : {
+                        "field" : "host.hostname",
+                        "size" : 20000,
+                        "order" : { "_key" : "asc" }
 					}
 				}
             }
