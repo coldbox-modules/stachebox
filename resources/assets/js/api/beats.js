@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const urlRoot = "/stachebox/api/v1/logs";
+const urlRoot = "/stachebox/api/v1/beats";
 
 const defaultAPI = Axios.create({
 	baseURL: urlRoot,

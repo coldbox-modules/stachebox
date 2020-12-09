@@ -10,13 +10,13 @@
         "mementifier":"^2.3.0+116",
         "cbsecurity":"^2.8.0+129",
         "testbox":"^4.1.0",
-        "cbelasticsearch":"^2.0.1",
+        "cbelasticsearch":"^2.1.1",
         "cbrestbasehandler":"^1.0.0",
         "JSONToRC":"^1.0.0",
         "cbvalidation":"^2.3.0+143",
         "route-visualizer":"^1.4.0+24",
-		"BCrypt":"^3.0.1+34",
-		"logstash":"^1.0.1+23"
+        "BCrypt":"^3.0.1+34",
+        "logstash":"^1.1.0"
     },
     "installPaths":{
         "coldbox":"coldbox/",

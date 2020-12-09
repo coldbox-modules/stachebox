@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import authAPI from "../api/authentication";
 import usersAPI from "../api/users";
 import logsAPI from "../api/logs";
+import beatsAPI from "../api/beats";
 
 Vue.use(Vuex);
 
@@ -68,6 +69,12 @@ export default new Vuex.Store({
 		fetchLogs : ( context, params = {} ) => {
 			return logsAPI.list( params, context.state.authToken )
 		},
+		fetchBeats : ( context, params = {} ) => {
+			return beatsAPI.list( params, context.state.authToken )
+		},
+		fetchBeatsEntry : ( context, id, params= {} ) => {
+			return beatsAPI.fetch( id, params, context.state.authToken )
+		},
 		fetchLogEntry : ( context, id, params= {} ) => {
 			return logsAPI.fetch( id, params, context.state.authToken )
 		},
@@ -76,6 +83,14 @@ export default new Vuex.Store({
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
 						context.state.navAggregations.logCount = result.data.pagination.total;
+
+						context.dispatch( "fetchBeats", { maxrows : 0 } )
+								.then( ( result ) => {
+									Vue.set( context.state.navAggregations, "beatsCount", result.data.pagination.total );
+									Object.keys( result.data.aggregations ).forEach( key => {
+										Vue.set( context.state.navAggregations, key, result.data.aggregations[ key ] );
+									} )
+								} );
 					} );
 		},
 		suppressEntry : ( context, { field, id } ) => {

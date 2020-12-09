@@ -10,6 +10,8 @@ component{
 				.applyCustomSettings()
 				.ensureUserIndex()
 				.ensureDefaultAdminUser();
+
+			ensureStacheboxMappings();
 		}
 	}
 
@@ -80,6 +82,7 @@ component{
 											}
 										).encryptPassword().save();
 		}
+		return this;
 	}
 
 	function applyCustomSettings(){
@@ -107,6 +110,28 @@ component{
 				"beatsIndexPattern" : getModuleSettings( "stachebox", "beatsIndexPattern" )
 			}
 		};
+	}
+
+	function ensureStacheboxMappings(){
+		var mapping = new cbelasticsearch.models.logging.LogstashAppender( name="sample" ).getIndexConfig();
+		structDelete( mapping, "settings" )
+
+		getInstance( "IndexBuilder@cbelasticsearch" ).new(
+            name=variables.moduleSettings.logIndexPattern,
+            properties=mapping
+		).save();
+
+		getInstance( "IndexBuilder@cbelasticsearch" ).new(
+			name=variables.moduleSettings.beatsIndexPattern,
+			properties = {
+				"mappings" : {
+					"properties" :{
+						"stachebox" : mapping.mappings.properties.stachebox
+					}
+				}
+			}
+		).save();
+
 	}
 
 	function onStacheboxSettingUpdate( event, interceptData ){

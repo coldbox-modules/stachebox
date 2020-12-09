@@ -99,7 +99,8 @@ component {
 
 		interceptorSettings = {
 			customInterceptionPoints = [
-				"onStacheboxSettingUpdate"
+				"onStacheboxSettingUpdate",
+				"ensureStacheboxMappings"
 			]
 		};
 
@@ -112,6 +113,11 @@ component {
 			{
 				resource : "/api/v1/settings",
 				handler : "api.v1.Settings"
+
+			},
+			{
+				resource : "/api/v1/beats",
+				handler : "api.v1.Beats"
 
 			}
 		];
