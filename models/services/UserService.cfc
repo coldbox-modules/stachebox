@@ -90,7 +90,7 @@ component accessors="true" {
 				"startRow" : searchBuilder.getStartRow(),
 				"maxRows" : javacast( "int", arguments.searchCollection.maxrows )
 			},
-			"results" : result.getHits().map( function( user ){ var memento = user.getMemento(); memento[ "id" ] = user.getId(); return memento } )
+			"results" : result.getHits().map( function( user ){ var memento = user.getMemento(); memento[ "id" ] = user.getId(); return memento; } )
 		};
 	}
 
