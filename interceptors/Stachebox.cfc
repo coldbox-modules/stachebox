@@ -114,7 +114,7 @@ component{
 
 	function ensureStacheboxMappings(){
 		var mapping = new cbelasticsearch.models.logging.LogstashAppender( name="sample" ).getIndexConfig();
-		structDelete( mapping, "settings" )
+		structDelete( mapping, "settings" );
 
 		try{
 			getInstance( "IndexBuilder@cbelasticsearch" ).new(
