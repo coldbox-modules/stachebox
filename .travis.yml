@@ -32,7 +32,7 @@ before_install:
   # Install Elasticsearch v7
   - curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb -o elasticsearch.deb
   - sudo dpkg -i --force-confnew elasticsearch.deb
-  - sudo chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
+  - rm -f elasticsearch.deb && sudo chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
   - sudo service elasticsearch restart
   # CommandBox Keys
   - curl -fsSl https://downloads.ortussolutions.com/debs/gpg | sudo apt-key add -
