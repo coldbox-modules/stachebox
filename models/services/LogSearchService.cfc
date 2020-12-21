@@ -88,16 +88,21 @@ component {
 
 	}
 
-	function parseAggregationData( required struct aggData ){
+	function parseAggregationData( required any aggData ){
+
+		if( isSimpleValue( aggData ) ) return aggData;
 
 		return aggData.buckets.reduce( function( acc, val ){
-			acc[ val.key ] = {
+
+			// if( right( val.key, 12 ) === "_occurrences" ){}
+			var keyName = val.keyExists( "key_as_string" ) ? val.key_as_string : val.key;
+			acc[ keyName ] = {
 				"count" : val.doc_count
 			};
 			if( val.keyArray().len() > 2 ){
-				val.keyArray().filter( function( k ){ return ![ "key", "doc_count" ].contains( arguments.k );} )
+				val.keyArray().filter( function( k ){ return ![ "key", "key_as_string", "doc_count" ].contains( arguments.k );} )
 								.each( function( k ){
-									acc[ val.key ][ arguments.k ] = parseAggregationData( val[ arguments.k ] )
+									acc[ val.key ][ arguments.k ] = parseAggregationData( val[ arguments.k ] );
 								} );
 			}
 			return acc;
@@ -134,6 +139,34 @@ component {
 							"terms" : {
 								"field" : "stachebox.signature",
 								"size" : 500
+							},
+							"aggs" : {
+								"daily_occurrences": {
+									"date_histogram": {
+									  "field": "timestamp",
+									  "fixed_interval": "7d"
+									}
+								}//,
+                                // "hourly_occurrences": {
+								// 	"date_histogram": {
+								// 	  "field": "timestamp",
+								// 	  "calendar_interval": "hour"
+								// 	}
+								// }
+							}
+						},
+                        "levels" : {
+							"terms" : {
+								"field" : "level",
+								"size" : 500
+							},
+							"aggs" : {
+								"daily_occurrences": {
+									"date_histogram": {
+									  "field": "timestamp",
+									  "fixed_interval": "7d"
+									}
+								}
 							}
 						}
 					}
