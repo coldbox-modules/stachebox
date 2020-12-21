@@ -12,7 +12,7 @@ Vue.component('fa-icon', FontAwesomeIcon)
 import Empty from "./layouts/EmptyLayout";
 Vue.component("empty-layout", Empty);
 
-import Dashboard from "./layouts/DashboardLayout";
+import Dashboard from "./layouts/MainLayout";
 Vue.component("dashboard-layout", Dashboard);
 
 import VTooltip from "v-tooltip";

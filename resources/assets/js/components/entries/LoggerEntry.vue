@@ -6,7 +6,7 @@
 			<!--- Top Left Exception Area --->
 			<!----------------------------------------------------------------------------------------->
 			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="file-alt" fixed-width /> Entry Summary</h2>
-			<table class="text-left table-fixed border-collapse mt-5">
+			<table class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
 					<template v-if="entry.event">
 						<tr v-if="entry.event.dataset">
@@ -84,7 +84,7 @@
 
 			<!-- Apache log format -->
 			<h2 v-if="entry.verb" class="text-3xl font-medium text-gray-500 mt-20"><fa-icon icon="file-alt" fixed-width /> HTTP Request Info</h2>
-			<table v-if="entry.verb" class="text-left table-fixed border-collapse mt-5">
+			<table v-if="entry.verb" class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
 					<tr v-if="entry.request">
 						<th class="w-1/3 align-top">Request:</th>
@@ -129,8 +129,14 @@
 
 			<!-- NGINX access log format -->
 			<h2 v-if="entry.http" class="text-3xl font-medium text-gray-500 mt-20"><fa-icon icon="file-alt" fixed-width /> HTTP Request Info</h2>
-			<table v-if="entry.http" class="text-left table-fixed border-collapse mt-5">
+			<table v-if="entry.http" class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
+					<template v-if="entry.url && entry.url.original">
+						<tr>
+							<th class="w-1/3 align-top">URL:</th>
+							<td class="w-2/3">{{ entry.url.original }}</td>
+						</tr>
+					</template>
 					<template v-if="entry.http.request">
 						<tr v-if="entry.http.request.method">
 							<th class="w-1/3 align-top">HTTP Verb:</th>

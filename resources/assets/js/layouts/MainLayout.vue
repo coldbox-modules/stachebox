@@ -1,0 +1,34 @@
+<template>
+	<div>
+		<Header v-on:toggle-sidebar="sidebarIsOpen = !sidebarIsOpen" />
+		<div class="flex h-screen bg-gray-200 font-roboto">
+			<Sidebar :isOpen="sidebarIsOpen" />
+
+			<div class="flex-1 flex flex-col overflow-hidden">
+				<main
+					class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200"
+				>
+					<div class="container mx-auto px-6 py-8">
+						<slot />
+					</div>
+				</main>
+			</div>
+		</div>
+	</div>
+</template>
+<script>
+import Sidebar from "./inc/Sidebar.vue";
+import Header from "./inc/Header.vue";
+
+export default {
+	components: {
+		Header,
+		Sidebar
+	},
+	data() {
+		return {
+			sidebarIsOpen: true
+		};
+	}
+};
+</script>
