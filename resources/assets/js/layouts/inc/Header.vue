@@ -2,14 +2,32 @@
   <header
     class="flex justify-between items-center py-5 px-6 bg-gray-100 border-b-2 border-gray-800"
   >
-    <div class="flex items-center">
-      <div class="relative mx-4 lg:mx-0">
+	<div class="flex items-center">
+		<div class="flex items-center justify-center bg-gray-100">
+			<div class="flex items-center">
+				<router-link :to="{ name : 'Dashboard'}">
+					<img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" width="200px"/>
+				</router-link>
+			</div>
+		</div>
+		<div class="relative ml-2">
+			<button
+				@click="$emit( 'toggle-sidebar' )"
+				class="text-gray-500 focus:outline-none"
+				v-tooltip="'Toggle the sidebar menu'"
+			>
+				<fa-icon icon="bars" fixed-width/>
+			</button>
+		</div>
+	</div>
+    <div class="flex items-center w-2/3">
+      <div class="relative mx-4 lg:mx-0 w-full">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
 			<fa-icon class="text-gray-400 h-9 text-xs" icon="search" fixed-width />
         </span>
 
         <input
-          class="form-input rounded-none block w-32 sm:w-64 py-2 px-2 pl-10 pr-4 focus:border-cyan-600"
+          class="form-input rounded-none block w-5/6 py-2 px-2 pl-10 pr-4 focus:border-cyan-600"
           type="text"
           placeholder="Search"
 		  v-model="searchText"
@@ -75,7 +93,8 @@ export default {
 	},
 	computed : {
 		...mapState({
-			user : ( state ) => state.authUser
+			user : ( state ) => state.authUser,
+			baseHref : ( state ) => state.globals.stachebox.baseHref
 		})
 	},
 	methods : {

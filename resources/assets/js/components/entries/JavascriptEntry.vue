@@ -6,7 +6,7 @@
 			<!--- Top Left Exception Area --->
 			<!----------------------------------------------------------------------------------------->
 			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="bomb" fixed-width /> Error Information</h2>
-			<table class="text-left table-fixed border-collapse mt-5">
+			<table class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
 					<tr v-if="entry.application">
 						<th class="w-1/3 align-top">Application ID:</th>
