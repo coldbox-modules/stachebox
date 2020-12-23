@@ -100,7 +100,8 @@ component {
 				"count" : val.doc_count
 			};
 			if( val.keyArray().len() > 2 ){
-				val.keyArray().filter( function( k ){ return ![ "key", "key_as_string", "doc_count" ].contains( arguments.k );} )
+				var excludeKeys = [ "key", "key_as_string", "doc_count" ];
+				val.keyArray().filter( function( k ){ return !excludeKeys.contains( arguments.k );} )
 								.each( function( k ){
 									acc[ val.key ][ arguments.k ] = parseAggregationData( val[ arguments.k ] );
 								} );
