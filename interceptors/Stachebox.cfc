@@ -102,12 +102,19 @@ component{
 	}
 
 	function onRequestCapture( event, rc, prc ){
+
+		var moduleSettings = getModuleSettings( "stachebox" );
+		var cbSecuritySettings = getModuleSettings( "cbsecurity" );
+		param moduleSettings.isStandalone = false;
+
 		prc.globalData = {
 			"stachebox" : {
 				"baseHref" : event.getModuleRoot( "stachebox" ),
-				"isStandalone" : getModuleSettings( "stachebox", "isStandalone", false ),
-				"logIndexPattern" : getModuleSettings( "stachebox", "logIndexPattern" ),
-				"beatsIndexPattern" : getModuleSettings( "stachebox", "beatsIndexPattern" )
+				"isStandalone" : moduleSettings.isStandalone,
+				"logIndexPattern" : moduleSettings.logIndexPattern,
+				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
+				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
+				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() )
 			}
 		};
 	}
