@@ -98,8 +98,9 @@ component {
 			acc[ val.key ] = {
 				"count" : val.doc_count
 			};
+			var excludeKeys = [ "key", "doc_count" ];
 			if( val.keyArray().len() > 2 ){
-				val.keyArray().filter( function( k ){ return ![ "key", "doc_count" ].contains( arguments.k );} )
+				val.keyArray().filter( function( k ){ return !excludeKeys.contains( arguments.k );} )
 								.each( function( k ){
 									acc[ val.key ][ arguments.k ] = parseAggregationData( val[ arguments.k ] )
 								} );
