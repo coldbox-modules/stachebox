@@ -103,11 +103,6 @@ component extends="coldbox.system.EventHandler" {
 			arguments.exception = e;
 			this.onEntityNotFoundException( argumentCollection = arguments );
 		} catch ( Any e ) {
-			// Log Exception
-			log.error(
-				"Error calling #arguments.event.getCurrentEvent()#: #e.message# #e.detail#",
-				{ "exception" : e }
-			);
 
 			// Setup General Error Response
 			arguments.prc.response
@@ -116,10 +111,28 @@ component extends="coldbox.system.EventHandler" {
 				.setStatusCode( STATUS.INTERNAL_ERROR )
 				.setStatusText( "General application error" );
 
-			// If in development, let's show the error template
-			if ( getSetting( "environment" ) eq "development" ) {
-				rethrow;
-			}
+				try{
+					// Log Exception
+					log.error(
+						"Error calling #arguments.event.getCurrentEvent()#: #e.message# #e.detail#",
+						{ "exception" : e }
+					);
+				} catch ( any e ){}
+
+				// Non-production additions
+				if( getSetting( "environment" ) != "production" ){
+
+					if( structKeyExists( e, "detail" ) && len( e.detail ) ){
+						arguments.prc.response.addMessage( "Detail: #e.detail#" );
+					}
+					if( structKeyExists( e, "stackTrace" ) && len( e.stackTrace ) ){
+						arguments.prc.response.addMessage( "StackTrace: #e.stackTrace#" );
+					}
+					if( structKeyExists( e, "extendedInfo" ) && len( e.extendedInfo ) ){
+						arguments.prc.response.addMessage( "ExtendedInfo: #e.extendedInfo#" );
+					}
+
+				}
 		}
 
 		// Development additions
@@ -198,6 +211,7 @@ component extends="coldbox.system.EventHandler" {
 		if ( !isNull( actionResults ) ) {
 			return actionResults;
 		}
+
 	}
 
 	/**
