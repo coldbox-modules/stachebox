@@ -63,7 +63,6 @@ component {
 				// You can define your security rules here
 				"rules"							: [],
 				"jwt" : {
-					"customAuthHeader" : "x-auth-token",
 					"expiration"       : 20
 				}
 			},
