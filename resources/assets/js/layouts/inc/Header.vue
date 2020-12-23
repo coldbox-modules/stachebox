@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="flex items-center">
+    <div class="flex items-center" v-if="internalSecurityEnabled">
 
       <div class="relative" v-if="user">
         <button
@@ -94,7 +94,8 @@ export default {
 	computed : {
 		...mapState({
 			user : ( state ) => state.authUser,
-			baseHref : ( state ) => state.globals.stachebox.baseHref
+			baseHref : ( state ) => state.globals.stachebox.baseHref,
+			internalSecurityEnabled : ( state ) => state.globals.stachebox.internalSecurity
 		})
 	},
 	methods : {
