@@ -109,7 +109,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: store.state.globalData && store.state.globalData.stachebox.isStandalone ? '' : '/stachebox',
+  base: store.state.globals && store.state.globals.stachebox.isStandalone ? '' : '/stachebox',
   routes
 })
 
@@ -139,7 +139,14 @@ router.beforeEach((to, from, next) => {
 					}
 				);
 			} )
-			.catch(() => { next({ name: "Login" }); });
+			.catch(() => {
+				console.log( store );
+				if( store.state.globals.stachebox.isStandalone.internalSecurity ){
+					next({ name: "Login" });
+				} else {
+					window.location.assign( store.state.globals.stachebox.loginURL )
+				}
+			} );
 	} else {
 		next()
 	}

@@ -54,6 +54,9 @@ export default new Vuex.Store({
 			} );
 		},
 		fetchAuthUser : ( context, params = {} ) => {
+			if( !context.state.globals.stachebox.internalSecurity ) {
+				return new Promise( ( resolve, reject ) => { resolve( null ) } );
+			}
 			return new Promise( ( resolve, reject ) => {
 				// if( !context.state.authId ) reject();
 				usersAPI.fetch( context.state.authId, params, context.state.authToken )
