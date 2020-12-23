@@ -82,9 +82,15 @@
 				<td
 					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
 				>
-					<a @click="suppress( entry )" v-tooltip="'Suppress this entry and its occurrences, to date, from future log results'" class="text-cyan-600 hover:text-cyan-900">
-						<fa-icon icon="eye-slash"></fa-icon>
-					</a>
+					<confirmation-button
+						@confirmed="suppress( entry )"
+						confirmation-message="Click to Suppress"
+						class-string="text-cyan-600 hover:text-cyan-900"
+					>
+						<template slot="icon">
+							<fa-icon icon="eye-slash" v-tooltip="'Suppress this log entry from future results'" fixed-width></fa-icon>
+						</template>
+					</confirmation-button>
 				</td>
 				</tr>
 			</tbody>
@@ -114,10 +120,12 @@ dayjs.extend( timezone );
 dayjs.tz.setDefault( dayjs.tz.guess() );
 import Pagination from "@/components/Pagination";
 import EntryListFilters from "@/components/entries/EntryListFilters";
+import ConfirmationButton from "@/components/ConfirmationButton";
 export default {
 	components : {
 		Pagination,
-		EntryListFilters
+		EntryListFilters,
+		ConfirmationButton
 	},
 	props : {
 		initialFilters : {
