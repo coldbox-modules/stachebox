@@ -1,4 +1,4 @@
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 	// ( GET ) /api/v1/users
 	function index( event, rc, prc ){

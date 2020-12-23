@@ -1,4 +1,4 @@
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 

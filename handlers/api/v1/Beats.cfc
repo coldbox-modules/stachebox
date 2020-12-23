@@ -1,4 +1,4 @@
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 	variables.timestampFormatter = createObject( "java", "java.text.SimpleDateFormat" ).init( "yyyy-MM-dd'T'HH:mm:ssXXX" );
