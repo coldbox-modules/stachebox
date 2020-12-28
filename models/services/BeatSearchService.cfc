@@ -168,7 +168,7 @@ component {
 		listToArray( searchCollection.search, "+" )
 							.each( function( item ){
 								var scopedArgs = listToArray( item, ":" );
-								if( len( scopedArgs ) > 1 ){
+								if( scopedArgs.len() > 1 ){
 									searchCollection[ scopedArgs[ 1 ] ] = scopedArgs[ 2 ]
 								}
 							} );
