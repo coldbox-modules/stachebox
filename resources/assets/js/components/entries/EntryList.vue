@@ -198,6 +198,7 @@ export default {
 		toggleFollow(){
 			if( this.followInterval ){
 				clearInterval( this.followInterval );
+				this.followInterval = null;
 			} else {
 				this.followInterval= setInterval( this.fetchLogs, this.intervalMilliseconds )
 			}
