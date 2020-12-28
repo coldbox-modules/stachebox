@@ -1,9 +1,14 @@
 Configuration
 =============
+### Dependency Configuration
 
-Once you have installed the module, you may add a custom configuration, specific to your environment, by adding a `stachebox` configuration object to your `moduleSettings` inside your `Coldbox.cfc` configuration file.
+Stachebox utilizes the `cbElasticsearch` module as a dependency.  When configuring the module you will first need to [configure your `cbElasticsearch` connection](https://cbelasticsearch.ortusbooks.com/configuration).  If you plan to use the the API to securely log error message from other sources ( e.g. [via the Stachebox NPM module](https://www.npmjs.com/package/stachebox) ), you will also need to apply the [configuration for the the logstash module](https://github.com/coldbox-modules/logstash#configuration).   
 
-By default the following are in place, without additional configuration:
+### Module/Standalone Configuration
+
+Once once the dependencies are configuration, you may add a custom configuration for the stachebox, specific to your environment, by adding a `stachebox` configuration object to your `moduleSettings` inside your `Coldbox.cfc` configuration file.  Of note is that the module may also be deployed as a solo application by turning the `isStandalone` configuration to `true`.  When this setting is enabled, the module routes are promoted to the root of the application.
+
+The following module options ( with defaults listed below ) are in place, without additional configuration:
 
 ```
 moduleSettings = {
@@ -37,7 +42,6 @@ moduleSettings = {
 				// You can define your security rules here
 				"rules"							: [],
 				"jwt" : {
-					"customAuthHeader" : "x-auth-token",
 					"expiration"       : 20
 				}
 			},
@@ -49,9 +53,46 @@ moduleSettings = {
     }
 };
 ```
+
+### Environment Variables
+
+The following environment ( or Java system property ) values are supported for configuring your Stachebox instance at runtime:
+
+* `STACHEBOX_SETTINGS_INDEX` - The name of the index used to store settings for the stachebox module.  This defaults to `.stachebox_settings`
+* `STACHEBOX_USERS_INDEX` - If using the module's user service class, this setting names the index used to store user credentials and information.  This defaults to `.stachebox_users`
+* `STACHEBOX_ADMIN_EMAIL` - When using the internal authentication, this is the email address of the default stachebox admin user.  If starting the application for the first time, without using your own customized user service, this variable must be configured.
+* `STACHEBOX_ADMIN_PASSWORD` - This is the password for the default `STACHEBOX_ADMIN_EMAIL` account.  See the note above on initial configuration.  Once this variable has been provided and the initial admin account is created, both keys may be removed from the environment, unless the settings index name changes.
+
+### Index templates and mappings
+
+By default, Stachebox ( and the [logstash module](https://github.com/coldbox-modules/logstash/blob/master/readme.md) ) adhere to the [default logstash index template for Elasticsearch 7.x](https://github.com/logstash-plugins/logstash-output-elasticsearch/blob/master/lib/logstash/outputs/elasticsearch/templates/ecs-disabled/elasticsearch-7x.json), with one notable exception.  On the load of the module, a `stachebox` key mapping is added to all indices matching the `logIndexPattern` setting ( e.g. `logstash-*` ).  This key allows for the additional grouping and suppression functionality provided by the module.  If your Elasticsearch instance contains index data which does not adhere to the default template linked above, those indices will either return no data ( best case ) or will throw an error when attempting to retreive log entries.
+
+
+### Authentication
+
+By default, Stachebox provides its own internal authentication mechanisms, leveraging [the `cbSecurity` module](https://coldbox-security.ortusbooks.com/).  You may utilize the existing authentication services, or you may provide your own - as long as they implement a fully implemented `cbSecurity` [user service](https://coldbox-security.ortusbooks.com/getting-started/first-chapter#user-services) and [the JWT user service methods](https://coldbox-security.ortusbooks.com/jwt/jwt-services#user-service).  The `cbSecurity` and `cbSecurity.jwt` configuration blocks may be modified to match your custom user service classes. 
+
+Example:
+
+```
+moduleSettings = {
+	"stachebox" : {
+		...
+		"cbSecurity" : {
+			"userService" : "UserService@myapp"
+		},
+		"cbAuth" : {
+			"userServiceClass" : "UserService@myApp"
+		}
+	}
+}
+```
+
+When using a custom security service, the `StacheboxUser` role will need to be assigned to any user who will be allowed access to the Stachebox logs API.   In addition, any users you wish to allow to administer the StacheBox module configuration will need to have the permission `Stachebox:Administer` in order to modify settings like index search patterns or  settings index names ( which may be also configured via the environment ).
+
 ## Web Server Configuration
 
-In order to implement JWT authentication ( used by Stachebox ) in your application, you may need to modify some web server settings. Most web servers have default content length restrictions on the size of an individual header.  If your web server platform has such default enabled, you will need to increase the buffer size to accommodate the presence of JTW tokens in both the request and response headers.  The size of a JWT token header, encrypted via the default cbSecurity HMAC512 algorithm, is around 44 kilobytes.  As such you will need to allow for at least that size.   Below are some examples for common web server configurations
+In order to implement JWT authentication ( used by Stachebox ) in your application, you may need to modify some web server settings. Most web servers have default content length restrictions on the size of an individual header.  If your web server platform has such default enabled, you will need to increase the buffer size to accommodate the presence of JTW tokens in both the request and response headers.  The size of a JWT token header, encrypted via the default cbSecurity HMAC512 algorithm, is around 44 kilobytes.  As such you will need to allow for at least that size.   Below are some examples for common web server configurations.
 ### NGINX
 The following configuration may be applied to the main NGINX `http` configuration block to allow for the presence of tokens in both the request and response headers:
 ```
