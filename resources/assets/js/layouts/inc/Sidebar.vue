@@ -1,12 +1,5 @@
 <template>
-  <div class="flex" :class="isOpen ? 'opacity-100' : 'opacity-0'">
-    <!-- Backdrop -->
-    <!-- <div
-      @click="$emit( 'toggle-sidebar' )"
-      class="fixed z-20 inset-0 bg-black opacity-50 transition-opacity"
-      :class="isOpen ? 'block' : 'hidden'"
-    ></div> -->
-    <!-- End Backdrop -->
+  <div class="flex transform" :class="isOpen ? 'opacity-100' : 'opacity-0 hidden'">
     <div
       :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
       class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-800 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0"
