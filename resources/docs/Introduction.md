@@ -22,6 +22,9 @@ Installation
 
 Via CommandBox:  `install stachebox`
 
+Configuration
+=============
+See the [configuration documentation](Configuration.md)
 
 Requirements
 ============

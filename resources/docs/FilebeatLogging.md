@@ -1,0 +1,2 @@
+# Filebeat Logging
+
