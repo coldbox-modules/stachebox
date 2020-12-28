@@ -35,7 +35,8 @@
     },
     "ignore":[
         "**/.*",
-        "test-harness"
+        "test-harness",
+        "docker-compose.yml"
     ],
     "scripts":{
         "release":"recipe build/release.boxr",
