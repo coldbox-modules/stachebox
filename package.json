@@ -1,5 +1,5 @@
 {
-  "name": "stachebox",
+  "name": "stachebox-cfml",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -51,6 +51,7 @@
     "postcss-nesting": "^7.0.1",
     "prismjs": "^1.22.0",
     "sass-loader": "^10.1.0",
+    "stachebox": "0.0.1",
     "tailwindcss": "^2.0.1",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",

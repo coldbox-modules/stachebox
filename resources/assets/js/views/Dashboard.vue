@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import Stachebox from "@/errors/Stachebox";
+import Stachebox from "stachebox";
 import EntryList from "@/components/entries/EntryList";
 import logsAPI from "../api/logs";
 import { mapState } from "vuex";
@@ -109,16 +109,16 @@ export default {
   created(){
 	  var self = this;
 
-		//   Error log generation
-		//   setInterval( function(){
-		// 	  // javascript error
-		// 	  let errMsg  = 'Boom goes the UI #' + Math.floor( Math.random() * Math.floor(1000) );
-		// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( errMsg ) );
-		// 	  // Add a grouped error
-		// 	  new Stachebox( { token : self.$store.state.authToken } ).log( new Error( "Boom goes the javascript" ) );
-		// 	  // cfml error
-		// 	  self.$store.dispatch( "fetchLogs", { minDate : "I am not a date" } );
-		//   }, 5000)
+		// Error log generation
+		setInterval( function(){
+			// javascript error
+			// let errMsg  = 'Boom goes the UI #' + Math.floor( Math.random() * Math.floor(1000) );
+			// new Stachebox( { token : self.$store.state.authToken } ).log( new Error( errMsg ) );
+			// Add a grouped error
+			// new Stachebox( { token : self.$store.state.authToken } ).log( new Error( "Boom goes the javascript" ) );
+			// cfml error
+			// self.$store.dispatch( "fetchLogs", { minDate : "I am not a date" } );
+		}, 5000)
 
   }
 
