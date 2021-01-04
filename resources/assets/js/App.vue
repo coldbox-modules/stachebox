@@ -1,6 +1,8 @@
 <template>
   <component :is="layout">
-    <router-view />
+	<transition name="fade">
+		<router-view :key="$route.fullPath" />
+	</transition>
   </component>
 </template>
 
