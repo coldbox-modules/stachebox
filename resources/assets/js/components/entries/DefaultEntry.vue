@@ -225,6 +225,13 @@
 						</tbody>
 					</table>
 				</tab>
+				<tab name="Extra Info" v-else-if="entry.extrainfo">
+					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.extrainfo ) )}}</code></pre>
+				</tab>
+
+				<tab name="User Info" v-else-if="entry.userinfo && Object.keys( entry.userinfo ).length">
+					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.userinfo ) )}}</code></pre>
+				</tab>
 
 				<tab name="Raw Stack Trace" v-if="entry.extrainfo && entry.extrainfo.javaStackTrace && entry.extrainfo.javaStackTrace.length">
 					<code class="language-javastacktrace">{{entry.extrainfo.javaStackTrace}}</code>
@@ -239,10 +246,14 @@
 					<pre v-else><code class="language-javastacktrace">{{entry.stacktrace}}</code></pre>
 				</tab>
 
-				<tab v-if="multipleOccurrences" name="Occurrences">
+				<tab name="Raw Entry Data" v-else>
+					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry ) )}}</code></pre>
+				</tab>
+
+				<tab v-if="multipleOccurrences" name="Other Occurrences">
 					<entry-list
 						v-if="multipleOccurrences"
-						:initialFilters='{ "stachebox.signature" : entry.stachebox.signature, sortOrder : "timestamp DESC" }'
+						:initialFilters='{ "stachebox.signature" : entry.stachebox.signature, exclude : entry.id, sortOrder : "timestamp DESC" }'
 						:displayOccurrences="false"
 						:displayApplication="false"
 					></entry-list>
