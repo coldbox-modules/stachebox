@@ -256,6 +256,14 @@ component {
                     boost = 20
 				);
 			}
+
+			if( searchCollection.keyExists( "exclude" ) ){
+				builder.filterTerms(
+					"_id",
+					searchCollection.exclude,
+					"must_not"
+				);
+			}
 		}
 
 	}
@@ -271,7 +279,7 @@ component {
 							} );
 		// Note the `^` boosts the field by the following multiplier
 		var matchText = [
-			"message^10",
+			"message^20",
 			"stacktrace",
 			"frames"
 		];
@@ -279,7 +287,8 @@ component {
 		arguments.builder.multiMatch(
 			matchText,
 			trim( searchCollection.search ),
-			20.00
+			20.00,
+			'phrase'
 		);
 
 

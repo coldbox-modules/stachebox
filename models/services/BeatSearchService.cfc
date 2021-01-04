@@ -180,7 +180,8 @@ component {
 		arguments.builder.multiMatch(
 			matchText,
 			trim( searchCollection.search ),
-			20.00
+			20.00,
+			'phrase'
 		);
 
 
