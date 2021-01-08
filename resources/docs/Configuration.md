@@ -95,6 +95,7 @@ When using a custom security service, the `StacheboxUser` role will need to be a
 In order to implement JWT authentication ( used by Stachebox ) in your application, you may need to modify some web server settings. Most web servers have default content length restrictions on the size of an individual header.  If your web server platform has such default enabled, you will need to increase the buffer size to accommodate the presence of JTW tokens in both the request and response headers.  The size of a JWT token header, encrypted via the default cbSecurity HMAC512 algorithm, is around 44 kilobytes.  As such you will need to allow for at least that size.   Below are some examples for common web server configurations.
 ### NGINX
 The following configuration may be applied to the main NGINX `http` configuration block to allow for the presence of tokens in both the request and response headers:
+
 ```
 http {
 	# These settings affect outbound headers via proxy server
@@ -121,6 +122,19 @@ The recommended value for these settings are:
 * `Http2MaxConcurrentClientStreams` : 100
 * `MaxFieldLength`: 415028
 * `MaxRequestBytes` : 16777216
+
+The PowerShell commands to add these settings are:
+
+```
+New-Item –path "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters" -PropertyType DWORD  –Name MaxFieldLength
+Set-Itemproperty -path 'HKLM:\System\CurrentControlSet\Services\HTTP\Parameters' -Name MaxFieldLength -value 415028
+
+New-Item –path "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters" -PropertyType DWORD  –Name MaxRequestBytes
+Set-Itemproperty -path 'HKLM:\System\CurrentControlSet\Services\HTTP\Parameters' -Name MaxRequestBytes -value 16777216
+
+New-Item –path "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters" -PropertyType DWORD  –Name Http2MaxConcurrentClientStreams
+Set-Itemproperty -path 'HKLM:\System\CurrentControlSet\Services\HTTP\Parameters' -Name Http2MaxConcurrentClientStreams -value 100
+```
 
 Note:  If you encounter additional 500 errors from IIS after appplying these machine keys, the following articles may assist in mitigating compression-related, and individual site-related header settings-related issues:
 
