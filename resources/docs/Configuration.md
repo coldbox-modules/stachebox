@@ -113,8 +113,11 @@ http {
 ```
 ### IIS
 You will need to modify three registry keys:
+
 1. `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\HTTP\Parameters\MaxFieldLength` - Sets an upper limit, in bytes, for each header. The default value is 16384 bytes and the maximum value is 65534 bytes ( 64kb )
+
 2. `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\HTTP\Parameters\MaxRequestBytes` - Sets the upper limit for the request line and the headers, combined.  As such 128K should allow for both long URLs, as well as JWT tokens in the headers. The default value is 16384 bytes and the maximum value is 16777216 bytes ( 16 MB )
+
 3. `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\HTTP\Parameters\Http2MaxConcurrentClientStreams` - If HTTP2 is enabled on IIS, this will prevent AJAX errors on concurrent return/responses
 
 The recommended value for these settings are:
@@ -136,7 +139,7 @@ New-Item –path "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters" -Prop
 Set-Itemproperty -path 'HKLM:\System\CurrentControlSet\Services\HTTP\Parameters' -Name Http2MaxConcurrentClientStreams -value 100
 ```
 
-Note:  If you encounter additional 500 errors from IIS after appplying these machine keys, the following articles may assist in mitigating compression-related, and individual site-related header settings-related issues:
+Note:  If you encounter additional 500 errors from IIS after applying these machine keys, the following articles may assist in mitigating compression-related, and individual site-related header settings-related issues:
 
 * [IIS acting as reverse proxy : Where the problems start](https://techcommunity.microsoft.com/t5/iis-support-blog/iis-acting-as-reverse-proxy-where-the-problems-start/ba-p/846259)
 * [IIS Header Limits Configuration](https://docs.microsoft.com/en-us/iis/configuration/system.webserver/security/requestfiltering/requestlimits/headerlimits/)
