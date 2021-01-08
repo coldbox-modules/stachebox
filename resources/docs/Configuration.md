@@ -123,7 +123,7 @@ The recommended value for these settings are:
 * `MaxFieldLength`: 415028
 * `MaxRequestBytes` : 16777216
 
-The PowerShell commands to add these settings are:
+The PowerShell commands ( all run as Administrator ) to add these settings are:
 
 ```
 New-Item –path "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters" -PropertyType DWORD  –Name MaxFieldLength
