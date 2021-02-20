@@ -6,7 +6,8 @@ const defaultAPI = Axios.create({
 	baseURL: urlRoot,
 	headers : {
 	  "Content-Type" : "application/json"
-	}
+	},
+	...require( "./transformers.js" ).default
 });
 
 export const finalAPI = {
