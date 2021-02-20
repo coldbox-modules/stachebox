@@ -141,7 +141,7 @@ router.beforeEach((to, from, next) => {
 			} )
 			.catch(() => {
 				console.log( store );
-				if( store.state.globals.stachebox.isStandalone.internalSecurity ){
+				if( store.state.globals.stachebox.internalSecurity ){
 					next({ name: "Login" });
 				} else {
 					window.location.assign( store.state.globals.stachebox.loginURL )
