@@ -103,7 +103,7 @@ export default {
 		  return this.aggregations && this.aggregations.types ? Object.keys( this.aggregations.types ).length : 0
 	  },
 	  applications(){
-		  return this.aggregations ? Object.keys( this.aggregations.applications ) : null;
+		  return this.aggregations && this.aggregations.applications ? Object.keys( this.aggregations.applications ) : null;
 	  }
   },
   created(){
