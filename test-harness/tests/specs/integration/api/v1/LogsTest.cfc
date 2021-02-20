@@ -73,7 +73,11 @@ component extends="tests.resources.BaseAPITestHelper"{
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		application.cbController.getSettingStructure().moduleSettings.stachebox = variables.baseSettings;
+		structAppend(
+			variables.moduleSettings,
+			variables.baseSettings,
+			true
+		);
 
 		getWirebox().getInstance( "Client@cbelasticsearch" )
 					.deleteByQuery(
