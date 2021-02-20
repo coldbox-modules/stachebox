@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 
-## [1.0.0] => 2020-12-25
+## [0.1.0] - 2020-12-25
 
 ### Added
-- Initial release of module
+- Public Beta release of module
+
+
+## [1.0.0] - 2021-02-20
+
+## Added
+- Official first release
+## Fixed
+- Fixes a regression in internal/external security redirect
+- Fixes a javascript error when no applications were returned from API
+### Changed
+- Discontinued support for Coldbox 5 due to major differences in module dependencies
