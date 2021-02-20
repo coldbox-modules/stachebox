@@ -29,7 +29,7 @@ See the [configuration documentation](Configuration.md)
 Requirements
 ============
 
-* Coldbox >= v5.x
+* Coldbox >= v6.x
 * Elasticsearch  >= v7.x
 * Lucee >= v5 or Adobe Coldfusion >= v2016
 
