@@ -29,6 +29,7 @@ component{
             "build",
 			"test-harness",
 			"node_modules",
+			"modules",
 			"resources",
             ".DS_Store",
             ".git"
