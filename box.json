@@ -1,6 +1,6 @@
 {
     "name":"stachebox",
-    "version":"0.1.1",
+    "version":"1.1.0",
     "location":"http://downloads.ortussolutions.com/ortussolutions/coldbox-modules/stachebox/@build.version@/stachebox-@build.version@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/stachebox",
@@ -24,14 +24,12 @@
         "Jon Clausen <jclausen@ortussolutions.com>"
     ],
     "dependencies":{
-        "mementifier":"^2.3.0+116",
-        "cbsecurity":"^2.8.0+129",
-        "cbelasticsearch":"^2.1.1",
-        "cbrestbasehandler":"^1.0.0",
-        "JSONToRC":"^1.0.0",
-        "cbvalidation":"^2.3.0+143",
-        "BCrypt":"^3.0.1+34",
-        "logstash":"^1.1.0"
+        "mementifier":"^2",
+        "cbsecurity":"^2",
+        "cbelasticsearch":"^2",
+        "cbvalidation":"^2",
+        "BCrypt":"^3",
+        "logstash":"^1"
     },
     "ignore":[
         "**/.*",
@@ -43,5 +41,13 @@
         "format":"cfformat run models/,test-harness/tests/ --overwrite",
         "format:watch":"cfformat watch models/,test-harness/tests/",
         "format:check":"cfformat check models/,test-harness/tests/"
+    },
+    "installPaths":{
+        "mementifier":"modules/mementifier/",
+        "cbsecurity":"modules/cbsecurity/",
+        "cbelasticsearch":"modules/cbelasticsearch/",
+        "cbvalidation":"modules/cbvalidation/",
+        "BCrypt":"modules/BCrypt/",
+        "logstash":"modules/logstash/"
     }
 }
