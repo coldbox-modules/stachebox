@@ -10,6 +10,10 @@
         },
         "rewrites":{
             "enable":"true"
+        },
+        "aliases":{
+            "/moduleroot/stachebox/includes":"../includes",
+            "/stachebox/includes":"../includes"
         }
     },
     "openBrowser":"false"
