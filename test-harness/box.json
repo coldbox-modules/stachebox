@@ -6,30 +6,14 @@
     "description":"",
     "dependencies":{},
     "devDependencies":{
-        "coldbox":"^5.0.0",
-        "mementifier":"^2.3.0+116",
-        "cbsecurity":"^2.8.0+129",
-        "testbox":"^4.1.0",
-        "cbelasticsearch":"^2.1.1",
-        "cbrestbasehandler":"^1.0.0",
-        "JSONToRC":"^1.0.0",
-        "cbvalidation":"^2.3.0+143",
-        "route-visualizer":"^1.4.0+24",
-        "BCrypt":"^3.0.1+34",
-        "logstash":"^1.1.0"
+        "coldbox":"^6",
+        "testbox":"^4",
+        "route-visualizer":"^1"
     },
     "installPaths":{
         "coldbox":"coldbox/",
         "testbox":"testbox/",
-        "cbelasticsearch":"modules/cbelasticsearch/",
-        "cbrestbasehandler":"modules/cbrestbasehandler/",
-        "JSONToRC":"modules/JSONToRC/",
-        "mementifier":"modules/mementifier/",
-        "cbsecurity":"modules/cbsecurity/",
-        "cbvalidation":"modules/cbvalidation/",
-        "route-visualizer":"modules/route-visualizer/",
-        "BCrypt":"modules/BCrypt/",
-        "logstash":"modules/logstash/"
+        "route-visualizer":"modules/route-visualizer/"
     },
     "testbox":{
         "runner":"http://localhost:60299/tests/runner.cfm"
