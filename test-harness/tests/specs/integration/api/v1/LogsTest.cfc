@@ -3,6 +3,8 @@
 */
 component extends="tests.resources.BaseAPITestHelper"{
 
+	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
+
 /*********************************** LIFE CYCLE Methods ***********************************/
 
 	// executes before all suites+specs in the run() method
@@ -12,8 +14,9 @@ component extends="tests.resources.BaseAPITestHelper"{
 
 		super.beforeAll();
 
-		variables.moduleSettings = application.cbController.getSettingStructure().moduleSettings.stachebox;
-		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.stachebox );
+		getWirebox().autowire( this );
+
+		variables.baseSettings = duplicate( variables.moduleSettings );
 
 		//create some test log entries
 		for( var i = 1; i <= 20; i++ ){
