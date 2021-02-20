@@ -26,11 +26,12 @@
 			//Error/Exception Handling
 			exceptionHandler		= "",
 			onInvalidEvent			= "",
-			customErrorTemplate 	= "/coldbox/system/includes/BugReport.cfm",
+			customErrorTemplate 	= "/coldbox/system/exceptions/Whoops.cfm",
 
 			//Application Aspects
 			handlerCaching 			= false,
-			eventCaching			= false
+			eventCaching			= false,
+			jsonPayloadToRC 		= true
 		};
 
 		// environment settings, create a detectEnvironment() method to detect it yourself.
