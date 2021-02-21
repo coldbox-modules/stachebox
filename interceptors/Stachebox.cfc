@@ -69,7 +69,7 @@ component{
 			len( variables.moduleSettings.adminEmail )
 			&& isNull( getInstance( "User@stachebox" ).findByEmail( variables.moduleSettings.adminEmail ) )
 		){
-			var logoFile = expandPath( '/stachebox/resources/assets/images/stachebox-icon.png' );
+			var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
 			var adminUser = getInstance( "User@stachebox" )
 										.new(
 											{
