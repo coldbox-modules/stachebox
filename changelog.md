@@ -7,11 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 
-## [0.1.0] - 2020-12-25
+## [1.0.1] - 2020-02-21
 
-### Added
-- Public Beta release of module
-
+### Fixed
+- Fix icon path in interceptor
 
 ## [1.0.0] - 2021-02-20
 
@@ -22,3 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixes a javascript error when no applications were returned from API
 ### Changed
 - Discontinued support for Coldbox 5 due to major differences in module dependencies
+
+## [0.1.0] - 2020-12-25
+
+### Added
+- Public Beta release of module
+
+
