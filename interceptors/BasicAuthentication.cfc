@@ -24,13 +24,4 @@ component{
             return;
         }
     }
-
-    /**
-     * Auto-logout Basic Authentication
-     */
-    void function postProcess( event, interceptData, buffer, rc, prc ){
-        if( event.getPrivateValue( "authenticationMethod", "" ) == 'basic' ){
-            auth().logout();
-        }
-    }
 }
