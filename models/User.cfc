@@ -39,7 +39,7 @@ component
         },
         "email" : {
             "required" : true,
-            "validator" : "UniqueFieldValidator@cbelasticsearch",
+            "validator" : "UniqueFieldValidator@stachebox",
             "type" : "string"
         },
         "isActive": { "type": "boolean" }
