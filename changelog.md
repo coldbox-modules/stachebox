@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 
-## [1.0.1] - 2020-02-21
+## [1.0.2] - 2021-02-22
+
+### Fixed
+- Add UniqueFieldValidator and fix DSL path
+
+
+## [1.0.1] - 2021-02-21
 
 ### Fixed
 - Fix icon path in interceptor
