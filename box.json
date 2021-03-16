@@ -1,7 +1,7 @@
 {
     "name":"stachebox",
     "version":"1.0.2",
-    "location":"http://downloads.ortussolutions.com/ortussolutions/coldbox-modules/stachebox/@build.version@/stachebox-@build.version@.zip",
+    "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/stachebox/@build.version@/stachebox-@build.version@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/stachebox",
     "documentation":"https://github.com/coldbox-modules/stachebox",
