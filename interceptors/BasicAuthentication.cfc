@@ -18,7 +18,7 @@ component{
             prc.authenticationMethod = "basic";
 
         }  catch ( InvalidCredentials e ) {
-            event.overrideEvent( "WEATPublicSecurityAPIv1:Authentication.onAuthenticationFailure" );
+            event.overrideEvent( "stachebox:api.v1.Authentication.onAuthenticationFailure" );
         } catch( any e ){
             // skip out and let subsequent interceptions handle the auth failure
             return;
