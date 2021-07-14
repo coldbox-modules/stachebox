@@ -6,7 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ----
+## [1.0.3] - 2021-07-14
 
+### Changed
+- Changed mapping customization updates to fail quietly, rather than throwing
+### Fixed
+- Fixed typo reference in invocation path
 ## [1.0.2] - 2021-02-22
 
 ### Fixed
