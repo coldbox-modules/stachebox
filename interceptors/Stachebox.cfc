@@ -130,7 +130,9 @@ component{
 			).save();
 		} catch( cbElasticsearch.native.index_not_found_exception e ){
 			log.warn( "No indices exist with the logstash index pattern of `#variables.moduleSettings.logIndexPattern#`. Mapping updates could not proceed" );
-		} catch( any e ){ rethrow; }
+		} catch( any e ){
+			log.error( "An error ocurred when attempting to apply the customized Stachebox mappings to the existing logstash indices", { "exeception" : e } );
+		}
 
 		try{
 			getInstance( "IndexBuilder@cbelasticsearch" ).new(
@@ -145,7 +147,9 @@ component{
 			).save();
 		} catch( cbElasticsearch.native.index_not_found_exception e ){
 			log.warn( "No indices exist with the filebeat index pattern of `#variables.moduleSettings.beatsIndexPattern#`. Mapping updates could not proceed" );
-		} catch( any e ){ rethrow; }
+		} catch( any e ){
+			log.error( "An error ocurred when attempting to apply the customized Stachebox mappings to the existing filebeat indices", { "exeception" : e } );
+		}
 
 	}
 
