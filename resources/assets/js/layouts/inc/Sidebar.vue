@@ -28,19 +28,21 @@
 			</router-link>
 		</template>
 
-		<template v-if="this.aggregations && this.aggregations.datasets && Object.keys( this.aggregations.datasets ).length">
+		<template v-if="this.aggregations && ( this.aggregations.datasets || this.aggregations.inputTypes )">
 			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-600 border-gray-600 border-b">FileBeats</h3>
-			<router-link
-				v-for="(dataset) in Object.keys( this.aggregations.datasets )"
-				:key="dataset"
-				class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
-				:class="[$route.name === 'DatasetLogs' && $route.params.id == dataset ? activeClass : inactiveClass]"
-				:to="`/logs/dataset/${dataset}`"
-			>
-				<fa-icon icon="heartbeat" fixed-width/>
-				<span class="mx-4">{{dataset |  datasetName | truncate( 15 ) }}</span>
-			</router-link>
-			<template v-if="this.aggregations && this.aggregations.inputTypes && Object.keys( this.aggregations.inputTypes ).length">
+			<template v-if="Object.keys( this.aggregations.datasets ).length">
+				<router-link
+					v-for="(dataset) in Object.keys( this.aggregations.datasets )"
+					:key="dataset"
+					class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
+					:class="[$route.name === 'DatasetLogs' && $route.params.id == dataset ? activeClass : inactiveClass]"
+					:to="`/logs/dataset/${dataset}`"
+				>
+					<fa-icon icon="heartbeat" fixed-width/>
+					<span class="mx-4">{{dataset |  datasetName | truncate( 15 ) }}</span>
+				</router-link>
+			</template>
+			<template v-if="Object.keys( this.aggregations.inputTypes ).length">
 				<router-link
 					v-for="(type) in Object.keys( this.aggregations.inputTypes )"
 					:key="type"
