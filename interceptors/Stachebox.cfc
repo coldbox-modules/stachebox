@@ -36,7 +36,7 @@ component{
 		var searchBuilder = getInstance( "SearchBuilder@cbelasticsearch" ).new( variables.moduleSettings.settingsIndex );
 		var uuidLib = createobject("java", "java.util.UUID");
 		defaults.each( function( setting ){
-			searchBuilder.setQuery( { "term" : { "#setting.name#" : setting.value } } );
+			searchBuilder.setQuery( { "term" : { "name.keyword" : "#setting.name#" } } );
 			if( !searchBuilder.count() ){
 				setting[ "id" ] = uuidLib.randomUUID().toString();
 				getInstance( "Document@cbelasticsearch" )
