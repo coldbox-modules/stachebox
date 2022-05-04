@@ -1,16 +1,7 @@
 # StacheBox - The Bug and Logging Management Platform for the Coldbox Framework
 
-
-
 ## LICENSE
 Apache License, Version 2.0.
-
-
-Installation
-============
-
-Via CommandBox:  `install stachebox`
-
 
 Instructions
 ============
