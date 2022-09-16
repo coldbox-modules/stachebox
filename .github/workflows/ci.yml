@@ -22,8 +22,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        cfengine: ["lucee@5", "adobe@2018", "adobe@2021"]
-        javaVersion: [ "11" ]
+        cfengine: ["lucee@5", "adobe@2018", "adobe@2021" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
