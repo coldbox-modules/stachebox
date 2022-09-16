@@ -16,5 +16,8 @@
             "/stachebox/includes":"../includes"
         }
     },
-    "openBrowser":"false"
+    "openBrowser":"false",
+	"scripts" : {
+		"onServerInstall" : "cfpm install zip,mysql,document,feed"
+	}
 }
