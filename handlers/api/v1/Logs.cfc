@@ -106,7 +106,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 	}
 
 	// ( DELETE ) /api/v1/logs/:id
-	function delete( event, rc, prc ) secured="Stachebox:Administrator"{
+	function delete( event, rc, prc ) secured="StacheboxAdministrator"{
 		var entry = getInstance( "SearchBuilder@cbElasticsearch" )
 							.new( variables.moduleSettings.logIndexPattern )
 							.term( "_id", rc.id )
