@@ -43,8 +43,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          box install
           box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
+          box run-script harness:install
 
       - name: Start ${{ matrix.cfengine }} Server
         run: |
