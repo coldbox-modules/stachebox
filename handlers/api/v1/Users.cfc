@@ -19,7 +19,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 	}
 
 	// ( POST ) /api/v1/users
-	function create( event, rc, prc ) secured="Stachebox:Administrator"{
+	function create( event, rc, prc ) secured="StacheboxAdministrator"{
 		var user = getInstance( "User@stachebox" )
 									.new( rc )
 									.encryptPassword()
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 	}
 
 	// ( DELETE ) /api/v1/users/:id
-	function delete( event, rc, prc ) secured="Stachebox:Administrator"{
+	function delete( event, rc, prc ) secured="StacheboxAdministrator"{
 		getInstance( "User@stachebox" )
 				.getOrFail( rc.id )
 				.delete();

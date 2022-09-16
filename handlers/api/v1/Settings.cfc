@@ -94,7 +94,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 
 
 	// ( DELETE ) /api/v1/settings/:id
-	function delete( event, rc, prc ) secured="Stachebox:Administrator"{
+	function delete( event, rc, prc ) secured="StacheboxAdministrator"{
 		var entry = getInstance( "Client@cbelasticsearch" ).get( rc.id, moduleSettings.settingsIndex );
 
 		if( isNull( entry ) ){
