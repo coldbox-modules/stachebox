@@ -17,8 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        cfengine: ["lucee@5", "adobe@2018", "adobe@2021"]
-        javaVersion: [ "11" ]
+        cfengine: ["lucee@5", "adobe@2018", "adobe@2021" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -38,17 +37,13 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          box install
           box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
+          box run-script harness:install
 
       - name: Start ${{ matrix.cfengine }} Server
         run: |
           cd ${GITHUB_WORKSPACE}/test-harness
           box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --debug
-          if [[ "${{ matrix.cfengine }}" == "adobe2021" ]] ; then
-            docker exec app /bin/sh -c "cd /app && box cfpm install zip,mysql,document,feed"
-            docker restart app
-          fi
           sleep 60
           curl http://127.0.0.1:60299
 
