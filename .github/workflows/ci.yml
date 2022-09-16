@@ -50,10 +50,6 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}/test-harness
           box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --debug
-          if [[ "${{ matrix.cfengine }}" == "adobe@2021" ]] ; then
-            docker exec app /bin/sh -c "cd /app && box cfpm install zip,mysql,document,feed"
-            docker restart app
-          fi
           sleep 60
           curl http://127.0.0.1:60299
 
