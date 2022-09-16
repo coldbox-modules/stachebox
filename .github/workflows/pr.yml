@@ -1,0 +1,87 @@
+name: Pull Requests
+
+on:
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    env:
+      ELASTICSEARCH_PROTOCOL: http
+      ELASTICSEARCH_HOST: 127.0.0.1
+      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_VERSION: 7.17.2
+    strategy:
+      fail-fast: true
+      matrix:
+        cfengine: ["lucee@5", "adobe@2018", "adobe@2021"]
+        javaVersion: [ "11" ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: ${{ matrix.javaVersion }}
+
+      - name: Setup CommandBox
+        uses: elpete/setup-commandbox@v1.0.0
+
+      - name: Setup Elasticsearch
+        run: |
+          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          box install
+          box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
+
+      - name: Start ${{ matrix.cfengine }} Server
+        run: |
+          cd ${GITHUB_WORKSPACE}/test-harness
+          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --debug
+          if [[ "${{ matrix.cfengine }}" == "adobe2021" ]] ; then
+            docker exec app /bin/sh -c "cd /app && box cfpm install zip,mysql,document,feed"
+            docker restart app
+          fi
+          sleep 60
+          curl http://127.0.0.1:60299
+
+      - name: Run Web App Tests
+        run: |
+          cd ${GITHUB_WORKSPACE}
+          mkdir -p ${GITHUB_WORKSPACE}/test-harness/tests/results/web
+          box package set testbox.runner="http://127.0.0.1:60299/tests/runner.cfm?seed=true"
+          box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
+
+      - name: Publish Test Reports
+        uses: mikepenz/action-junit-report@v2
+        with:
+          report_paths: 'test-harness/tests/results/*.xml'
+          check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
+          summary: true
+
+      - name: Failure debugging
+        if: ${{ failure() }}
+        run: cd ${GITHUB_WORKSPACE}/test-harness && box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
+
+  format:
+    name: Format
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - uses: Ortus-Solutions/commandbox-action@v1.0.2
+        with:
+          cmd: run-script format
+
+      - name: Commit Format Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply cfformat changes

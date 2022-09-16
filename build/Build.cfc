@@ -12,8 +12,8 @@ component{
         variables.cwd           = getCWD().reReplace( "\.$", "" );
         variables.artifactsDir  = cwd & "/.artifacts";
         variables.buildDir      = cwd & "/.tmp";
-        variables.apiDocsURL    = "http://localhost:60299/apidocs/";
-        variables.testRunner    = "http://localhost:60299/tests/runner.cfm";
+        variables.apiDocsURL    = "http://localhost:8080/apidocs/";
+        variables.testRunner    = "http://localhost:8080/tests/runner.cfm";
 
         // Source Excludes Not Added to final binary
         variables.excludes      = [
@@ -67,15 +67,12 @@ component{
 		// Create project mapping
 		fileSystemUtil.createMapping( arguments.projectName, variables.cwd );
 
-        // Run the tests
-        runTests();
-
         // Build the source
         buildSource( argumentCollection=arguments );
 
         // Build Docs
         arguments.outputDir = variables.buildDir & "/apidocs";
-        docs( argumentCollection=arguments );
+        // docs( argumentCollection=arguments );
 
         // checksums
 		buildChecksums();
@@ -87,27 +84,6 @@ component{
         print.line()
             .boldMagentaLine( "Build Process is done! Enjoy your build!" )
             .toConsole();
-    }
-
-    /**
-     * Run the test suites
-     */
-    function runTests(){
-        // Tests First, if they fail then exit
-        print.blueLine( "Testing the package, please wait..." ).toConsole();
-
-        command( 'testbox run' )
-            .params(
-                runner = variables.testRunner,
-				verbose = true,
-				outputFile = "build/results.json"
-            )
-            .run();
-
-        // Check Exit Code?
-        if( shell.getExitCode() ){
-            return error( "Cannot continue building, tests failed!" );
-        }
     }
 
     /**
@@ -190,8 +166,7 @@ component{
 			.params(
 				"source"               =  "models",
 				"mapping"              =  "models",
-				"mappings:/cbelasticsearch" = "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch",
-				"mappings:/stachebox" = "#variables.projectBuildDir#",
+				"mappings:/cbcUI" = "#variables.projectBuildDir#",
 				"strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
 				"strategy-outputDir"   = arguments.outputDir
 			)
