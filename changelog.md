@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed permission name on API guards for administrators
+- Updated NPM build process and updated outdated JS libraries
 
 ### Added
 - Added new `StacheboxLog` permission, which can log, but does not allow UI access
