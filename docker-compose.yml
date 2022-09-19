@@ -28,8 +28,3 @@ services:
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
-
-  nginx:
-    image: nginx
-    ports:
-      - "80:80"

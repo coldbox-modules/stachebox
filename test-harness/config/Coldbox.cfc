@@ -75,6 +75,9 @@
 			},
 			"cbauth" : {
 				"userServiceClass" : "UserService@stachebox"
+			},
+			"logstash" : {
+				"enableAppenders" : true
 			}
 		};
 
