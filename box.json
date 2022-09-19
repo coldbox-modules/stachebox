@@ -34,6 +34,7 @@
     "ignore":[
         "**/.*",
         "test-harness",
+        "readme.md",
         "docker-compose.yml"
     ],
     "scripts":{
