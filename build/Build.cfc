@@ -32,6 +32,11 @@ component{
 			"modules",
 			"resources",
             ".DS_Store",
+			"tailwind.config.js",
+			"webpack.config.js",
+			"postcss.config.js",
+			"package.json",
+			"package-lock.json",
             ".git"
         ];
 

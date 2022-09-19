@@ -6,10 +6,11 @@ This module provides a common interface for sending stachebox logs to elasticsea
 
 ## LICENSE
 
-Apache License, Version 2.0.
+[Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
 ## IMPORTANT LINKS
 
+- Documentation :  https://stachebox.ortusbooks.com
 - Source: https://github.com/coldbox-modules/stachebox
 - Issues: https://github.com/coldbox-modules/stachebox/issues
 
