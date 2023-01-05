@@ -20,7 +20,7 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-	this.dependencies 		= [ "cbelasticsearch", "logstash", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
+	this.dependencies 		= [ "logstash", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
 
 	// App Helpers
 	this.applicationHelper = [
@@ -47,7 +47,7 @@ component {
 			// An initial admin password to login
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
 			// Whether to promote the module UI to the root URLS of the application
-			"isStandalone" : false,
+			"isStandalone" : getSystemSetting( "STACHEBOX_STANDALONE", false ),
 			// The cbSecurity configuration overrides for this module
 			"cbsecurity" : {
 				"userService" : "UserService@stachebox",
