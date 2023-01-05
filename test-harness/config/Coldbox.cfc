@@ -63,10 +63,7 @@
 				console : { class : "coldbox.system.logging.appenders.ConsoleAppender" }
 			},
 			// Root Logger
-			root  : { levelmax : "DEBUG", appenders : "*" },
-			// Implicit Level Categories
-			info  : [ "coldbox.system" ],
-			debug : [ "stachebox" ]
+			root  : { levelmax : "DEBUG", appenders : "*" }
 		};
 
 		moduleSettings = {
@@ -86,7 +83,7 @@
 	/**
 	 * Load the Module you are testing
 	 */
-	function afterAspectsLoad( event, interceptData, rc, prc ){
+	function afterConfigurationLoad( event, interceptData, rc, prc ){
 		controller.getModuleService()
 			.registerAndActivateModule(
 				moduleName 		= request.MODULE_NAME,
