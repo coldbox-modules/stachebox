@@ -37,6 +37,8 @@ component{
 			"postcss.config.js",
 			"package.json",
 			"package-lock.json",
+			"book.json",
+			"docker-compose.yml",
             ".git"
         ];
 
