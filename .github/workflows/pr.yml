@@ -15,7 +15,7 @@ jobs:
       ELASTICSEARCH_PROTOCOL: http
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
-      ELASTICSEARCH_VERSION: 7.17.2
+      ELASTICSEARCH_VERSION: 8.5.3
     strategy:
       fail-fast: true
       matrix:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Setup Elasticsearch
         run: |
-          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
+          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' -e 'xpack.security.enabled=false' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
 
       - name: Install Dependencies
         run: |
