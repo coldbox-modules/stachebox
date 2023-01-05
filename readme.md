@@ -18,7 +18,7 @@ This module provides a common interface for sending stachebox logs to elasticsea
 
 ## SYSTEM REQUIREMENTS
 
-- Adobe ColdFusion 2016+
+- Adobe ColdFusion 2018+
 - Lucee 5
 
 ## Instructions
