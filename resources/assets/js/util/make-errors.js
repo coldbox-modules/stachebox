@@ -27,7 +27,7 @@ fetch(
 
 var makeErrors = function(){
 	fetch(
-		'/main/data',
+		'/index.cfm?event=Main.data',
 		{
 			method: 'get'
 		}
