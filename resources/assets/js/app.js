@@ -36,6 +36,8 @@ Vue.filter( "datasetName", function ( text ) {
 // Global event bus
 window.Event = new Vue();
 
+// require( "./util/make-errors" );
+
 new Vue({
 	store,
 	router,

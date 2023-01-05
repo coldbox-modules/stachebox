@@ -7,10 +7,16 @@
 </template>
 
 <script>
-	const defaultLayout = "dashboard";
+	import { mapState } from "vuex";
 	export default {
 		computed : {
-			layout(){ return  `${this.$route.meta.layout || defaultLayout}-layout` }
+			...mapState( {
+				authUser : state => state.authUser
+			}),
+			layout(){
+				var defaultLayout = this.authUser ? 'dashboard' : 'empty';
+				return  `${this.$route.meta.layout || defaultLayout}-layout`
+			}
 		}
 	}
 </script>
