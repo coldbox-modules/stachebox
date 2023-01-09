@@ -59,6 +59,8 @@ component{
 	// request start
 	public boolean function onRequestStart(String targetPage){
 
+		setting requestTimeout="300";
+
 		if( url.keyExists( "fwreinit" ) ){
 			if( server.keyExists( "lucee" ) ){
 				pagePoolClear();

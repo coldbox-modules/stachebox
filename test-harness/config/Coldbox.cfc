@@ -75,6 +75,15 @@
 			},
 			"logstash" : {
 				"enableAppenders" : true
+			},
+			"cfmigrations" : {
+				"managers": {
+                    "elasticsearch": {
+                        "manager": "cbelasticsearch.models.migrations.Manager",
+                        "migrationsDirectory": "/resources/migrations/elasticsearch",
+                        "seedsDirectory": "/resources/migrations/seeds"
+                    }
+                }
 			}
 		};
 

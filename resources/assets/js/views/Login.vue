@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center h-screen bg-gray-200 px-6">
     <div class="p-6 max-w-sm w-full bg-white shadow-md">
       <div class="flex justify-center items-center">
-        <img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" width="300px"/>
+        <img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" style="width:300px"/>
       </div>
 
       <form class="mt-4" @submit.prevent="login">

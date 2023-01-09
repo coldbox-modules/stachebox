@@ -1,5 +1,6 @@
-@import "prismjs/themes/prism.css";
+@import "prismjs/themes/prism-okaidia.css";
 @import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+@import "floating-vue/dist/style.css";
 
 @tailwind base;
 @tailwind components;

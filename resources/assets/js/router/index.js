@@ -1,8 +1,5 @@
-import VueRouter from "vue-router";
-import Vue from "vue";
+import { createRouter, createWebHistory } from "vue-router";
 import auth from "../api/authentication";
-
-Vue.use( VueRouter );
 
 import Dashboard from "@/views/Dashboard.vue";
 import Login from "@/views/Login.vue";
@@ -46,6 +43,11 @@ const routes = [
     path: "/beats/entry/:id",
     name: "BeatsEntry",
     component: BeatsEntry,
+  },
+  {
+    path: "/logs/application/:id/:environment",
+    name: "ApplicationEnvironmentLogs",
+    component: ApplicationLogs,
   },
   {
     path: "/logs/application/:id",
@@ -104,11 +106,11 @@ const routes = [
 		permission : "Edit:User"
 	}
   },
-  { path: '*', component: NotFound }
+  { path: "/:catchAll(.*)", component: NotFound }
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history : createWebHistory(),
   base: store.state.globals && store.state.globals.stachebox.isStandalone ? '' : '/stachebox',
   routes
 })
