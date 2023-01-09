@@ -334,7 +334,7 @@ export default {
 	},
 	methods : {
 		fetchUser(){
-			usersAPI.fetch( this.$route.params.id, {}, this.authToken ).then( result => this.$set( this, "user", result.data ) )
+			usersAPI.fetch( this.$route.params.id, {}, this.authToken ).then( result => this.user = result.data )
 		},
 		saveUser(){
 			var self = this;
@@ -349,7 +349,7 @@ export default {
 				.then(
 					result => {
 						if( self.user.id ){
-							self.$set( self, "user", result.data )
+							self.user = result.data
 							self.saveSuccess = true;
 							setTimeout(() => {
 								self.saveSuccess = false;
@@ -424,7 +424,7 @@ export default {
 						canvasProcessor.resizeImage64(base64_image, newWidth, newHeight).then(
 							( resized_image ) => canvasProcessor.cropImage64( resized_image, 0, 0, 200, 200)
 																.then( cropped_image => {
-																	self.$set( self.user, "avatar", cropped_image );
+																	self.user.avatar = cropped_image;
 																})
 						);
 
@@ -444,7 +444,7 @@ export default {
 	},
 	mounted(){
 		if( this.$route.params && this.$route.params.id ){
-			this.$set( this, "user", null )
+			this.user = null;
 			this.fetchUser();
 		} else {
 			this.user = {

@@ -6,7 +6,7 @@
 		<div class="flex items-center justify-center bg-gray-100">
 			<div class="flex items-center">
 				<router-link :to="{ name : 'Dashboard'}">
-					<img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" width="200px"/>
+					<img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" style="width:200px"/>
 				</router-link>
 			</div>
 		</div>

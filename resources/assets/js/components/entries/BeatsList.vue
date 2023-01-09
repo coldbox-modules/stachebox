@@ -72,7 +72,7 @@
 						style="max-width:400px!important"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-						<code class="text-yellow-600 text-xs">{{ ( entry.message || 'N/A' ) | truncate( truncate ? 200 : ( entry.message || 'N/A' ).length + 1 ) }}</code>
+						<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message || 'N/A',  truncate ? 200 : ( entry.message || 'N/A' ).length + 1 ) }}</code>
 					</td>
 					<td
 						class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
@@ -83,7 +83,7 @@
 							confirmation-message="Click to Suppress"
 							class-string="text-cyan-600 hover:text-cyan-900"
 						>
-							<template slot="icon">
+							<template #icon>
 								<fa-icon icon="eye-slash" v-tooltip="'Suppress this log message from future results'" fixed-width></fa-icon>
 							</template>
 						</confirmation-button>
@@ -185,12 +185,12 @@ export default {
 			this.$store.dispatch( "fetchBeats", this.searchFilters )
 						.then( ( result ) => {
 							if( !self.logs ){
-								self.$set( self, "isSyncing", false )
+								self.isSyncing = false;
 							} else {
-								setTimeout( () => self.$set( self, "isSyncing", false ), 1500 );
+								setTimeout( () => self.isSyncing = false , 1500 );
 							}
-							self.$set( self, "logs", result.data.results );
-							self.$set( self, "pagination", result.data.pagination );
+							self.logs = result.data.results;
+							self.pagination = result.data.pagination;
 
 
 						} )
@@ -210,14 +210,14 @@ export default {
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
 			this.$delete( this.searchFilters, "startRows" );
-			this.$set( this.searchFilters, "page", pageNumber );
+			this.searchFilters.page = pageNumber;
 			this.fetchBeats();
 			if( refreshEnabled ) this.toggleFollow();
 		},
 		updateFilters( args ){
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
-			Object.keys( args ).forEach( ( key ) => this.$set( this.searchFilters, key, args[ key ] ) );
+			Object.keys( args ).forEach( ( key ) => this.searchFilters[ key ] = args[ key ] );
 			this.fetchBeats();
 			if( refreshEnabled ) this.toggleFollow();
 		},

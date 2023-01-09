@@ -14,7 +14,7 @@
 					<template v-if="entry.event">
 						<tr v-if="entry.event.dataset">
 							<th class="w-1/3 align-top">Dataset:</th>
-							<td class="w-2/3">{{ entry.event.dataset | datasetName }}</td>
+							<td class="w-2/3">{{ $filters.datasetName( entry.event.dataset ) }}</td>
 						</tr>
 					</template>
 					<template v-if="entry.agent">

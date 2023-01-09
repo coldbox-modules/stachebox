@@ -8,12 +8,14 @@
     "devDependencies":{
         "coldbox":"^6",
         "testbox":"^4",
-        "route-visualizer":"^1"
+        "route-visualizer":"^1",
+        "cfmigrations":"^3.0.7"
     },
     "installPaths":{
         "coldbox":"coldbox/",
         "testbox":"testbox/",
-        "route-visualizer":"modules/route-visualizer/"
+        "route-visualizer":"modules/route-visualizer/",
+        "cfmigrations":"modules/cfmigrations/"
     },
     "testbox":{
         "runner":"http://localhost:60299/tests/runner.cfm"

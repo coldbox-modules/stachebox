@@ -2,7 +2,7 @@
 	<div>
 
 		<router-link to="Dashboard">
-			<img style="display:block;margin-left:auto;margin-right:auto" :src="`${baseHref}/includes/images/stachebox-logo.png`"width="500"/>
+			<img style="display:block;margin-left:auto;margin-right:auto" :src="`${baseHref}/includes/images/stachebox-logo.png`" width="500"/>
 		</router-link>
 
 		<h1 class="text-gray-700 text-5xl font-medium text-center mt-5">Oopsie Daisy!</h1>

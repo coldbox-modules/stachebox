@@ -1,46 +1,67 @@
-import Vue from 'vue';
+import Vue, { createApp } from "vue";
 import App from './App.vue';
 import store from './store';
 import router from './router';
-import VueTailwind from 'vue-tailwind';
+import filters from './filters';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-library.add( fas );
-Vue.component('fa-icon', FontAwesomeIcon)
-
-import Empty from "./layouts/EmptyLayout";
-Vue.component("empty-layout", Empty);
-
-import Dashboard from "./layouts/MainLayout";
-Vue.component("dashboard-layout", Dashboard);
-
-import VTooltip from "v-tooltip";
-Vue.use( VTooltip );
+import EventBus from "@/events/eventBus";
 
 // String prototype extensions
 import '@/extensions/String';
 
-Vue.config.productionTip = false;
+const app = createApp( App );
 
-Vue.filter( "truncate", function ( text, stop, clamp ) {
-    return text.slice( 0, stop ) + ( stop < text.length ? clamp || "..." : "" );
-} );
+library.add( fas );
 
-Vue.filter( "datasetName", function ( text ) {
-    return text.split( '.' ).map( segment => segment.toTitleCase() ).join( ' ' )
-} );
+app.component('fa-icon', FontAwesomeIcon);
 
+import Empty from "./layouts/EmptyLayout";
+app.component("empty-layout", Empty);
+
+import Dashboard from "./layouts/MainLayout";
+app.component("dashboard-layout", Dashboard);
+
+app.config.productionTip = false;
+
+app.config.globalProperties.$filters = filters;
 
 // Global event bus
-window.Event = new Vue();
+window.Event = new EventBus();
 
 // require( "./util/make-errors" );
 
-new Vue({
-	store,
-	router,
-	VueTailwind,
-	render: h => h(App)
-}).$mount('#app');
+app.use( store );
+app.use( router );
+app.mount( "#app" );
+
+import FloatingVue from 'floating-vue';
+app.use(
+    FloatingVue,
+    {
+        themes: {
+            tooltip: {
+                placement : 'bottom'
+            },
+            "dropdown-info" : {
+                $extend: "dropdown"
+            },
+            "dropdown-success" : {
+                $extend: "dropdown"
+            },
+            "dropdown-warning" : {
+                $extend: "dropdown"
+            },
+            "dropdown-caution" : {
+                $extend: "dropdown"
+            },
+            "dropdown-danger" : {
+                $extend: "dropdown"
+            },
+            "dropdown-help" : {
+                $extend: "dropdown"
+            }
+        }
+    }
+);

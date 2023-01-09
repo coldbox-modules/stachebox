@@ -14,37 +14,54 @@
           <span class="mx-4">Dashboard</span>
         </router-link>
 
-		<template v-if="this.aggregations && this.aggregations.applications">
-			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-600 border-gray-600 border-b">Applications</h3>
+		<template v-if="orderedApplications">
+			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-400 border-gray-600 border-b">Applications</h3>
 			<router-link
-				v-for="(application,index) in Object.keys( this.aggregations.applications )"
+				v-for="( application, index ) in orderedApplications"
 				:key="index"
-				class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
-				:class="[$route.name === 'ApplicationLogs' && $route.params.id == application ? activeClass : inactiveClass]"
+				class="flex items-center duration-200 mt-4 py-1 px-8"
+				:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && !$route.params.environment ? activeClass : inactiveClass]"
 				:to="`/logs/application/${application}`"
 			>
 				<fa-icon icon="server" fixed-width/>
-				<span class="mx-4">{{application.toTitleCase() | truncate( 15 ) }}</span>
+				<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
 			</router-link>
 		</template>
 
-		<template v-if="this.aggregations && ( this.aggregations.datasets || this.aggregations.inputTypes )">
-			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-600 border-gray-600 border-b">FileBeats</h3>
-			<template v-if="Object.keys( this.aggregations.datasets ).length">
+		<template v-if="aggregations && aggregations.environments && Object.keys( aggregations.environments ).length">
+			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-400 border-gray-600 border-b">Environments</h3>
+			<template v-for="environment in Object.keys( aggregations.environments )" :key="`environment-${environment}`">
+				<h4 class="ml-7 mr-5 pl-2 mt-5 mb-5 pb-1 text-gray-400" v-text="environment.toTitleCase()"></h4>
 				<router-link
-					v-for="(dataset) in Object.keys( this.aggregations.datasets )"
+					v-for="(application,index) in Object.keys( aggregations.environments[ environment ].applications ).sort( (a,b) => a.localeCompare( b ) )"
+					:key="index"
+					class="flex items-center duration-200 mt-4 py-1 px-8"
+					:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && $route.params.environment == environment ? activeClass : inactiveClass]"
+					:to="`/logs/application/${application}/${environment.toLowerCase()}`"
+				>
+					<fa-icon icon="server" fixed-width/>
+					<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
+				</router-link>
+			</template>
+		</template>
+
+		<template v-if="aggregations && ( aggregations.datasets || aggregations.inputTypes )">
+			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-400 border-gray-600 border-b">FileBeats</h3>
+			<template v-if="Object.keys( aggregations.datasets ).length">
+				<router-link
+					v-for="(dataset) in Object.keys( aggregations.datasets )"
 					:key="dataset"
 					class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
 					:class="[$route.name === 'DatasetLogs' && $route.params.id == dataset ? activeClass : inactiveClass]"
 					:to="`/logs/dataset/${dataset}`"
 				>
 					<fa-icon icon="heartbeat" fixed-width/>
-					<span class="mx-4">{{dataset |  datasetName | truncate( 15 ) }}</span>
+					<span class="mx-4">{{ $filters.truncate( $filters.datasetName( dataset ), 15 ) }}</span>
 				</router-link>
 			</template>
-			<template v-if="Object.keys( this.aggregations.inputTypes ).length">
+			<template v-if="Object.keys( aggregations.inputTypes ).length">
 				<router-link
-					v-for="(type) in Object.keys( this.aggregations.inputTypes )"
+					v-for="(type) in Object.keys( aggregations.inputTypes )"
 					:key="type"
 					class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
 					:class="[$route.name === 'DatasetLogs' && $route.params.id == type ? activeClass : inactiveClass]"
@@ -57,7 +74,7 @@
 		</template>
 
 		<template v-if="hasPermission( 'Administer:Settings' )">
-			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-600 border-gray-600 border-b">Administration</h3>
+			<h3 class="ml-5 mr-5 pl-2 mt-10 mb-5 pb-1 uppercase text-gray-400 border-gray-600 border-b">Administration</h3>
 
 			<router-link
 			class="flex items-center duration-200 mt-4 py-2 px-6 border-l-4"
@@ -101,7 +118,8 @@ export default{
 	},
 	computed : {
 		...mapGetters({
-			hasPermission : "hasPermission"
+			hasPermission : "hasPermission",
+			orderedApplications: "orderedApplications"
 		}),
 		...mapState({
 			authToken : ( state ) => state.authToken,

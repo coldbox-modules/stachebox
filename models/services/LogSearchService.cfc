@@ -113,6 +113,47 @@ component {
 
 
 	function applyCommonAggregations( required SearchBuilder builder, required struct searchCollection ){
+		var applicationAggs = {
+			"terms" : {
+				"field" : "application",
+				"size" : 20000,
+				"order" : { "_key" : "asc" }
+			},
+			"aggs" : {
+				"daily_occurrences": {
+					"date_histogram": {
+						"min_doc_count": 0,
+						"field": "timestamp",
+						"fixed_interval": "1d"
+					}
+				},
+				"hourly_occurrences": {
+					"date_histogram": {
+						"min_doc_count": 0,
+						"field": "timestamp",
+						"calendar_interval": "hour"
+					}
+				},
+				"releases" : {
+					"terms" : {
+						"field" : "release",
+						"size" : 500
+					}
+				},
+				"groups" : {
+					"terms" : {
+						"field" : "stachebox.signature",
+						"size" : 500
+					}
+				},
+				"levels" : {
+					"terms" : {
+						"field" : "level",
+						"size" : 500
+					}
+				}
+			}
+		};
 		builder.setAggregations(
             {
 				"types" : {
@@ -122,54 +163,15 @@ component {
                         "order" : { "_key" : "asc" }
 					}
 				},
-				"applications" : {
+				"applications" : applicationAggs,
+				"environments" : {
 					"terms" : {
-                        "field" : "application",
+                        "field" : "environment",
                         "size" : 20000,
                         "order" : { "_key" : "asc" }
 					},
 					"aggs" : {
-						"releases" : {
-							"terms" : {
-								"field" : "release",
-								"size" : 500
-							}
-
-						},
-						"groups" : {
-							"terms" : {
-								"field" : "stachebox.signature",
-								"size" : 500
-							},
-							"aggs" : {
-								"daily_occurrences": {
-									"date_histogram": {
-									  "field": "timestamp",
-									  "fixed_interval": "7d"
-									}
-								}//,
-                                // "hourly_occurrences": {
-								// 	"date_histogram": {
-								// 	  "field": "timestamp",
-								// 	  "calendar_interval": "hour"
-								// 	}
-								// }
-							}
-						},
-                        "levels" : {
-							"terms" : {
-								"field" : "level",
-								"size" : 500
-							},
-							"aggs" : {
-								"daily_occurrences": {
-									"date_histogram": {
-									  "field": "timestamp",
-									  "fixed_interval": "7d"
-									}
-								}
-							}
-						}
+						"applications" : applicationAggs
 					}
 				}
             }

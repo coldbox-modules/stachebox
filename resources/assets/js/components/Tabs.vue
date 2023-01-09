@@ -23,9 +23,6 @@ export default {
     data() {
         return { tabs: [] };
     },
-    created() {
-        this.tabs = this.$children;
-    },
     methods: {
         selectTab(selectedTab) {
             this.tabs.forEach(tab => {

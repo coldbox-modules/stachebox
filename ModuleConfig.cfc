@@ -178,6 +178,10 @@ component {
 			scopeRoutingToRoot();
 		}
 
+		if( url.keyExists( "seed" ) && url.seed ){
+			controller.getWirebox().getInstance( "migrationService:elasticsearch" ).seed( "Seed-Test-Data" );
+		}
+
 	}
 
     /**

@@ -79,14 +79,22 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 			rc.field = "stachebox.signature";
 		}
 
+		var searchBuilder = getInstance( "SearchBuilder@cbElasticsearch" )
+							.new( variables.moduleSettings.logIndexPattern )
+							.filterTerm(
+								rc.field,
+								rc.id
+							);
+		if( rc.keyExists( "environment" ) && len( rc.environment ) ){
+			searchBuilder.filterTerm(
+				"environment",
+				rc.environment
+			);
+		}
+
 		var updateResult = getInstance( "Client@cbelasticsearch" )
 			.updateByQuery(
-				getInstance( "SearchBuilder@cbElasticsearch" )
-						.new( variables.moduleSettings.logIndexPattern )
-						.filterTerm(
-							rc.field,
-							rc.id
-						),
+				searchBuilder,
 				{
 					"lang" : "painless",
 					"source" : "if( ctx._source.stachebox == null ) ctx._source.stachebox = new HashMap(); ctx._source.stachebox.isSuppressed = true"

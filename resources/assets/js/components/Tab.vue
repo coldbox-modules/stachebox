@@ -18,8 +18,15 @@ export default {
             return '#' + this.name.toLowerCase().replace(/ /g, '-');
         }
     },
+    beforeMount(){
+        this.$parent.tabs.push( this );
+    },
+    beforeUnmount(){
+        let self = this;
+        this.$parent.tabs.splice( this.$parent.tabs.findIndex( tab => tab.name === self.name ), 1 );
+    },
     mounted() {
         this.isActive = this.selected;
-    },
+    }
 }
 </script>

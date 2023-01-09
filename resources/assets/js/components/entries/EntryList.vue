@@ -76,7 +76,7 @@
 					style="max-width:400px!important"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					<code class="text-yellow-600 text-xs">{{ entry.message | truncate( truncate ? 200 : entry.message.length + 1 ) }}</code>
+					<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message, truncate ? 200 : entry.message.length + 1 ) }}</code>
 				</td>
 
 				<td
@@ -85,9 +85,9 @@
 					<confirmation-button
 						@confirmed="suppress( entry )"
 						confirmation-message="Click to Suppress"
-						class-string="text-cyan-600 hover:text-cyan-900"
+						class-string="text-gray-300 hover:text-cyan-900"
 					>
-						<template slot="icon">
+						<template #icon>
 							<fa-icon icon="eye-slash" v-tooltip="'Suppress this log entry from future results'" fixed-width></fa-icon>
 						</template>
 					</confirmation-button>
@@ -185,12 +185,12 @@ export default {
 			this.$store.dispatch( "fetchLogs", this.searchFilters )
 						.then( ( result ) => {
 							if( !self.logs ){
-								self.$set( self, "isSyncing", false )
+								self.isSyncing = false
 							} else {
-								setTimeout( () => self.$set( self, "isSyncing", false ), 1500 );
+								setTimeout( () => self.isSyncing = false, 1500 );
 							}
-							self.$set( self, "logs", result.data.results );
-							self.$set( self, "pagination", result.data.pagination );
+							self.logs = result.data.results;
+							self.pagination = result.data.pagination;
 
 
 						} )
@@ -211,14 +211,14 @@ export default {
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
 			this.$delete( this.searchFilters, "startRows" );
-			this.$set( this.searchFilters, "page", pageNumber );
+			this.searchFilters.page = pageNumber;
 			this.fetchLogs();
 			if( refreshEnabled ) this.toggleFollow();
 		},
 		updateFilters( args ){
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
-			Object.keys( args ).forEach( ( key ) => this.$set( this.searchFilters, key, args[ key ] ) );
+			Object.keys( args ).forEach( ( key ) => this.searchFilters[ key ] = args[ key ] );
 			this.fetchLogs();
 			if( refreshEnabled ) this.toggleFollow();
 		},
@@ -232,6 +232,8 @@ export default {
 			} else {
 				args = { field : "id", id : entry.id };
 			}
+
+			args[ "environment" ] = this.$route.params.environment;
 
 			this.$store.dispatch( "suppressEntry", args )
 							.then( () => this.logs.splice( this.logs.findIndex( item => item.id == entry.id ), 1 ) );

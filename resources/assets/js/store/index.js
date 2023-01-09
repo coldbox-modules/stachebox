@@ -1,13 +1,16 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import authAPI from "../api/authentication";
 import usersAPI from "../api/users";
 import logsAPI from "../api/logs";
 import beatsAPI from "../api/beats";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend( utc );
+dayjs.extend( timezone );
+dayjs.tz.setDefault( dayjs.tz.guess() );
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
 	state: {
 		authId: null,
 		authToken: null,
@@ -18,7 +21,10 @@ export default new Vuex.Store({
 	getters:{
 		hasPermission: ( state,getters ) => ( permission ) =>{
 			return state.authUser && state.authUser.isAdministrator;
-		}
+		},
+		orderedApplications : ( state, getters ) =>  state.navAggregations && state.navAggregations.applications
+														? Object.keys( state.navAggregations.applications ).sort( ( a, b ) => a.localeCompare( b ) )
+														: null
 	},
 	mutations: {
 		processLoginSuccess: (state, response) => {
@@ -82,22 +88,22 @@ export default new Vuex.Store({
 			return logsAPI.fetch( id, params, context.state.authToken )
 		},
 		fetchNavAggregations : ( context ) => {
-			context.dispatch( "fetchLogs", { maxrows : 0 } )
+			context.dispatch( "fetchLogs", { maxrows : 0, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString() } )
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
 						context.state.navAggregations.logCount = result.data.pagination.total;
 
 						context.dispatch( "fetchBeats", { maxrows : 0 } )
 								.then( ( result ) => {
-									Vue.set( context.state.navAggregations, "beatsCount", result.data.pagination.total );
+									context.state.navAggregations.beatsCount = result.data.pagination.total;
 									Object.keys( result.data.aggregations ).forEach( key => {
-										Vue.set( context.state.navAggregations, key, result.data.aggregations[ key ] );
+										context.state.navAggregations[ key ] = result.data.aggregations[ key ];
 									} )
 								} );
 					} );
 		},
-		suppressEntry : ( context, { field, id } ) => {
-			return logsAPI.suppress( field, id, context.state.authToken );
+		suppressEntry : ( context, { field, id, environment } ) => {
+			return logsAPI.suppress( field, id, context.state.authToken, environment );
 		}
 	}
 });
