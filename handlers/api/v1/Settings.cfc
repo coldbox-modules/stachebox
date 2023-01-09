@@ -73,7 +73,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 				).save() ).getMemento()
 		);
 
-		announceInterception( "onStacheboxSettingUpdate", { setting : prc.response.getData() } );
+		announce( "onStacheboxSettingUpdate", { setting : prc.response.getData() } );
 
 
 	}

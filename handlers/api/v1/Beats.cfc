@@ -61,7 +61,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 			return;
 		}
 
-		announceInterception( "ensureStacheboxMappings" );
+		announce( "ensureStacheboxMappings" );
 		// we cannot use `get()` because we are searching across multiple indices
 		var entry = getInstance( "SearchBuilder@cbElasticsearch" )
 							.new( variables.moduleSettings.beatsIndexPattern )
@@ -84,7 +84,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 	// ( DELETE ) /api/v1/logs/suppress/:field/:id
 	function suppress( event, rc, prc ){
-		announceInterception( "ensureStacheboxMappings" );
+		announce( "ensureStacheboxMappings" );
 		if( rc.field == 'signature' ){
 			rc.field = "stachebox.signature";
 		}
