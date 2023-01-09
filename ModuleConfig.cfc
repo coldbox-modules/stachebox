@@ -20,7 +20,7 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-	this.dependencies 		= [ "logstash", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
+	this.dependencies 		= [ "logstash", "BCrypt" "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
 
 	// App Helpers
 	this.applicationHelper = [
