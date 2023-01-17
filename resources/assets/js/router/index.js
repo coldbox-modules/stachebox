@@ -3,7 +3,6 @@ import auth from "../api/authentication";
 
 import Dashboard from "@/views/Dashboard.vue";
 import Login from "@/views/Login.vue";
-import Blank from "@/views/Blank.vue";
 import NotFound from "@/views/NotFound.vue";
 import LogEntry from "@/views/LogEntry.vue";
 import BeatsEntry from "@/views/BeatsEntry.vue";

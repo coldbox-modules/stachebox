@@ -206,6 +206,9 @@ component {
 						}
 					}
 				},
+				"unassigned": {
+					"missing" : { "field" : "fields.application" }
+				},
 				"ungrouped" : {
 					"missing" : { "field" : "event.dataset" }
 				},
@@ -222,6 +225,13 @@ component {
                         "size" : 20000,
                         "order" : { "_key" : "asc" }
 					}
+				},
+				"applications" : {
+					"terms" : {
+						"field" : "fields.application",
+						"size" : 500
+					}
+
 				}
             }
         );

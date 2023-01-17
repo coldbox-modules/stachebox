@@ -2,7 +2,7 @@
 	<button
 		@click="exportEntry"
 		class="text-gray-500 focus:outline-none float-right"
-		v-tooltip="'Download this log entry to a JSON file on your local machine'"
+		v-tooltip="$t( 'Download this log entry to a JSON file on your local machine' )"
 	>
 		<fa-icon icon="download" size="xs" fixed-width/>
 	</button>

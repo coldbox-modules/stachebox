@@ -7,19 +7,19 @@
 			</router-link>
 		</h3>
 		<tabs class="mt-2">
-			<tab name="Past 24 Hours">
+			<tab :name="$t( 'Past 24 Hours' )">
 				<BarChart v-if="aggregations" style="max-height:350px" :chartData="hourlyData" :options="chartOptions"></BarChart>
 			</tab>
-			<tab name="Past 7 Days">
+			<tab :name="$t( 'Past 7 Days' )">
 				<BarChart v-if="aggregations" style="max-height:350px" :chartData="dailyData" :options="chartOptions"></BarChart>
 			</tab>
-			<tab v-if="!chartsOnly" name="Recent Entries">
+			<tab v-if="!chartsOnly" :name="$t( 'Recent Entries' )">
 				<entry-list
 					wrapper-class="mt-0"
 					:initialFilters='{ sortOrder : "timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
 					:displayApplication="false"
-					:loaderMessage="`Fetching recent log data for application: ${application}. Please stand by...`"
-					:emptyStateMessage="`No new log data for application: ${application}`"
+					:loaderMessage="$t( 'Fetching recent log data for application', { application: application } )"
+					:emptyStateMessage="$t( 'No new log data for application: {application}', { application: application } )"
 				></entry-list>
 			</tab>
 		</tabs>
@@ -110,7 +110,7 @@ export default {
 			for( var i = 0; i <= this.hourRange; i++ ){
 				var thisHour = hourStart.clone().add( i, "hours" );
 				chartData.labels.push( thisHour.format( "M/D " ) + thisHour.format( "hA" ) + "-" + thisHour.clone().add( 1, "hour" ).format( "hA" )   );
-				let hourKey = thisHour.utc().format( "YYYY-MM-DDTHH:mm:ss[Z]" )
+				let hourKey = thisHour.utc().format( "YYYY-MM-DDTHH:mm:ss[Z]" );
 				chartData.datasets[ 0 ].data.push( aggs[ hourKey ] ? aggs[ hourKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}
@@ -138,9 +138,6 @@ export default {
 				var thisDay = dayStart.clone().add( i, "days" );
 				chartData.labels.push( thisDay.format( "ddd M/D" ) );
 				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss[Z]" );
-				console.log( dayKey );
-				console.log( Object.keys( aggs ) );
-				console.log( aggs[ dayKey ] );
 				chartData.datasets[ 0 ].data.push( aggs[ dayKey ] ? aggs[ dayKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}

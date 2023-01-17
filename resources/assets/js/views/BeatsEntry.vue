@@ -3,7 +3,7 @@
 		<logger-entry v-if="logEntry" :entry="logEntry"></logger-entry>
 		<div v-else class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-300" icon="circle-notch" spin fixed-width />
-			<p class="mt-4 text-gray-300">Loading log entry data. Please wait...</p>
+			<p class="mt-4 text-gray-300">{{ $t( "Loading log data. Please wait..." ) }}</p>
 		</div>
 	</div>
 </template>

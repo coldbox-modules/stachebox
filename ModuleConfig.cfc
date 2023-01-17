@@ -71,6 +71,11 @@ component {
 				"userServiceClass" : "UserService@stachebox"
 			}
 		};
+		cbi18n = {
+			"resourceBundles" : {
+				"stachebox" : "#moduleMapping#/includes/i18n/stachebox"
+			}
+		}
 
         // Try to look up the release based on a box.json
         if( !isNull( appmapping ) ) {

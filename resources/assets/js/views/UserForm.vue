@@ -99,18 +99,16 @@
 								<button
 									type="button"
 									:aria-pressed="user.isAdministrator"
-									@click="user.isAdministrator = !user.isAdministrator"
+									@click="toggleAdmin"
 									aria-labelledby="toggleLabel"
-									class="bg-gray-200 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-									:class="user.isAdministrator ? 'bg-cyan-600' : 'bg-gray-200'"
+									:class="adminButtonClass"
 								>
 									<!-- On: "bg-cyan-600", Off: "bg-gray-200" -->
 									<span class="sr-only">Use setting</span>
 									<!-- On: "translate-x-5", Off: "translate-x-0" -->
 									<span
 										aria-hidden="true"
-										class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
-										:class="user.isAdministrator ? 'translate-x-5' : 'translate-x-0'"
+										:class="adminToggleClass"
 									></span>
 								</button>
 								<span class="ml-3" id="toggleLabel">
@@ -309,7 +307,7 @@ export default {
 	},
 	data(){
 		return {
-			user : {},
+			user : null,
 			isSaving : false,
 			saveSuccess : false,
 			validation : {
@@ -330,9 +328,25 @@ export default {
 		},
 		isValid(){
 			return this.isPasswordVerified
+		},
+		adminButtonClass(){
+			console.log( this.user.isAdministrator );
+			let btnClass = 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ';
+			btnClass += this.user.isAdministrator ? 'bg-cyan-600' : 'bg-gray-300';
+			return btnClass;
+		},
+		adminToggleClass(){
+			console.log( this.user.isAdministrator );
+			let toggleClass = "inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 "
+			toggleClass += this.user.isAdministrator ? 'translate-x-5' : 'translate-x-0';
+			return toggleClass
+
 		}
 	},
 	methods : {
+		toggleAdmin(){
+			this.user.isAdministrator = !this.user.isAdministrator
+		},
 		fetchUser(){
 			usersAPI.fetch( this.$route.params.id, {}, this.authToken ).then( result => this.user = result.data )
 		},

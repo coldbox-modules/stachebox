@@ -1,36 +1,20 @@
 <template>
 	<div class="settings-admin">
-		<h3 class="text-gray-700 text-3xl font-medium">StacheBox Custom Settings</h3>
-		<table v-if="settings" class="text-left table-fixed border-collapse mt-5">
-			<tbody>
-				<tr class="border-b">
-					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Logstash Log Index Pattern: <a v-tooltip="'The index pattern to search for application-provided log entries'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
-					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.logIndexPattern.value"/>
-					</td>
-				</tr>
-				<tr class="border-b">
-					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Filebeats Log Index Pattern: <a v-tooltip="'The index pattern to search for filebeat ( e.g. machine ) log entries'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
-					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.beatsIndexPattern.value"/>
-					</td>
-				</tr>
-				<tr class="border-b">
-					<th class="py-3 px-3 w-1/3 text-medium text-gray-600">Omit from entry data: <a v-tooltip="'Regex pattern which denotes any fields which should be omitted from log API output'"><fa-icon class="text-theme text-xs" icon="info-circle"/></a></th>
-					<td class="py-3 px-3 w-2/3">
-						<input class="form-input rounded-none mt-1 w-full focus:border-cyan-600" v-model="settings.neverExpose.value"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2 items-right">
-						<button
-						@click="applySettings"
-						class="block mt-10 float-right items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-						><fa-icon icon="save"></fa-icon> Update Settings</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<Tabs v-if="settings">
+			<Tab name="Logging">
+				<logs :settings="settings" @update-settings="applySettings"></logs>
+			</Tab>
+			<Tab name="API Tokens">
+				<tokens :settings="settings" @update-settings="applySettings"></tokens>
+			</Tab>
+			<Tab name="Projects">
+				<projects :settings="settings" @update-projects="updateProjects"></projects>
+			</Tab>
+			<Tab name="Indexes">
+				<indexes></indexes>
+			</Tab>
+		</Tabs>
+
 		<div v-else class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-400" icon="circle-notch" spin fixed-width />
 			<p class="mt-4 text-gray-400">Loading module settings...</p>
@@ -40,8 +24,21 @@
 <script>
 import settingsAPI from "@/api/settings";
 import { mapGetters, mapState } from "vuex";
+import Tabs from "@/components/Tabs";
+import Tab from "@/components/Tab";
+import Logs from "@/components/settings/Logs";
+import Tokens from "@/components/settings/Tokens";
+import Indexes from "@/components/settings/Indexes";
+import Projects from "@/components/settings/Projects";
 export default {
-
+	components: {
+		Tabs,
+		Tab,
+		Logs,
+		Tokens,
+		Indexes,
+		Projects
+	},
 	data(){
 		return {
 			settings : null,
@@ -51,9 +48,6 @@ export default {
 		}
 	},
 	computed : {
-		...mapGetters({
-			hasPermission : "hasPermission"
-		}),
 		...mapState({
 			authToken : ( state ) => state.authToken
 		})
@@ -68,8 +62,12 @@ export default {
 		},
 		updateSetting( key ){
 			settingsAPI.patch( this.settings[ key ], this.authToken )
+		},
+		updateProjects( projects ){
+			this.settings.projects = projects;
+			this.updateSetting( "projects" );
 		}
 	},
-	created(){ this.fetchSettings() }
+	beforeMount(){ this.fetchSettings() }
 }
 </script>

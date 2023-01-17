@@ -8,27 +8,27 @@
 						v-if="displayDataset"
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						Dataset
+						{{ $t( "Dataset" ) }}
 					</th>
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						Time
+						{{ $t( "Time" ) }}
 					</th>
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						Host
+						{{ $t( "Host" ) }}
 					</th>
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 						style="max-width:400px!important"
 					>
-						Message
+						{{ $t( "Message" ) }}
 					</th>
 					<th class="px-2 py-3 border-b border-gray-200 bg-gray-50 justify-right text-right">
-						<a @click="toggleFollow" v-tooltip="followInterval ? 'Disable auto-refresh' : 'Enable auto-refresh'" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>
-						<a @click="toggleFilters" v-tooltip="'Toggle filter options'"><fa-icon class="text-gray-400" icon="filter"/></a>
+						<a @click="toggleFollow" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>
+						<a @click="toggleFilters" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
 					</th>
 				</tr>
 			</thead>
@@ -80,11 +80,11 @@
 						<confirmation-button
 							v-if="entry.stachebox"
 							@confirmed="suppress( entry )"
-							confirmation-message="Click to Suppress"
+							:confirmation-message="$t( 'Click to Suppress' )"
 							class-string="text-cyan-600 hover:text-cyan-900"
 						>
 							<template #icon>
-								<fa-icon icon="eye-slash" v-tooltip="'Suppress this log message from future results'" fixed-width></fa-icon>
+								<fa-icon icon="eye-slash" v-tooltip="$t( 'Suppress this log message from future results' )" fixed-width></fa-icon>
 							</template>
 						</confirmation-button>
 					</td>
