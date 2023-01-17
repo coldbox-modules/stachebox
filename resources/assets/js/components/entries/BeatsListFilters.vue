@@ -2,12 +2,12 @@
 	<div class="grid bg-white grid-cols-3 gap-2">
 		<div class="my-2">
 			<div class="px-3 py-2 mt-2">
-				<label class="text-gray-400 text-xs uppercase leading-5">Date Range:</label>
+				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Date Range" ) }}:</label>
 				<date-time-picker
 					v-model="dateRange"
 					:range="true"
 					color="#159CBF"
-					label="Select a minimum date or range"
+					:label="$t( 'Select a minimum date or range' )"
 					:max-date="new Date().toISOString()"
 					@validate="updateDateRangeFilters"
 					@input="checkDateRangeClear"
@@ -23,7 +23,7 @@
 		<div class="my-2 pl-5 border-l border-gray-300">
 			<template v-if="filterSet == 'dataset'">
 				<div class="px-3 py-2 mt-2" v-if="!searchFilters['event.dataset']">
-					<label class="text-gray-400 text-xs uppercase leading-5">Dataset:</label>
+					<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Dataset" ) }}:</label>
 					<select
 						id="application"
 						name="application"
@@ -32,14 +32,14 @@
 						@change="onFilterChange( 'event.dataset', searchFilters[ 'event.dataset' ] )"
 						class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 					>
-						<option :value="undefined">All Datasets</option>
+						<option :value="undefined">{{$t( "All Datasets" ) }}</option>
 						<option v-for="dataset in datasets" :key="dataset" :value="dataset">{{ filters.$datasetName( dataset ) }}</option>
 					</select>
 				</div>
 
 			</template>
 			<div v-else class="px-3 py-2 mt-2">
-				<label class="text-gray-400 text-xs uppercase leading-5">Host Name:</label>
+				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Host Name" ) }}:</label>
 				<select
 					id="environment"
 					name="environment"
@@ -48,7 +48,7 @@
 					@change="onFilterChange( 'host.hostname', searchFilters[ 'host.hostname' ] )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
-					<option :value="undefined">All Hosts</option>
+					<option :value="undefined">{{ $t( "All Hosts" ) }}</option>
 					<option
 						v-for="hostname in hostNames"
 						:key="hostname"
@@ -61,7 +61,7 @@
 
 		<div class="my-2 pl-5 border-l border-gray-300" >
 			<div class="px-3 py-2 mt-2">
-				<label class="text-gray-400 text-xs uppercase leading-5">Log Level:</label>
+				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Log Level" ) }}:</label>
 				<select
 					v-if="filterSet == 'dataset'"
 					id="level"
@@ -71,12 +71,12 @@
 					@change="onFilterChange( 'event.type', searchFilters[ 'event.type' ] )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
-					<option :value="undefined">No Level</option>
-					<option value="fatal">Fatal</option>
-					<option value="error">Error</option>
-					<option value="warn">Warning</option>
-					<option value="info">Informational</option>
-					<option value="debug">Debug</option>
+					<option :value="undefined">{{ $t( "No Level" ) }}</option>
+					<option value="fatal">{{ $t( "Fatal" ) }}</option>
+					<option value="error">{{ $t( "Error" ) }}</option>
+					<option value="warn">{{ $t( "Warning" ) }}</option>
+					<option value="info">{{ $t( "Informational" ) }}</option>
+					<option value="debug">{{ $t( "Debug" ) }}</option>
 				</select>
 
 				<select
@@ -88,12 +88,12 @@
 					@change="onFilterChange( 'search', searchFilters[ 'search' ] )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
-					<option :value="undefined">No Level</option>
-					<option value="[FATAL">Fatal</option>
-					<option value="[ERR">Error</option>
-					<option value="[WARN">Warning</option>
-					<option value="[INFO">Informational</option>
-					<option value="[DEBUG">Debug</option>
+					<option :value="undefined">{{ $t( "No Level" ) }}</option>
+					<option value="[FATAL">{{ $t( "Fatal" ) }}</option>
+					<option value="[ERR">{{ $t( "Error" ) }}</option>
+					<option value="[WARN">{{ $t( "Warning" ) }}</option>
+					<option value="[INFO">{{ $t( "Informational" ) }}</option>
+					<option value="[DEBUG">{{ $t( "Debug" ) }}</option>
 				</select>
 
 			</div>

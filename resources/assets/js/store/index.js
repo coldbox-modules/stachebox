@@ -96,9 +96,7 @@ export default createStore({
 						context.dispatch( "fetchBeats", { maxrows : 0 } )
 								.then( ( result ) => {
 									context.state.navAggregations.beatsCount = result.data.pagination.total;
-									Object.keys( result.data.aggregations ).forEach( key => {
-										context.state.navAggregations[ key ] = result.data.aggregations[ key ];
-									} )
+									context.state.navAggregations.beatsAggregations = result.data.aggregations;
 								} );
 					} );
 		},

@@ -1,6 +1,6 @@
 <template>
 	<div class="dataset-logs">
-		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">Filebeat Entries for for type: {{$route.params.id.toTitleCase()}}</h3>
+		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Entries for for type: {type}", { type: $route.params.id.toTitleCase() } ) }}</h3>
 		<div class="entry-list">
 			<beats-list
 				filter-set="filebeat"

@@ -3,6 +3,7 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 import filters from './filters';
+import { createI18n } from 'vue-i18n';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -32,6 +33,12 @@ window.Event = new EventBus();
 
 // require( "./util/make-errors" );
 
+const i18n = createI18n({
+    locale: "en_US",
+    messages: window.globalData.stachebox.i18nLocales
+});
+
+app.use( i18n );
 app.use( store );
 app.use( router );
 app.mount( "#app" );

@@ -6,49 +6,49 @@
 			<!--- Top Left Exception Area --->
 			<!----------------------------------------------------------------------------------------->
 			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="bomb" fixed-width />
-				Log Entry Information
+				{{ $t( "Log Entry Information" ) }}
 				<entry-export-button :entry="entry"/>
 			</h2>
 			<table class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
 					<tr class="border-b" v-if="entry.application">
-						<th class="w-1/3 align-top">Application ID:</th>
+						<th class="w-1/3 align-top">{{ $t( "Application ID" ) }}:</th>
 						<td class="w-2/3">{{ entry.application }}</td>
 					</tr>
 					<tr class="border-b">
-						<th class="w-1/3 align-top">Release Version:</th>
+						<th class="w-1/3 align-top">{{ $t( "Release Version" ) }}:</th>
 						<td class="w-2/3">{{ entry.release || 'N/A' }}</td>
 					</tr>
 					<tr class="border-b">
-						<th class="w-1/3 align-top">Environment:</th>
+						<th class="w-1/3 align-top">{{ $t( "Environment" ) }}:</th>
 						<td class="w-2/3">{{ entry.environment || 'N/A' }}</td>
 					</tr>
 					<tr class="border-b">
-						<th class="w-1/3 align-top">Level:</th>
-						<td class="w-2/3">{{entry.level || 'N/A'}} <span v-if="entry.severity">( Severity {{entry.severity}} )</span></td>
+						<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
+						<td class="w-2/3">{{entry.level || 'N/A'}} <span v-if="entry.severity">( {{ $t( "Severity" ) }} {{entry.severity}} )</span></td>
 					</tr>
 					<tr class="border-b" v-if="entry.type">
-						<th class="w-1/3 align-top">Type:</th>
+						<th class="w-1/3 align-top">{{ $t( "Type" ) }}:</th>
 						<td class="w-2/3">{{entry.type}}</td>
 					</tr>
 					<tr class="border-b">
-						<th class="w-1/3 align-top">Occurred At:</th>
+						<th class="w-1/3 align-top">{{ $t( "Occurred At" ) }}:</th>
 						<td class="w-2/3">{{ dayjs( entry[ '@timestamp' ] ).format('YYYY-MM-DD HH:mm:ss') }}</td>
 					</tr>
 					<tr class="border-b" v-if="entry.category">
-						<th class="w-1/3 align-top">Category:</th>
+						<th class="w-1/3 align-top">{{ $t( "Category" ) }}:</th>
 						<td class="w-2/3">{{ entry.category }}</td>
 					</tr>
 					<tr class="border-b" v-if="entry.component">
-						<th class="w-1/3 align-top">Component:</th>
+						<th class="w-1/3 align-top">{{ $t( "Component" ) }}:</th>
 						<td class="w-2/3">{{ entry.component }}</td>
 					</tr>
 					<tr class="border-b" v-if="entry.appendername">
-						<th class="w-1/3 align-top">Appender:</th>
+						<th class="w-1/3 align-top">{{ $t( "Appender" ) }}:</th>
 						<td class="w-2/3">{{ entry.appendername }}</td>
 					</tr>
 					<tr class="border-b">
-						<th class="w-1/3 align-top">Message:</th>
+						<th class="w-1/3 align-top">{{ $t( "Message" ) }}:</th>
 						<td class="w-2/3">
 							<code class="text-yellow-600 text-xs">{{ entry.message }}</code>
 						</td>
@@ -61,11 +61,11 @@
 		<div class="entry-detail mt-20" v-if="entry.extrainfo || entry.event || entry.snapshot || entry.stacktrace">
 			<h2 class="text-3xl font-medium text-gray-500">
 				<fa-icon icon="search" fixed-width />
-				Exception Detail
+				{{ $t( "Exception Detail" ) }}
 			</h2>
 
 			<tabs class="mt-5">
-				<tab name="Stack Frames" v-if="entry.frames && entry.frames.length">
+				<tab :name="$t( 'Stack Frames' )" v-if="entry.frames && entry.frames.length">
 					<ul class="stackframes-list">
 						<li
 							v-for="( frame, index ) in reversedFrames"
@@ -82,36 +82,36 @@
 						</li>
 					</ul>
 				</tab>
-				<tab name="Event Details" v-if="entry.event && Object.keys( entry.event ).length">
+				<tab :name="$t( 'Event Details' )" v-if="entry.event && Object.keys( entry.event ).length">
 					<!-- Coldbox Event Information -->
 					<table v-if="entry.event.name" class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr class="border-b">
-								<th class="w-1/3 align-top">Environment:</th>
+								<th class="w-1/3 align-top">{{ $t( "Environment" ) }}:</th>
 								<td class="w-2/3">{{entry.event.environment}}</td>
 							</tr>
 							<tr v-if="entry.event.name" class="border-b">
-								<th class="w-1/3 align-top">Name:</th>
+								<th class="w-1/3 align-top">{{ $t( "Name" ) }}:</th>
 								<td class="w-2/3">{{entry.event.name}}</td>
 							</tr>
 							<tr v-if="entry.event.route" class="border-b">
-								<th class="w-1/3 align-top">Route:</th>
+								<th class="w-1/3 align-top">{{ $t( "Route" ) }}:</th>
 								<td class="w-2/3">{{entry.event.route}}</td>
 							</tr>
 							<tr v-if="entry.event.routed_url" class="border-b">
-								<th class="w-1/3 align-top">URL:</th>
+								<th class="w-1/3 align-top">{{ $t( "URL" ) }}:</th>
 								<td class="w-2/3">{{entry.event.routed_url}}</td>
 							</tr>
 							<tr v-if="entry.event.layout" class="border-b">
-								<th class="w-1/3 align-top">Layout:</th>
+								<th class="w-1/3 align-top">{{ $t( "Layout" ) }}:</th>
 								<td class="w-2/3">{{entry.event.layout}}</td>
 							</tr>
 							<tr v-if="entry.event.module" class="border-b">
-								<th class="w-1/3 align-top">Module:</th>
+								<th class="w-1/3 align-top">{{ $t( "Module" ) }}:</th>
 								<td class="w-2/3">{{entry.event.module}}</td>
 							</tr>
 							<tr v-if="entry.event.view" class="border-b">
-								<th class="w-1/3 align-top">View:</th>
+								<th class="w-1/3 align-top">{{ $t( "View" ) }}:</th>
 								<td class="w-2/3">{{entry.event.view}}</td>
 							</tr>
 						</tbody>
@@ -119,56 +119,56 @@
 					<!-- Other Event Information -->
 					<pre v-else><code class="language-json">{{formatJSON( JSON.stringify( entry.event ) )}}</code></pre>
 				</tab>
-				<tab name="Framework Snapshot" v-if="entry.snapshot && Object.keys( entry.snapshot ).length">
+				<tab :name="$t( 'Framework Snapshot' )" v-if="entry.snapshot && Object.keys( entry.snapshot ).length">
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.snapshot.path" class="border-b">
-								<th class="w-1/3 align-top">Path:</th>
+								<th class="w-1/3 align-top">{{ $t( "Path" ) }}:</th>
 								<td class="w-2/3">{{entry.snapshot.path}}</td>
 							</tr>
 							<tr v-if="entry.snapshot.host" class="border-b">
-								<th class="w-1/3 align-top">Host:</th>
+								<th class="w-1/3 align-top">{{ $t( "Host" ) }}:</th>
 								<td class="w-2/3">{{entry.snapshot.host}}</td>
 							</tr>
 							<tr v-if="entry.snapshot.referrer" class="border-b">
-								<th class="w-1/3 align-top">Referrer:</th>
+								<th class="w-1/3 align-top">{{ $t( "Referrer" ) }}:</th>
 								<td class="w-2/3">{{entry.snapshot.referrer}}</td>
 							</tr>
 							<tr v-if="entry.snapshot.browser" class="border-b">
-								<th class="w-1/3 align-top">Browser:</th>
+								<th class="w-1/3 align-top">{{ $t( "Browser" ) }}:</th>
 								<td class="w-2/3">{{entry.snapshot.browser}}</td>
 							</tr>
 							<tr v-if="entry.snapshot.remote_address" class="border-b">
-								<th class="w-1/3 align-top">Referrer:</th>
+								<th class="w-1/3 align-top">{{ $t( "Remote Address" ) }}:</th>
 								<td class="w-2/3">{{entry.snapshot.remote_address}}</td>
 							</tr>
 						</tbody>
 					</table>
 				</tab>
 
-				<tab name="Database" v-if="entry.extrainfo && entry.extrainfo.database && Object.keys( entry.extrainfo.database ).length">
+				<tab :name="$t( 'Database' )" v-if="entry.extrainfo && entry.extrainfo.database && Object.keys( entry.extrainfo.database ).length">
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.extrainfo.database.nativeErrorCode" class="border-b">
-								<th class="w-1/3 align-top">Native Error Code:</th>
+								<th class="w-1/3 align-top">{{ $t( "Native Error Code" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.database.nativeErrorCode}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.database.SQLState" class="border-b">
-								<th class="w-1/3 align-top">SQL State:</th>
+								<th class="w-1/3 align-top">{{ $t( "SQL State" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.database.SQLState}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.database.queryError" class="border-b">
-								<th class="w-1/3 align-top">Query Error:</th>
+								<th class="w-1/3 align-top">{{ $t( "Query Error" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.database.queryError}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.database.SQL" class="border-b">
-								<th class="w-1/3 align-top">SQL:</th>
+								<th class="w-1/3 align-top">{{ $t( "SQL" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-sql">{{entry.extrainfo.database.SQL}}</code></pre>
 								</td>
 							</tr>
 							<tr v-if="entry.extrainfo.database.where" class="border-b">
-								<th class="w-1/3 align-top">Where Clause(s):</th>
+								<th class="w-1/3 align-top">{{ $t( "Where Clause(s)" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-sql">{{entry.extrainfo.database.where}}</code></pre>
 								</td>
@@ -177,40 +177,40 @@
 					</table>
 				</tab>
 
-				<tab name="Locks" v-if="entry.extrainfo && entry.extrainfo.lock && Object.keys( entry.extrainfo.lock ).length">
+				<tab :name="$t( 'Locks' )" v-if="entry.extrainfo && entry.extrainfo.lock && Object.keys( entry.extrainfo.lock ).length">
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.extrainfo.lock.name" class="border-b">
-								<th class="w-1/3 align-top">Lock Name:</th>
+								<th class="w-1/3 align-top">{{ $t( "Lock Name" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.lock.name}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.lock.operation" class="border-b">
-								<th class="w-1/3 align-top">Lock Operation:</th>
+								<th class="w-1/3 align-top">{{ $t( "Lock Operation" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.lock.operation}}</td>
 							</tr>
 						</tbody>
 					</table>
 				</tab>
 
-				<tab name="HTTP Request Data" v-if="entry.extrainfo && entry.extrainfo.httpData && Object.keys( entry.extrainfo.httpData ).length">
+				<tab :name="$t( 'HTTP Request Data' )" v-if="entry.extrainfo && entry.extrainfo.httpData && Object.keys( entry.extrainfo.httpData ).length">
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.extrainfo.httpData.protocol" class="border-b">
-								<th class="w-1/3 align-top">Protocol:</th>
+								<th class="w-1/3 align-top">{{ $t( "Protocol" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.httpData.protocol}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.httpData.method" class="border-b">
-								<th class="w-1/3 align-top">Protocol:</th>
+								<th class="w-1/3 align-top">{{ $t( "HTTP Method" ) }}:</th>
 								<td class="w-2/3">{{entry.extrainfo.httpData.method}}</td>
 							</tr>
 							<tr v-if="entry.extrainfo.httpData.content" class="border-b">
-								<th class="w-1/3 align-top">Content Body:</th>
+								<th class="w-1/3 align-top">{{ $t( "Content Body" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-json">{{formatJSON( entry.extrainfo.httpData.content )}}</code></pre>
 								</td>
 							</tr>
 							<tr v-if="entry.extrainfo.httpData.headers && Object.keys( entry.extrainfo.httpData.headers ).length" class="border-b">
-								<th class="w-1/3 align-top">Headers:</th>
+								<th class="w-1/3 align-top">{{ $t( "Headers" ) }}:</th>
 								<td class="w-2/3">
 									<table class="text-left table-fixed border-collapse">
 										<tbody>
@@ -225,32 +225,32 @@
 						</tbody>
 					</table>
 				</tab>
-				<tab name="Extra Info" v-else-if="entry.extrainfo">
+				<tab :name="$t( 'Extra Info' )" v-else-if="entry.extrainfo">
 					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.extrainfo ) )}}</code></pre>
 				</tab>
 
-				<tab name="User Info" v-else-if="entry.userinfo && Object.keys( entry.userinfo ).length">
+				<tab :name="$t( 'User Info' )" v-else-if="entry.userinfo && Object.keys( entry.userinfo ).length">
 					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.userinfo ) )}}</code></pre>
 				</tab>
 
-				<tab name="Raw Stack Trace" v-if="entry.extrainfo && entry.extrainfo.javaStackTrace && entry.extrainfo.javaStackTrace.length">
+				<tab :name="$t( 'Raw Stack Trace' )" v-if="entry.extrainfo && entry.extrainfo.javaStackTrace && entry.extrainfo.javaStackTrace.length">
 					<code class="language-javastacktrace">{{entry.extrainfo.javaStackTrace}}</code>
 				</tab>
 
-				<tab name="Raw Stack Trace" v-else-if="entry.extrainfo && !entry.extrainfo.javaStackTrace && entry.extrainfo._stacktrace">
+				<tab :name="$t( 'Raw Stack Trace' )" v-else-if="entry.extrainfo && !entry.extrainfo.javaStackTrace && entry.extrainfo._stacktrace">
 					<code class="language-javastacktrace">{{entry.extrainfo._stacktrace}}</code>
 				</tab>
 
-				<tab name="Raw Stack Trace" v-else-if="entry.stacktrace">
+				<tab :name="$t( 'Raw Stack Trace' )" v-else-if="entry.stacktrace">
 					<pre v-if="Array.isArray( entry.stacktrace )"><code class="language-javastacktrace">{{entry.stacktrace.join( "\n" )}}</code></pre>
 					<pre v-else><code class="language-javastacktrace">{{entry.stacktrace}}</code></pre>
 				</tab>
 
-				<tab name="Raw Entry Data" v-else>
+				<tab :name="$t( 'Raw Entry Data' )" v-else>
 					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry ) )}}</code></pre>
 				</tab>
 
-				<tab v-if="multipleOccurrences" name="Other Occurrences">
+				<tab v-if="multipleOccurrences" :name="$t( 'Other Occurrences' )">
 					<entry-list
 						v-if="multipleOccurrences"
 						:initialFilters='{ "stachebox.signature" : entry.stachebox.signature, exclude : entry.id, sortOrder : "timestamp DESC" }'

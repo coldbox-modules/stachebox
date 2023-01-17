@@ -1,6 +1,6 @@
 <template>
 	<div class="dataset-logs">
-		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">Filebeat Dataset Logs for: {{$filters.datasetName( $route.params.id )}}</h3>
+		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b"> {{ $t( "Filebeat Dataset Logs for: {dataset}", { dataset : $filters.datasetName( $route.params.id ) } ) }}</h3>
 		<div class="entry-list">
 			<beats-list
 				:initialFilters="searchParams"

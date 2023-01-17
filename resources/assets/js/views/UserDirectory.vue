@@ -1,7 +1,7 @@
 <template>
     <div>
 		<div class="user-directory">
-			<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">User Directory</h3>
+			<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "User Directory" ) }}</h3>
 		</div>
         <section>
 			<div class="float-right" v-if='hasPermission( "Administer:Users" )'>
@@ -9,7 +9,7 @@
                     type="button"
                     class="py-2 px-4 text-center bg-green-600 w-full text-white text-sm"
                     @click="$router.push( { name : 'NewUser' } )">
-                    <fa-icon icon="plus"/> New User
+                    <fa-icon icon="plus"/> {{ $t( "New User" ) }}
                 </button>
             </div>
 			<table v-if="users" class="min-w-full divide-y divide-gray-200">

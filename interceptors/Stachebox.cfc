@@ -107,6 +107,12 @@ component{
 		var cbSecuritySettings = getModuleSettings( "cbsecurity" );
 		param moduleSettings.isStandalone = false;
 
+		var i18nBundles = getInstance( "i18n@cbi18n" ).getResourceService().getBundles().stachebox;
+		var locales = {};
+		i18nBundles.keyArray().each( function( locale){
+			locales[ locale ] = i18nBundles[ locale ];
+		} );
+
 		prc.globalData = {
 			"stachebox" : {
 				"baseHref" : event.getModuleRoot( "stachebox" ),
@@ -114,7 +120,8 @@ component{
 				"logIndexPattern" : moduleSettings.logIndexPattern,
 				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
 				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
-				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() )
+				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() ),
+				"i18nLocales" : locales
 			}
 		};
 	}
