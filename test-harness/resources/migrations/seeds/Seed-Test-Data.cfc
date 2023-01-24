@@ -3,6 +3,7 @@ component{
 		var logBox = application.cbController.getLogbox();
 		var registry = logbox.getAppenderRegistry();
 		var appender = registry[ "logstash_appender" ];
+	
 
 		var testApps = mockData.mock( $num=3, $type="words" );
 		var testEnvironments = [ "development", "staging", "production" ];
