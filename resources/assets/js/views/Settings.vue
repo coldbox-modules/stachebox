@@ -11,7 +11,7 @@
 				<projects :settings="settings" @update-projects="updateProjects"></projects>
 			</Tab>
 			<Tab name="Indexes">
-				<indexes></indexes>
+				<!-- <indexes></indexes> -->
 			</Tab>
 		</Tabs>
 
@@ -61,10 +61,10 @@ export default {
 			Object.keys( this.settings ).forEach( setting => this.updateSetting( setting ) )
 		},
 		updateSetting( key ){
-			settingsAPI.patch( this.settings[ key ], this.authToken )
+			settingsAPI.patch( this.settings[ key ], this.authToken );
 		},
 		updateProjects( projects ){
-			this.settings.projects = projects;
+			this.settings.projects.value = projects;
 			this.updateSetting( "projects" );
 		}
 	},

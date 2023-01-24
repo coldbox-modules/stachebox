@@ -1,34 +1,26 @@
 component extends="BaseAPIHandler" secured="Administer:Settings"{
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
+	property name="settingService" inject="SettingService@stachebox";
 	property name="ESUtil" inject="Util@cbelasticsearch";
 
 	// ( GET ) /api/v1/settings
 	function index( event, rc, prc ){
-
-		var searchBuilder = getInstance( "SearchBuilder@cbelasticsearch" )
-									.new( moduleSettings.settingsIndex )
-									.setQuery( { "match_all" : {} } );
-		searchBuilder.setMaxRows( searchBuilder.count() );
-
 		prc.response.setData(
-			searchBuilder.execute().getHits().map( function( entry ){
-				return expandDoc( entry ).getMemento();
-			} )
+			settingService.getAllSettings()
 		);
-
 	}
 
 	// ( GET ) /api/v1/settings/:id
 	function show( event, rc, prc ){
 
-		var entry = getInstance( "Client@cbelasticsearch" ).get( rc.id, moduleSettings.settingsIndex );
+		var entry = settingService.getById( rc.id );
 
 		if( isNull( entry ) ){
 			return onEntityNotFoundException( argumentCollection=arguments );
 		}
 
-		prc.response.setData( expandDoc( entry ).getMemento() );
+		prc.response.setData( entry );
 
 	}
 
@@ -107,12 +99,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 	}
 
 	function expandDoc( required Document doc ){
-		var entryMemento = arguments.doc.getMemento();
-		entryMemento[ "id" ] = arguments.doc.getId();
-		if( isJSON( entryMemento.value ) ){
-			entryMemento.value = deserializeJSON( entryMemento.value )
-		}
-		return arguments.doc;
+		return settingService.expandDoc( arguments.doc );
 	}
 
 }

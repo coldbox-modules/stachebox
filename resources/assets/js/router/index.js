@@ -7,6 +7,7 @@ import NotFound from "@/views/NotFound.vue";
 import LogEntry from "@/views/LogEntry.vue";
 import BeatsEntry from "@/views/BeatsEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
+import ProjectSnapshot from "@/views/ProjectSnapshot.vue";
 import DatasetLogs from "@/views/DatasetLogs.vue";
 import BeatsLogs from "@/views/BeatsLogs.vue";
 import LogSearch from "@/views/LogSearch.vue";
@@ -42,6 +43,11 @@ const routes = [
     path: "/beats/entry/:id",
     name: "BeatsEntry",
     component: BeatsEntry,
+  },
+  {
+    path: "/projects/:id",
+    name: "ProjectSnapshot",
+    component: ProjectSnapshot,
   },
   {
     path: "/logs/application/:id/:environment",

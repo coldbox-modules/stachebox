@@ -30,7 +30,8 @@
         "cbvalidation":"^2",
         "BCrypt":"^3",
         "logstash":"^1",
-        "cbi18n":"^3.2.0+12"
+        "cbi18n":"^3.2.0+12",
+        "cbmailservices":"^2.7.0-snapshot"
     },
     "ignore":[
         "**/.*",
@@ -52,6 +53,7 @@
         "cbvalidation":"modules/cbvalidation/",
         "BCrypt":"modules/BCrypt/",
         "logstash":"modules/logstash/",
-        "cbi18n":"modules/cbi18n/"
+        "cbi18n":"modules/cbi18n/",
+        "cbmailservices":"modules/cbmailservices/"
     }
 }

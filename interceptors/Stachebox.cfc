@@ -3,6 +3,7 @@ component{
 	property name="searchClient" inject="Client@cbelasticsearch";
 	property name="wirebox" inject="wirebox";
 	property name="moduleService" inject="coldbox:ModuleService";
+	property name="settingServce" inject="SettingService@stachebox";
 
 	function postModuleLoad( event, interceptData ){
 		if( interceptData.moduleName == "stachebox" ){
@@ -16,6 +17,7 @@ component{
 	}
 
 	function ensureSettingsIndex(){
+
 		if( !searchClient.indexExists( variables.moduleSettings.settingsIndex ) ){
 			getInstance( "IndexBuilder@cbelasticsearch" )
 				.new(
@@ -25,12 +27,13 @@ component{
 		}
 
 
-
 		var defaults = [
 			{ "name" : "applicationAliases", "value" : '{}' },
 			{ "name" : "logIndexPattern", "value" : variables.moduleSettings.logIndexPattern },
 			{ "name" : "beatsIndexPattern", "value" : variables.moduleSettings.beatsIndexPattern },
-			{ "name" : "neverExpose", "value" : "password|cookie|JSessionID|CFIDE" }
+			{ "name" : "neverExpose", "value" : "password|cookie|JSessionID|CFIDE" },
+			{ "name" : "projects", "value" : "[]"},
+			{ "name" : "apiTokens", "value" : "[]"}
 		];
 
 		var searchBuilder = getInstance( "SearchBuilder@cbelasticsearch" ).new( variables.moduleSettings.settingsIndex );
@@ -121,7 +124,18 @@ component{
 				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
 				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
 				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() ),
-				"i18nLocales" : locales
+				"i18nLocales" : locales,
+				"projects" : settingServce.getByName( "projects" ).value.reduce(
+					function( acc, value ){
+						structDelete( value, "owner" );
+						structDelete( value, "emailDistributionList" );
+						structDelete( value, "summaryEmails" );
+						structDelete( value, "frequency" );
+						acc.append( value );
+						return acc;
+					},
+					[]
+				)
 			}
 		};
 	}
