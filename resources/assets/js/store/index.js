@@ -31,8 +31,11 @@ export default createStore({
 			state.authId = response.headers["x-auth-user"];
 			state.authToken = response.headers["x-auth-token"];
 		},
-		updateState : ( state, key, value ) => {
-			state[ key ] = value;
+		updateState : ( state, payload ) => {
+			state[ payload.key ] = payload.value;
+		},
+		updateGlobal : ( state, payload ) => {
+			state.globals[ payload.key ] = payload.value;
 		}
 	},
 	actions: {

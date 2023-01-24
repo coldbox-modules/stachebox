@@ -16,6 +16,46 @@
 			<span class="mx-4">{{ $t( "Dashboard" ) }}</span>
 			</router-link>
 		</h2>
+
+		<template v-if="projects.length">
+			<details class="group" open>
+				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
+				rounded group-open:rounded-b-none group-open:z-[1] relative
+				">
+					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
+					<span class="flex-1"><fa-icon icon="cubes" class="mr-1" fixed-width/>{{ $t( "Projects" ) }}</span>
+					<div class="flex-2">
+						<div class="border-8 border-transparent border-l-gray-600 ml-2
+						group-open:rotate-90 transition-transform origin-left
+						"></div>
+					</div>
+					</h3>
+				</summary>
+				<div>
+					<router-link
+						v-for="( projects, index ) in project"
+						:key="index"
+						class="flex items-center duration-200 mt-2 py-1 px-8"
+						:class="[$route.name === 'ProjectSnapshot' && $route.params.id == project.id ? activeClass : inactiveClass]"
+						:to="`/project/${project.id}`"
+					>
+						<div
+							v-if="project.icon"
+							class="relative z-10 block h-8 w-8 rounded-full overflow-hidden shadow"
+						>
+							<img
+								class="h-full w-full object-cover"
+								:src="project.icon"
+								:alt="`Icon for ${project.name}`"
+							/>
+						</div>
+						<fa-icon v-else icon="cube" fixed-width/>
+						<span class="mx-4">{{ project.name }}</span>
+					</router-link>
+				</div>
+			</details>
+		</template>
+
 		<template v-if="orderedApplications">
 			<details class="group">
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
@@ -184,7 +224,8 @@ export default{
 			authToken : ( state ) => state.authToken,
 			aggregations : ( state ) => state.navAggregations,
 			beatsAggregations : ( state ) => state.navAggregations ? state.navAggregations.beatsAggregations : null,
-			baseHref : ( state ) => state.globals.stachebox.baseHref
+			baseHref : ( state ) => state.globals.stachebox.baseHref,
+			projects : ( state ) => state.globals.stachebox.projects
 		})
 	}
 }
