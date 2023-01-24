@@ -19,4 +19,7 @@ changelog-latest.md
 logs/**
 node_modules
 
-includes/**
+includes/css
+includes/images
+includes/js
+includes/*.json
