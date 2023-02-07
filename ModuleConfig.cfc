@@ -39,7 +39,7 @@ component {
 			// The index used to to manage user accounts ( if using the StacheBox users service for cbSecurity and cbAuth )
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
 			// A default index pattern for logstash logs ( e.g. application exceptions). May be overriden in the UI settings admin
-			"logIndexPattern" : "logstash-*",
+			"logIndexPattern" : "logs-coldbox-*",
 			// A default index pattern for filebeat logs ( e.g. server log files/entries ). May be overriden in the UI settings admin
 			"beatsIndexPattern" : "filebeat-*",
 			// An initial admin email address. When present, it will create the initial login.
