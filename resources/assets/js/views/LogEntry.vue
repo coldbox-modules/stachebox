@@ -1,7 +1,7 @@
 <template>
 	<div class="stachebox-log-entry">
-		<logger-entry v-if="logEntry && !Object.keys( logEntry ).indexOf( 'stacktrace' ) == -1" :entry="logEntry"></logger-entry>
-		<javascript-entry v-else-if="logEntry && logEntry.type && logEntry.type == 'javascript'" :entry="logEntry"></javascript-entry>
+		<logger-entry v-if="logEntry && logEntry.error && !Object.keys( logEntry.error ).indexOf( 'stack_trace' ) == -1" :entry="logEntry"></logger-entry>
+		<javascript-entry v-else-if="logEntry && logEntry.error && logEntry.error.type && logEntry.error.type == 'javascript'" :entry="logEntry"></javascript-entry>
 		<default-entry v-else-if="logEntry" :entry="logEntry"></default-entry>
 		<div v-else class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-300" icon="circle-notch" spin fixed-width />
