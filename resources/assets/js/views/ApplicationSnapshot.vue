@@ -16,7 +16,7 @@
 			<tab v-if="!chartsOnly" :name="$t( 'Recent Entries' )">
 				<entry-list
 					wrapper-class="mt-0"
-					:initialFilters='{ sortOrder : "timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
+					:initialFilters='{ sortOrder : "@timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
 					:displayApplication="false"
 					:loaderMessage="$t( 'Fetching recent log data for application', { application: application } )"
 					:emptyStateMessage="$t( 'No new log data for application: {application}', { application: application } )"

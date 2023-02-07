@@ -32,7 +32,7 @@ export default{
 			searchParams : {
 				environment : this.$route.params.environment,
 				application : this.$route.params.id,
-				sortOrder : "timestamp DESC",
+				sortOrder : "@timestamp DESC",
 				collapse : "stachebox.signature"
 			}
 		}
@@ -49,7 +49,7 @@ export default{
 					"on-search-filter-change",
 					{
 						application : this.$route.params.id,
-						sortOrder : "timestamp DESC",
+						sortOrder : "@timestamp DESC",
 						collapse : "stachebox.signature"
 					}
 				);

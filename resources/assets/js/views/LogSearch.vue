@@ -28,7 +28,7 @@ export default{
 		return {
 			searchResult : null,
 			searchParams : {
-				sortOrder : "timestamp DESC",
+				sortOrder : "@timestamp DESC",
 				collapse : "stachebox.signature",
 				maxrows : 10
 			},

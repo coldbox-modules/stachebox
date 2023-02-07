@@ -47,7 +47,7 @@
 					style="width: 150px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					{{entry.application || 'N/A'}}
+					{{entry.labels.application || 'N/A'}}
 				</td>
 
 				<td
@@ -62,7 +62,7 @@
 					style="width: 150px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					{{entry.type.toTitleCase()}}
+					{{entry.error.type.toTitleCase()}}
 				</td>
 				<td
 					v-if="displayOccurrences"
@@ -130,7 +130,7 @@ export default {
 	props : {
 		initialFilters : {
 			type : Object,
-			default : () => { return { sortOrder : "timestamp DESC", "stachebox.isSuppressed" : false } }
+			default : () => { return { sortOrder : "@timestamp DESC", "stachebox.isSuppressed" : false } }
 		},
 		truncate : {
 			type : Boolean,

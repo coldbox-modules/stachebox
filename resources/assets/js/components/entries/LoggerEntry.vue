@@ -43,37 +43,37 @@
 							<td class="w-2/3">{{ entry.log.file.path }}</td>
 						</tr>
 					</template>
-					<tr v-if="entry.application">
+					<tr v-if="entry.labels.application">
 						<th class="w-1/3 align-top">{{ $t( "Application ID" ) }}:</th>
-						<td class="w-2/3">{{ entry.application }}</td>
+						<td class="w-2/3">{{ entry.labels.application }}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Release Version" ) }}:</th>
-						<td class="w-2/3">{{ entry.release || 'N/A' }}</td>
+						<td class="w-2/3">{{ entry.package.version || 'N/A' }}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
-						<td class="w-2/3">{{entry.level || 'N/A'}} <span v-if="entry.severity">( Severity {{entry.severity}} )</span></td>
+						<td class="w-2/3">{{entry.log.level || 'N/A'}} <span v-if="entry.event.severity">( Severity {{entry.event.severity}} )</span></td>
 					</tr>
-					<tr v-if="entry.type">
+					<tr v-if="entry.error.type">
 						<th class="w-1/3 align-top">{{ $t( "Type" ) }}:</th>
-						<td class="w-2/3">{{entry.type}}</td>
+						<td class="w-2/3">{{entry.error.type}}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Occurred At" ) }}:</th>
 						<td class="w-2/3">{{ dayjs( entry[ '@timestamp' ] ).format('YYYY-MM-DD HH:mm:ss') }}</td>
 					</tr>
-					<tr v-if="entry.category">
+					<tr v-if="entry.log.category">
 						<th class="w-1/3 align-top">{{ $t( "Category" ) }}:</th>
-						<td class="w-2/3">{{ entry.category }}</td>
+						<td class="w-2/3">{{ entry.log.category }}</td>
 					</tr>
 					<tr v-if="entry.component">
 						<th class="w-1/3 align-top">{{ $t( "Component" ) }}:</th>
 						<td class="w-2/3">{{ entry.component }}</td>
 					</tr>
-					<tr v-if="entry.appendername">
+					<tr v-if="entry.log.logger">
 						<th class="w-1/3 align-top">{{ $t( "Appender" ) }}:</th>
-						<td class="w-2/3">{{ entry.appendername }}</td>
+						<td class="w-2/3">{{ entry.log.logger }}</td>
 					</tr>
 					<!-- if we have a verb key, it's an Apache/NGINX log format -->
 					<tr v-if="!entry.verb">
