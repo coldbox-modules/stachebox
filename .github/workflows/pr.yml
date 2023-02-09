@@ -4,75 +4,22 @@ on:
   pull_request:
     branches:
       - development
-      - master
       - main
 
 jobs:
   tests:
-    name: Tests
-    runs-on: ubuntu-20.04
-    env:
-      ELASTICSEARCH_PROTOCOL: http
-      ELASTICSEARCH_HOST: 127.0.0.1
-      ELASTICSEARCH_PORT: 9200
-      ELASTICSEARCH_VERSION: 8.5.3
-    strategy:
-      fail-fast: true
-      matrix:
-        cfengine: ["lucee@5", "adobe@2018", "adobe@2021" ]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    uses: ./.github/workflows/tests.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      S3SDK_AWS_BUCKET_NAME: ${{ secrets.S3SDK_AWS_BUCKET_NAME }}
 
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: ${{ matrix.javaVersion }}
-
-      - name: Setup CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
-
-      - name: Setup Elasticsearch
-        run: |
-          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' -e 'xpack.security.enabled=false' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
-
-      - name: Install Dependencies
-        run: |
-          box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
-          box run-script harness:install
-
-      - name: Start ${{ matrix.cfengine }} Server
-        run: |
-          cd ${GITHUB_WORKSPACE}/test-harness
-          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --debug
-          sleep 60
-          curl http://127.0.0.1:60299
-
-      - name: Run Web App Tests
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          mkdir -p ${GITHUB_WORKSPACE}/test-harness/tests/results/web
-          box package set testbox.runner="http://127.0.0.1:60299/tests/runner.cfm"
-          box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
-
-      - name: Publish Test Reports
-        uses: mikepenz/action-junit-report@v2
-        with:
-          report_paths: 'test-harness/tests/results/*.xml'
-          check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
-          summary: true
-
-      - name: Failure debugging
-        if: ${{ failure() }}
-        run: cd ${GITHUB_WORKSPACE}/test-harness && box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
-
+  # Format PR
   format:
     name: Format
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.2.0
 
       - uses: Ortus-Solutions/commandbox-action@v1.0.2
         with:
