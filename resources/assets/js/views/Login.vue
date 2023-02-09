@@ -70,7 +70,8 @@ export default {
 	},
 	computed : {
 		...mapState({
-			baseHref : ( state ) => state.globals.stachebox.baseHref
+			baseHref : ( state ) => state.globals.stachebox.baseHref,
+			loginReferer: ( state ) => state.loginReferer
 		})
 	},
 	methods:{
@@ -79,11 +80,19 @@ export default {
 			self.isProcessing = true;
 			this.$store.dispatch( "authenticate", { email: self.email, password: self.password } )
 				.then( ( response ) => {
-					self.$router.push( { name : "Dashboard" } );
+					let referer = { name : "Dashboard" };
+					if( self.loginReferer ){
+						referer = self.loginReferer.name ? { ...self.loginReferer } : self.loginReferer.fullPath;
+						self.$store.commit( "removeFromState", "loginReferer" );
+					}
+					self.$router.push( referer );
 				}  )
-				.catch( ( {response, request, message} ) => {
+				.catch( ( err ) => {
+					console.log( err );
 					self.errors.splice( 0, self.errors.length );
-					response.data.messages.forEach( message => self.errors.push( message ) );
+					if( err.response ){
+						err.response.data.messages.forEach( message => self.errors.push( message ) );
+					}
 				} )
 				.finally( () => self.isProcessing = false )
 

@@ -79,8 +79,9 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 			rc.field = "stachebox.signature";
 		}
 
+		// Update by query will not work on a data stream so we need to run it through the index
 		var searchBuilder = getInstance( "SearchBuilder@cbElasticsearch" )
-							.new( variables.moduleSettings.logIndexPattern )
+							.new( ".ds-" & variables.moduleSettings.logIndexPattern )
 							.filterTerm(
 								rc.field,
 								rc.id
@@ -116,7 +117,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 	// ( DELETE ) /api/v1/logs/:id
 	function delete( event, rc, prc ) secured="StacheboxAdministrator"{
 		var entry = getInstance( "SearchBuilder@cbElasticsearch" )
-							.new( variables.moduleSettings.logIndexPattern )
+							.new( ".ds-" & variables.moduleSettings.logIndexPattern )
 							.term( "_id", rc.id )
 							.setMaxRows( 1 )
 							.execute()
@@ -142,6 +143,19 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 				}
 			}
 		);
+		var nested = [ "error", "user" ];
+		nested.each( function( path ){
+			if( entry.keyExists( path ) ){
+				entry[ path ].keyArray().each(
+					function( key ){
+						if( !isNull( entry[ path ][ key ] ) && isSimpleValue( entry[ path ][ key ] ) && isJSON( entry[ path ][ key ] ) ){
+							entry[ path ][ key ] = deserializeJSON( entry[ path ][ key ] );
+						}
+					}
+				);
+			}
+		} );
+
 		if( !arguments.entry.keyExists( "@timestamp" ) && arguments.entry.keyExists( "timestamp" ) ){
 			arguments.entry[ "@timestamp" ] = arguments.entry.timestamp;
 		}

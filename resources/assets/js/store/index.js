@@ -34,6 +34,9 @@ export default createStore({
 		updateState : ( state, payload ) => {
 			state[ payload.key ] = payload.value;
 		},
+		removeFromState : ( state, key ) => {
+			delete state[ key ];
+		},
 		updateGlobal : ( state, payload ) => {
 			state.globals[ payload.key ] = payload.value;
 		}

@@ -9,7 +9,7 @@ component {
 		boolean includeAggregations = true
 	){
 		param searchCollection.index = moduleSettings.logIndexPattern;
-		param searchCollection.sortOrder = "timestamp DESC";
+		param searchCollection.sortOrder = "@timestamp DESC";
 		param searchCollection.maxRows = 25;
 		param searchCollection.startRow = 0;
 
@@ -115,7 +115,7 @@ component {
 	function applyCommonAggregations( required SearchBuilder builder, required struct searchCollection ){
 		var applicationAggs = {
 			"terms" : {
-				"field" : "application",
+				"field" : "labels.application",
 				"size" : 20000,
 				"order" : { "_key" : "asc" }
 			},
@@ -123,20 +123,20 @@ component {
 				"daily_occurrences": {
 					"date_histogram": {
 						"min_doc_count": 0,
-						"field": "timestamp",
+						"field": "@timestamp",
 						"fixed_interval": "1d"
 					}
 				},
 				"hourly_occurrences": {
 					"date_histogram": {
 						"min_doc_count": 0,
-						"field": "timestamp",
+						"field": "@timestamp",
 						"calendar_interval": "hour"
 					}
 				},
 				"releases" : {
 					"terms" : {
-						"field" : "release",
+						"field" : "package.version",
 						"size" : 500
 					}
 				},
@@ -148,7 +148,7 @@ component {
 				},
 				"levels" : {
 					"terms" : {
-						"field" : "level",
+						"field" : "log.level",
 						"size" : 500
 					}
 				}
@@ -158,7 +158,7 @@ component {
             {
 				"types" : {
 					"terms" : {
-                        "field" : "type",
+                        "field" : "error.type",
                         "size" : 20000,
                         "order" : { "_key" : "asc" }
 					}
@@ -166,7 +166,7 @@ component {
 				"applications" : applicationAggs,
 				"environments" : {
 					"terms" : {
-                        "field" : "environment",
+                        "field" : "labels.environment",
                         "size" : 20000,
                         "order" : { "_key" : "asc" }
 					},
@@ -200,7 +200,7 @@ component {
 						}
 					},
 					"last_occurrence_time": {
-						"max": {"field": "timestamp"}
+						"max": {"field": "@timestamp"}
 					},
 					"last_ocurrence": {
 						"top_hits": {
@@ -229,7 +229,7 @@ component {
 				applyDynamicSearchArgs( builder, searchCollection );
 			}
 
-			var termFilters = [  "type", "application", "release", "level", "category", "appendername", "event.name", "route", "routed_url", "layout", "module", "view", "environment", "stachebox.signature", "stachebox.isSuppressed" ];
+			var termFilters = [  "error.type", "labels.application", "package.version", "log.level", "error.level", "log.category", "log.logger", "event.name", "event.route", "event.url", "event.layout", "module", "view", "labels.environment", "stachebox.signature", "stachebox.isSuppressed" ];
 
 			termFilters.each( function( term ){
 				if( searchCollection.keyExists( term ) && len( searchCollection[ term ] ) ){
@@ -244,7 +244,7 @@ component {
 				searchCollection.maxDate = parseDateTime( searchCollection.maxDate );
 
 				builder.dateMatch(
-                    name = "timestamp",
+                    name = "@timestamp",
                     start = variables.timestampFormatter.format( searchCollection.minDate ),
                     end = variables.timestampFormatter.format( searchCollection.maxDate ),
                     boost = 20
@@ -253,7 +253,7 @@ component {
 			} else if( searchCollection.keyExists( "maxDate" ) && len( searchCollection.maxDate ) ){
 				searchCollection.maxDate = parseDateTime( searchCollection.maxDate );
 				builder.dateMatch(
-                    name = "timestamp",
+                    name = "@timestamp",
                     end = variables.timestampFormatter.format( searchCollection.maxDate ),
                     boost = 20
 				);
@@ -282,8 +282,8 @@ component {
 		// Note the `^` boosts the field by the following multiplier
 		var matchText = [
 			"message^20",
-			"stacktrace",
-			"frames"
+			"error.stack_trace",
+			"error.frames"
 		];
 
 		arguments.builder.multiMatch(

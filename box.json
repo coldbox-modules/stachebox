@@ -26,10 +26,9 @@
     "dependencies":{
         "mementifier":"^2",
         "cbsecurity":"^2",
-        "cbelasticsearch":"^2",
         "cbvalidation":"^2",
         "BCrypt":"^3",
-        "logstash":"^1",
+        "logstash":"be",
         "cbi18n":"^3.2.0+12",
         "cbmailservices":"^2.7.0-snapshot"
     },
@@ -44,7 +43,7 @@
         "format":"cfformat run models/,test-harness/tests/ --overwrite",
         "format:watch":"cfformat watch models/,test-harness/tests/",
         "format:check":"cfformat check models/,test-harness/tests/",
-        "harness:install":"install && cd test-harness && install"
+        "harness:install":"install --force && cd test-harness && install --force"
     },
     "installPaths":{
         "mementifier":"modules/mementifier/",

@@ -24,7 +24,7 @@
 					Showing
 					<span class="font-medium">{{ pagination.startRow || 1 }}</span>
 					to
-					<span class="font-medium">{{ pagination.startRow + pagination.maxRows - ( pagination.startRow ? 1 : 0 )}}</span>
+					<span class="font-medium">{{ pagination.total > pagination.maxRows ? pagination.startRow + pagination.maxRows - ( pagination.startRow ? 1 : 0 ) : pagination.total }}</span>
 					of
 					<span class="font-medium">{{ pagination.total }}</span>
 					results

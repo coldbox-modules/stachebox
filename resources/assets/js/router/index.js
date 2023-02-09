@@ -147,8 +147,10 @@ router.beforeEach((to, from, next) => {
 				);
 			} )
 			.catch(() => {
-				console.log( store );
 				if( store.state.globals.stachebox.internalSecurity ){
+					if( !to.name || to.name != "Landing" ){
+						store.commit( "updateState", { key : "loginReferer", value : to } );
+					}
 					next({ name: "Login" });
 				} else {
 					window.location.assign( store.state.globals.stachebox.loginURL )

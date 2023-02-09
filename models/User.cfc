@@ -13,6 +13,7 @@ component
     property name="title" type="string" default="";
     property name="isActive" type="boolean" default="true";
     property name="isAdministrator" type="boolean" default="false";
+	property name="allowLogin" type="boolean" default="true";
 	property name="avatar" type="string" default="";
 
 	// memento default excluded properties
@@ -179,38 +180,73 @@ component
         return this;
     }
 
-    /**
-     * cbguard function to determine whether the current user (instance of this class)
-     * has the required permission - e.g. `secured="Administrator"`
-     */
-    public boolean function hasPermission( required string permission ){
-        return getIsAdministrator();
+   /**
+	* Determine whether a user has
+	*
+	* @permission any either a single permission or an array or list of any permissions to match
+	*/
+    public boolean function hasPermission( required any permission ){
+		if( isSimpleValue( arguments.permission ) ){
+			arguments.permission = listToArray( arguments.permission );
+		}
+        return getIsAdministrator()
+					? true
+					: getPermissions()
+						.reduce( function( boolean result, assigned ){
+							if( !result ){
+								result = permission.containsNoCase( assigned );
+							}
+							return result;
+						}, false );
     }
 
     /**
-     * cbguard function to determine whether the current user is in the given role.
-     * If this user is an admin, just return true to all role queries.
-     * If not, return false to all.
-     * Yes, it's crude and rudimentary. Yes, it works.
-     */
+	 * Determines whether a user is in a role
+	 *
+	 * @role string
+	 */
     public boolean function isInRole( required string role ){
-        return getIsAdministrator();
+        return getIsAdministrator()
+				? true
+				: !! getRoles().findNoCase( ( assigned ) => assigned.name == role );
     }
 
-    /**
-     * Grab an array of roles for the user.
-     * Currently, we only have one role ("StacheboxAdministrator").
-     * This is purposely different than the "Administrator" role
-     * to avoid conflicting with the internal instance "Administrator" role name.
-     */
+	public array function getPermissions(){
+		return getRoles().reduce(
+			function( acc, role ){
+				acc.append( role.permissions, true );
+				return acc;
+			},
+			[]
+		);
+	}
+
+
+	/**
+	 * Returns the roles assigned to the current user
+	 */
     public array function getRoles(){
         var roles = [
 			{
-				"name" : "StacheboxUser"
+				"name" : "Reporter",
+				"permissions" : [ "StacheboxReporter" ]
 			}
 		];
+		if( getAllowLogin() ){
+			roles.append(
+				{
+					"name" : "User",
+					"permissions" : [ "StacheboxUser" ]
+				}
+			);
+		}
         if ( getIsAdministrator() ){
-            ArrayAppend( roles, { "name": "StacheboxAdministrator" });
+			roles.append(
+				{
+					"name": "Administrator",
+					"permissions" : [ "StacheboxAdministrator" ]
+				}
+			);
         }
         return roles;
     }
@@ -241,7 +277,7 @@ component
      * This function returns an array of all the scopes that should be attached to the JWT token that will be used for authorization.
      */
     array function getJwtScopes(){
-		return getRoles().map( function( item ){ return item.name; } );
+		return getPermissions();
 	}
 
     private function newDocument() provider="Document@cbelasticsearch"{}
