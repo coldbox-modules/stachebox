@@ -62,7 +62,7 @@
 					style="width: 150px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					{{entry.error.type.toTitleCase()}}
+					{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}
 				</td>
 				<td
 					v-if="displayOccurrences"

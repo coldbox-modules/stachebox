@@ -4,15 +4,15 @@ component{
 	property name="wirebox" inject="wirebox";
 	property name="moduleService" inject="coldbox:ModuleService";
 	property name="settingServce" inject="SettingService@stachebox";
+	property name="userService" inject="UserService@stachebox";
 
 	function postModuleLoad( event, interceptData ){
 		if( interceptData.moduleName == "stachebox" ){
 			ensureSettingsIndex()
 				.applyCustomSettings()
 				.ensureUserIndex()
-				.ensureDefaultAdminUser();
-
-			ensureStacheboxMappings();
+				.ensureDefaultAdminUser()
+				.ensureTokenReporter();
 		}
 	}
 
@@ -65,12 +65,32 @@ component{
 
 	}
 
+	function ensureTokenReporter(){
+		var reporterUsername = moduleSettings.tokenReporter;
+		if( isNull( userService.retrieveUserByUsername( reporterUsername ) ) ){
+			var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
+			var adminUser = getInstance( "User@stachebox" )
+										.new(
+											{
+												"firstName" : "Token",
+												"lastName"  : "Reporter",
+												"email"     : reporterUsername,
+												"password"  : createUUID(),
+												"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#",
+												"isAdministrator" : false,
+												"allowLogin" : false
+											}
+										).encryptPassword().save();
+		}
+		return this;
+	}
+
 	function ensureDefaultAdminUser(){
 		if(
 			findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
 			&&
 			len( variables.moduleSettings.adminEmail )
-			&& isNull( getInstance( "User@stachebox" ).findByEmail( variables.moduleSettings.adminEmail ) )
+			&& isNull( getInstance( "UserService@stachebox" ).findByEmail( variables.moduleSettings.adminEmail ) )
 		){
 			var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
 			var adminUser = getInstance( "User@stachebox" )
@@ -81,7 +101,8 @@ component{
 												"email"     : variables.moduleSettings.adminEmail,
 												"password"  : variables.moduleSettings.adminPassword,
 												"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#",
-												"isAdministrator" : true
+												"isAdministrator" : true,
+												"allowLogin" : true
 											}
 										).encryptPassword().save();
 		}
@@ -138,40 +159,6 @@ component{
 				)
 			}
 		};
-	}
-
-	function ensureStacheboxMappings(){
-		var mapping = new cbelasticsearch.models.logging.LogstashAppender( name="sample" ).getIndexConfig();
-		structDelete( mapping, "settings" );
-
-		try{
-			getInstance( "IndexBuilder@cbelasticsearch" ).new(
-				name=variables.moduleSettings.logIndexPattern,
-				properties=mapping
-			).save();
-		} catch( cbElasticsearch.native.index_not_found_exception e ){
-			log.warn( "No indices exist with the logstash index pattern of `#variables.moduleSettings.logIndexPattern#`. Mapping updates could not proceed" );
-		} catch( any e ){
-			log.error( "An error ocurred when attempting to apply the customized Stachebox mappings to the existing logstash indices", { "exeception" : e } );
-		}
-
-		try{
-			getInstance( "IndexBuilder@cbelasticsearch" ).new(
-				name=variables.moduleSettings.beatsIndexPattern,
-				properties = {
-					"mappings" : {
-						"properties" :{
-							"stachebox" : mapping.mappings.properties.stachebox
-						}
-					}
-				}
-			).save();
-		} catch( cbElasticsearch.native.index_not_found_exception e ){
-			log.warn( "No indices exist with the filebeat index pattern of `#variables.moduleSettings.beatsIndexPattern#`. Mapping updates could not proceed" );
-		} catch( any e ){
-			log.error( "An error ocurred when attempting to apply the customized Stachebox mappings to the existing filebeat indices", { "exeception" : e } );
-		}
-
 	}
 
 	function onStacheboxSettingUpdate( event, interceptData ){

@@ -18,6 +18,6 @@
     },
     "openBrowser":"false",
 	"scripts" : {
-		"onServerInstall" : "cfpm install zip,mysql,document,feed"
+		"onServerInstall" : "cfpm install zip,document,feed"
 	}
 }

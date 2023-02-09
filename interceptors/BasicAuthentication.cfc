@@ -24,4 +24,10 @@ component{
             return;
         }
     }
+
+	void function postProcess( event, rc, prc ){
+		if( prc.keyExists( "authenticationMethod" ) && prc.authenticationMethod == "basic" ){
+			auth().logout()
+		}
+	}
 }

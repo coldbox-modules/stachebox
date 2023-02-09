@@ -1,5 +1,19 @@
 {
     "name":"stachebox-lucee@5",
+    "runwar":{
+        "args":[
+            "--log-pattern",
+            "[%d] %-5p %m{separator(|)}%n{separator(|)} %throwable{separator(|)}"
+        ]
+    },
+    "jvm":{
+        "args":[
+            "-XX:+UseG1GC",
+            "-javaagent:/Users/jonclausen/Sites/ortus/coldbox-modules/stachebox/test-harness/lib/elastic-apm-agent/elastic-apm-agent-1.35.0.jar",
+            "-Delastic.apm.service_name=stachebox-dev",
+            "-Delastic.apm.server_url=http://127.0.0.1:8200"
+        ]
+    },
     "app":{
         "serverHomeDirectory":".engine/lucee5",
         "cfengine":"lucee@5"

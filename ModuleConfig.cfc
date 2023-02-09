@@ -46,6 +46,8 @@ component {
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			// An initial admin password to login
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
+			// A username/email to use for the default token reporter ( no login privileges )
+			"tokenReporter" : getSystemSetting( "STACHEBOX_TOKEN_REPORTER", "nologin@stachebox.io" ),
 			// Whether to promote the module UI to the root URLS of the application
 			"isStandalone" : getSystemSetting( "STACHEBOX_STANDALONE", false ),
 			// The cbSecurity configuration overrides for this module

@@ -30,8 +30,8 @@ export default{
 		return {
 			searchResult : null,
 			searchParams : {
-				environment : this.$route.params.environment,
-				application : this.$route.params.id,
+				"labels.environment" : this.$route.params.environment,
+				"labels.application" : this.$route.params.id,
 				sortOrder : "@timestamp DESC",
 				collapse : "stachebox.signature"
 			}
@@ -48,7 +48,7 @@ export default{
 				window.Event.$emit(
 					"on-search-filter-change",
 					{
-						application : this.$route.params.id,
+						"labels.application" : this.$route.params.id,
 						sortOrder : "@timestamp DESC",
 						collapse : "stachebox.signature"
 					}

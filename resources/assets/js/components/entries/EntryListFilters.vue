@@ -31,7 +31,7 @@
 					<option v-for="application in applications" :key="application" :value="application">{{application.toTitleCase()}}</option>
 				</select>
 			</div>
-			<div v-else class="px-3 py-2 mt-2">
+			<div v-else-if="availableEnvironments" class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Environment" ) }}:</label>
 				<select
 					id="environment"
@@ -92,7 +92,7 @@ export default {
 	computed : {
 		...mapState({
 			applications : ( state ) => state.navAggregations ? Object.keys( state.navAggregations.applications ) : [],
-			availableEnvironments : state => Object.keys( state.navAggregations.environments )
+			availableEnvironments : state => state.navAggregations ? Object.keys( state.navAggregations.environments ) : null
 		})
 	},
 	methods: {
