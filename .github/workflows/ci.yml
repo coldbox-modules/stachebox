@@ -1,134 +1,74 @@
-name: Stachebox
+name: stachebox CI
 
 # Only on Development we build snapshots
 on:
   push:
     branches:
       - development
-      - master
       - main
 
 env:
   MODULE_ID: stachebox
 
 jobs:
-  tests:
-    name: Tests
-    runs-on: ubuntu-20.04
-    env:
-      ELASTICSEARCH_PROTOCOL: http
-      ELASTICSEARCH_HOST: 127.0.0.1
-      ELASTICSEARCH_PORT: 9200
-      ELASTICSEARCH_VERSION: 8.5.3
-    strategy:
-      fail-fast: true
-      matrix:
-        cfengine: ["lucee@5", "adobe@2018", "adobe@2021" ]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: "11"
-
-      - name: Setup CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
-
-      - name: Setup Elasticsearch
-        run: |
-          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' -e 'xpack.security.enabled=false' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
-
-      - name: Install Dependencies
-        run: |
-          box install commandbox-cfconfig,commandbox-dotenv,commandbox-docbox
-          box run-script harness:install
-
-      - name: Start ${{ matrix.cfengine }} Server
-        run: |
-          cd ${GITHUB_WORKSPACE}/test-harness
-          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --debug
-          sleep 60
-          curl http://127.0.0.1:60299
-
-      - name: Run Web App Tests
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          mkdir -p ${GITHUB_WORKSPACE}/test-harness/tests/results/web
-          box package set testbox.runner="http://127.0.0.1:60299/tests/runner.cfm"
-          box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
-
-      - name: Publish Test Reports
-        uses: mikepenz/action-junit-report@v2
-        with:
-          report_paths: 'test-harness/tests/results/*.xml'
-          check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
-          summary: true
-
-      - name: Failure debugging
-        if: ${{ failure() }}
-        run: cd ${GITHUB_WORKSPACE}/test-harness && box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
   #############################################
-  # Build Stachebox
+  # Tests First baby! We fail, no build :(
+  #############################################
+  tests:
+    uses: ./.github/workflows/tests.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  #############################################
+  # Build Module
   #############################################
   build:
     name: Build & Publish
-    runs-on: ubuntu-20.04
     needs: tests
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
 
       - name: Setup Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3.9.0
         with:
-          distribution: "adopt"
+          distribution: "temurin"
           java-version: "11"
 
       - name: Setup CommandBox
-        uses: Ortus-Solutions/setup-commandbox@main
+        uses: Ortus-Solutions/setup-commandbox@v2.0.1
         with:
           forgeboxAPIKey: ${{ secrets.FORGEBOX_TOKEN }}
-       # Focal ships with node 16.x so we need to update to 18
-      - name:  Install Node 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Compile Release Assets
-        run: |
-          node -v
-          npm -v
-          npm install && npm run prod
-          rm -rf node_modules
 
       - name: Setup Environment Variables For Build Process
         id: current_version
         run: |
           echo "VERSION=`cat box.json | jq '.version' -r`" >> $GITHUB_ENV
           box package set version=@build.version@+@build.number@
-          # master or snapshot
+          # main or snapshot
           echo "Github Ref is $GITHUB_REF"
-          echo "BRANCH=master" >> $GITHUB_ENV
+          echo "BRANCH=main" >> $GITHUB_ENV
           if [ $GITHUB_REF == 'refs/heads/development' ]
           then
             echo "BRANCH=development" >> $GITHUB_ENV
           fi
+
       - name: Build ${{ env.MODULE_ID }}
         run: |
           box install commandbox-docbox
           box task run taskfile=build/Build target=run :version=${{ env.VERSION }} :projectName=${{ env.MODULE_ID }} :buildID=${{ github.run_number }} :branch=${{ env.BRANCH }}
+
       - name: Upload Build Artifacts
         if: success()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ env.MODULE_ID }}
           path: |
             .artifacts/**/*
+
       - name: Upload Binaries to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -140,11 +80,23 @@ jobs:
           SOURCE_DIR: ".artifacts/${{ env.MODULE_ID }}"
           DEST_DIR: "ortussolutions/coldbox-modules/${{ env.MODULE_ID }}"
 
+      - name: Upload API Docs to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read
+        env:
+          AWS_S3_BUCKET: "apidocs.ortussolutions.com"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
+          SOURCE_DIR: ".tmp/apidocs"
+          DEST_DIR: "coldbox-modules/${{ env.MODULE_ID }}/${{ env.VERSION }}"
+
       - name: Publish To ForgeBox
         run: |
-          cd ${GITHUB_WORKSPACE}/.tmp/${{ env.MODULE_ID }}
+          cd .tmp/${{ env.MODULE_ID }}
           cat box.json
           box forgebox publish
+
       - name: Inform Slack
         if: ${{ always() }}
         uses: rtCamp/action-slack-notify@v2
