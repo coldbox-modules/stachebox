@@ -21,7 +21,7 @@
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
-						<td class="w-2/3">{{entry.log.level || 'N/A'}} <span v-if="entry.event.severity">( Severity {{entry.event.severity}} )</span></td>
+						<td class="w-2/3">{{entry.log.level || 'N/A'}} <span v-if="entry.event.severity">( {{ $t( "Severity" ) }} {{entry.event.severity}} )</span></td>
 					</tr>
 					<tr v-if="entry.error.type">
 						<th class="w-1/3 align-top">{{ $t( "Type" ) }}:</th>
@@ -146,25 +146,25 @@
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.error.extrainfo.database.nativeErrorCode" class="border-b">
-								<th class="w-1/3 align-top">Native Error Code:</th>
+								<th class="w-1/3 align-top">{{ $t( "Native Error Code" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.database.nativeErrorCode}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.database.SQLState" class="border-b">
-								<th class="w-1/3 align-top">SQL State:</th>
+								<th class="w-1/3 align-top">{{ $t( "SQL State" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.database.SQLState}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.database.queryError" class="border-b">
-								<th class="w-1/3 align-top">Query Error:</th>
+								<th class="w-1/3 align-top">{{ $t( "Query Error" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.database.queryError}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.database.SQL" class="border-b">
-								<th class="w-1/3 align-top">SQL:</th>
+								<th class="w-1/3 align-top">{{ $t( "SQL" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-sql">{{entry.error.extrainfo.database.SQL}}</code></pre>
 								</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.database.where" class="border-b">
-								<th class="w-1/3 align-top">Where Clause(s):</th>
+								<th class="w-1/3 align-top">{{ $t( "Where Clauses" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-sql">{{entry.error.extrainfo.database.where}}</code></pre>
 								</td>
@@ -177,11 +177,11 @@
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.error.extrainfo.lock.name" class="border-b">
-								<th class="w-1/3 align-top">Lock Name:</th>
+								<th class="w-1/3 align-top">{{ $t( "Lock Name" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.lock.name}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.lock.operation" class="border-b">
-								<th class="w-1/3 align-top">Lock Operation:</th>
+								<th class="w-1/3 align-top">{{ $t( "Lock Operation" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.lock.operation}}</td>
 							</tr>
 						</tbody>
@@ -192,21 +192,21 @@
 					<table class="text-left table-fixed border-collapse">
 						<tbody>
 							<tr v-if="entry.error.extrainfo.httpData.protocol" class="border-b">
-								<th class="w-1/3 align-top">Protocol:</th>
+								<th class="w-1/3 align-top">{{ $t( "Protocol" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.httpData.protocol}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.httpData.method" class="border-b">
-								<th class="w-1/3 align-top">Protocol:</th>
+								<th class="w-1/3 align-top">{{ $t( "HTTP Method" ) }}:</th>
 								<td class="w-2/3">{{entry.error.extrainfo.httpData.method}}</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.httpData.content" class="border-b">
-								<th class="w-1/3 align-top">Content Body:</th>
+								<th class="w-1/3 align-top">{{ $t( "Content Body" ) }}:</th>
 								<td class="w-2/3">
 									<pre><code class="language-json">{{formatJSON( entry.error.extrainfo.httpData.content )}}</code></pre>
 								</td>
 							</tr>
 							<tr v-if="entry.error.extrainfo.httpData.headers && Object.keys( entry.error.extrainfo.httpData.headers ).length" class="border-b">
-								<th class="w-1/3 align-top">Headers:</th>
+								<th class="w-1/3 align-top">{{ $t( "Headers" ) }}:</th>
 								<td class="w-2/3">
 									<table class="text-left table-fixed border-collapse">
 										<tbody>
@@ -250,7 +250,6 @@
 	</div>
 </template>
 <script>
-import dayjs from "dayjs";
 import Prism from "prismjs";
 import { formatJSONRaw } from "@/util/udf";
 import 'prismjs/components/prism-javascript';
@@ -292,7 +291,6 @@ export default {
 	},
 	data(){
 		return {
-			dayjs : dayjs,
 			activeTab : 0,
 			occurrences : null
 		}

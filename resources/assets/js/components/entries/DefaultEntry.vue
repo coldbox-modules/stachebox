@@ -260,7 +260,6 @@
 	</div>
 </template>
 <script>
-import dayjs from "dayjs";
 import Prism from "prismjs";
 import { formatJSONRaw } from "@/util/udf";
 import 'prismjs/components/prism-javascript';
@@ -287,7 +286,6 @@ export default {
 	},
 	data(){
 		return {
-			dayjs : dayjs,
 			activeTab : 0,
 		}
 	},

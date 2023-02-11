@@ -18,7 +18,7 @@
 		</h2>
 
 		<template v-if="projects.length">
-			<details class="group" open>
+			<details class="group">
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">

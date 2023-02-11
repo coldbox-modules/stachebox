@@ -24,3 +24,4 @@ includes/css
 includes/images
 includes/js
 includes/*.json
+schema-example.json

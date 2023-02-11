@@ -111,7 +111,6 @@ export default {
 	},
 	computed : {
 		activeProjects(){
-			console.log( this.projects );
 			return this.projects.filter( item => !! item.name ).sort( (a,b) => a.name.localeCompare( b.name ) );
 		},
 		...mapGetters({
@@ -137,12 +136,12 @@ export default {
 			this.$nextTick( () => this.showForm = true );
 		},
 		editProject( index ){
-			this.editIndex = this.projects[ this.projects.length - 1  ];
+			this.editIndex = index;
 			this.showForm = true;
 		},
 		updateProject( payload ){
-			if( !payload.id ){
-				payload.id = payload.name.slugify();
+			if( !payload.data.id ){
+				payload.data.id = payload.data.name.slugify();
 			}
 			this.projects.splice( payload.index, 1, payload.data );
 			this.saveProjects();

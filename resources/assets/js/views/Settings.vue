@@ -5,13 +5,10 @@
 				<logs :settings="settings" @update-settings="applySettings"></logs>
 			</Tab>
 			<Tab name="API Tokens">
-				<tokens :settings="settings" @update-settings="applySettings"></tokens>
+				<tokens :settings="settings" @update-tokens="updateTokens"></tokens>
 			</Tab>
 			<Tab name="Projects">
 				<projects :settings="settings" @update-projects="updateProjects"></projects>
-			</Tab>
-			<Tab name="Indexes">
-				<!-- <indexes></indexes> -->
 			</Tab>
 		</Tabs>
 
@@ -28,7 +25,6 @@ import Tabs from "@/components/Tabs";
 import Tab from "@/components/Tab";
 import Logs from "@/components/settings/Logs";
 import Tokens from "@/components/settings/Tokens";
-import Indexes from "@/components/settings/Indexes";
 import Projects from "@/components/settings/Projects";
 export default {
 	components: {
@@ -36,7 +32,6 @@ export default {
 		Tab,
 		Logs,
 		Tokens,
-		Indexes,
 		Projects
 	},
 	data(){
@@ -66,6 +61,10 @@ export default {
 		updateProjects( projects ){
 			this.settings.projects.value = projects;
 			this.updateSetting( "projects" );
+		},
+		updateTokens( tokens ){
+			this.settings.apiTokens.value = tokens;
+			this.updateSetting( "apiTokens" );
 		}
 	},
 	beforeMount(){ this.fetchSettings() }

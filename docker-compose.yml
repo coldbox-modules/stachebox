@@ -12,27 +12,38 @@ services:
       - http.max_content_length=1024mb
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=5t4ch380x!
-      - KIBANA_SYSTEM_PASSWORD=5t4ch380x!
-      - APM_SYSTEM_PASSWORD=5t4ch380x!
-      - REMOTE_MONITORING_USER_PASSWORD=5t4ch380x!
-      - LOGSTASH_SYSTEM_PASSWORD=L0g5t4ch3!
-      - BEATS_SYSTEM_PASSWORD=L0g5t4ch3!
+      - bootstrap.password=5t4ch380x!
     ports:
       - "9200:9200"
       - "9300:9300"
 
+  elastic-apm:
+    image: elastic/apm-server:8.6.1
+    user: apm-server
+    volumes:
+      - ./build/docker/elastic-apm/apm-server.config.yml:/usr/share/apm-server/apm-server.yml:ro
+    ports:
+      - "8200:8200"
+
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.5.3
+    image: kibana:8.6.0
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: "5t4ch380x!"
+      XPACK_MONITORING_ENABLED: "true"
+      XPACK_MONITORING_COLLECTION_ENABLED: "true"
+      XPACK_SECURITY_ENABLED: "true"
     ports:
       - "5601:5601"
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:8.5.3
+    image: logstash:8.6.0
     ports:
       - "5044:5044"
     environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      xpack.monitoring.elasticsearch.username: 'http://elasticsearch:9200'
+      xpack.monitoring.elasticsearch.username: elastic
+      xpack.monitoring.elasticsearch.password: "5t4ch380x!"

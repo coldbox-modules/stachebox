@@ -103,7 +103,6 @@
 <script>
 import DateTimePicker from 'vue-ctk-date-time-picker';
 import { mapState } from "vuex";
-import dayjs from "dayjs";
 export default {
 	components : {
 		DateTimePicker

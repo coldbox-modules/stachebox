@@ -98,6 +98,11 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 		prc.response.setStatusCode( STATUS.NO_CONTENT );
 	}
 
+	// ( POST ) /api/v1/settings/token
+	function generateToken( event, rc, prc ) secured="StacheboxAdministrator"{
+		prc.response.setData( { "token" : settingService.generateAPIToken() } ).setStatusCode( STATUS.CREATED )
+	}
+
 	function expandDoc( required Document doc ){
 		return settingService.expandDoc( arguments.doc );
 	}

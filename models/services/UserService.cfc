@@ -80,6 +80,10 @@ component accessors="true" {
 			searchBuilder.sort( sort );
 		} );
 
+		if( arguments.searchCollection.keyExists( "allowLogin" ) ){
+			searchBuilder.term( "allowLogin", javacast( "boolean", arguments.searchCollection.allowLogin ) );
+		}
+
 		var result = searchBuilder.execute();
 
 		return {

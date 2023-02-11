@@ -2,6 +2,7 @@ component singleton {
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 	property name="searchClient" inject="Client@cbelasticsearch";
+	property name="jwtService" inject="JWTService@cbsecurity"
 
 	function newSearchBuilder() provider="SearchBuilder@cbelasticsearch"{}
 
@@ -56,6 +57,32 @@ component singleton {
 			entryMemento.value = deserializeJSON( entryMemento.value )
 		}
 		return arguments.doc;
+	}
+
+	/**
+	 * Generates a new API token
+	 */
+	string function generateAPIToken( user, array permissions = [ "StacheboxReporter" ], expiration ){
+		var timestamp = now();
+		var sub = !isNull( arguments.user ) ? arguments.user.getId() : createUUID();
+		if( !isNull( arguments.user ) ){
+			arguments.permissions = arguments.user.getPermissions();
+		}
+		var params = {
+			// Issuing authority
+			"iss" : jwtService.getSettings().jwt.issuer,
+			"iat" : dateDiff( 's', dateConvert( "utc2Local", "January 1 1970 00:00" ), now() ),
+			"jti"   : hash( timestamp & sub & getTickCount() & rand( "SHA1PRNG" ) ),
+			"sub" : sub,
+			"scope" : permissions.toList( " " ),
+			"exp" : arguments.expiration ?: javacast( "null", 0 )
+		};
+
+		if( !isNull( arguments.user ) ){
+			structAppend( params, arguments.user.getJwtCustomClaims() );
+		}
+
+		return jwtService.encode( params );
 	}
 
 }

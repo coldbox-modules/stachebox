@@ -90,7 +90,7 @@ component{
 			findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
 			&&
 			len( variables.moduleSettings.adminEmail )
-			&& isNull( getInstance( "UserService@stachebox" ).findByEmail( variables.moduleSettings.adminEmail ) )
+			&& isNull( userService.retrieveUserByUsername( variables.moduleSettings.adminEmail ) )
 		){
 			var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
 			var adminUser = getInstance( "User@stachebox" )

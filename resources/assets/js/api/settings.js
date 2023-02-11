@@ -16,7 +16,7 @@ export const finalAPI = {
 	list :( params, token ) => defaultAPI.get( '', { params : params, headers : { 'Authorization' : 'Bearer ' + token } } ),
 	update : ( params, token ) => defaultAPI.put( '/' + params.id,  JSON.stringify( params ) , { headers : { 'Authorization' : 'Bearer ' + token } }  ),
 	patch : ( params, token ) => defaultAPI.patch( '/' + params.id, JSON.stringify( params ),  { headers : { 'Authorization' : 'Bearer ' + token } }  ),
-	delete : ( params, token ) => defaultAPI.put( '/' + id  ),
+	delete : ( params, token ) => defaultAPI.put( '/' + id  )
 };
 
 export default finalAPI;
