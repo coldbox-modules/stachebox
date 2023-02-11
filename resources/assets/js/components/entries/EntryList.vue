@@ -112,12 +112,6 @@
 
 </template>
 <script>
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-dayjs.extend( utc );
-dayjs.extend( timezone );
-dayjs.tz.setDefault( dayjs.tz.guess() );
 import Pagination from "@/components/Pagination";
 import EntryListFilters from "@/components/entries/EntryListFilters";
 import ConfirmationButton from "@/components/ConfirmationButton";
@@ -159,7 +153,6 @@ export default {
 	},
 	data(){
 		return {
-		  dayjs : dayjs,
 		  logs : null,
 		  pagination : null,
 		  searchFilters : Object.assign( {}, this.initialFilters ),

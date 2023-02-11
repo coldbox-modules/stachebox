@@ -330,13 +330,11 @@ export default {
 			return this.isPasswordVerified
 		},
 		adminButtonClass(){
-			console.log( this.user.isAdministrator );
 			let btnClass = 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ';
 			btnClass += this.user.isAdministrator ? 'bg-cyan-600' : 'bg-gray-300';
 			return btnClass;
 		},
 		adminToggleClass(){
-			console.log( this.user.isAdministrator );
 			let toggleClass = "inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 "
 			toggleClass += this.user.isAdministrator ? 'translate-x-5' : 'translate-x-0';
 			return toggleClass

@@ -46,7 +46,8 @@
             class="py-2 px-4 text-center bg-theme w-full text-white text-sm"
 			tabindex="3"
           >
-            {{ $t("Sign in") }}
+			<span v-if="!isProcessing">{{ $t("Sign in") }}</span>
+			<span v-else>{{ $t("Authenticating") }}... <fa-icon icon="spinner" spin></fa-icon></span>
           </button>
         </div>
       </form>

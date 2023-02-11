@@ -167,8 +167,80 @@
 										v-model="project.beats"
 										:options="beatsApplications"
 										:multiple="true"
-										placeholder="Choose Filebeat Apps to Associate to your project"
+										:placeholder="$t( 'Choose Filebeat Apps to Associate to your project' )"
 										:custom-label="(val) => val.toTitleCase()"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="mt-5">
+						<h3
+							class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
+						>
+							{{ $t( "Notification Settings" ) }}
+						</h3>
+						<div
+							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
+						>
+							<div class="sm:col-span-12">
+								<label
+									for="applications"
+									class="block text-sm font-medium text-gray-700"
+								>
+									{{ $t( "Enable Notifications" ) }}
+								</label>
+								<div class="mt-1">
+									<!-- Enabled: "bg-indigo-600", Not Enabled: "bg-gray-200" -->
+									<button type="button" @click="toggleNotifications" class="bg-gray-200 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" role="switch" :aria-checked="project.summaryEmails">
+										<span class="sr-only">Enable notifications</span>
+										<!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
+										<span aria-hidden="true" class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div
+							v-if="project.summaryEmails"
+							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
+						>
+							<div class="sm:col-span-12">
+								<label
+									for="applications"
+									class="block text-sm font-medium text-gray-700"
+								>
+									{{ $t( "Notification Frequency" ) }}
+								</label>
+								<div class="mt-1">
+									<VueMultiselect
+										v-model="project.frequency"
+										:options="frequencies"
+										:placeholder="$t( 'Choose a frequency at which notifications will occur' )"
+									/>
+								</div>
+							</div>
+						</div>
+						<div
+							v-if="project.summaryEmails"
+							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
+						>
+							<div class="sm:col-span-12">
+								<label
+									for="applications"
+									class="block text-sm font-medium text-gray-700"
+								>
+									{{ $t( "Notification Recipients" ) }}
+								</label>
+								<div class="mt-1">
+									<VueMultiselect
+										:loading="!users"
+										v-model="project.recipients"
+										:options="users"
+										track-by="id"
+										:multiple="true"
+										:custom-label="(val) => val.firstName + ' ' + val.lastName"
+										:placeholder="$t( 'Choose users to receive notification emails' )"
 									/>
 								</div>
 							</div>
@@ -238,8 +310,9 @@ import VueMultiselect from 'vue-multiselect';
 import useVuelidate from "@vuelidate/core";
 import FormErrors from "@/components/util/FormErrors";
 import { required, url } from "@vuelidate/validators";
-const canvasProcessor = require( "canvas_image_processing" );
+import usersAPI from "@/api/users";
 import { mapState } from "vuex";
+const canvasProcessor = require( "canvas_image_processing" );
 export default {
 	components: {
 		FormErrors,
@@ -273,21 +346,37 @@ export default {
 			project : null,
 			dropdownOpen : false,
 			isSaving : false,
-			saveSuccess : false
+			saveSuccess : false,
+			frequencies : [
+				"hourly",
+				"daily",
+				"weekly",
+				"monthly"
+			]
 		}
 	},
 	computed : {
 		isValid(){ return !this.v$.$invalid },
 		...mapState({
+			authUser : ( state ) => state.authUser,
+			authToken : ( state ) => state.authToken,
 			applications : ( state ) => Object.keys( state.navAggregations.applications ),
-			beatsApplications : ( state ) => Object.keys( state.navAggregations.beatsAggregations.applications )
+			beatsApplications : ( state ) => state.navAggregations.beatsAggregations.applications ? Object.keys( state.navAggregations.beatsAggregations.applications ) : [],
+			users : ( state ) => state.stacheboxUsers
 		})
 	},
-	mounted(){
+	beforeMount(){
 		this.project = this.data;
+		if( !this.project.owner ){
+			this.project.owner = { ...this.authUser };
+		}
+		this.fetchUsers();
+	},
+	beforeUnmount() {
+		this.project = null;
 	},
 	methods : {
-		reslugify( e ){
+		reSlugify( e ){
 			this.project.id = this.project.name.slugify();
 		},
 		saveProject(){
@@ -308,7 +397,6 @@ export default {
 					}
 				).then( response => console.log( response ) )
 				.then( blob => {
-					console.log( blob );
 					var reader = new FileReader() ;
 					reader.onload = function(){ console.log( this.result ) }; // <--- `this.result` contains a base64 data URI
 					reader.readAsDataurl( blob );
@@ -323,6 +411,15 @@ export default {
 			if (event.target.files.length ) {
 				createBase64ImageFromFile( event.target.files[0] ).then( base64 => this.project.icon = base64 );
 			}
+		},
+		fetchUsers(){
+			if( !this.users ){
+				usersAPI.list( { "sortOrder" : "lastName DESC, firstName DESC", "allowLogin" : true }, this.authToken )
+						.then( result => this.$store.commit( "updateState", { key : "stacheboxUsers", value : result.data.results } ) )
+			}
+		},
+		toggleNotifications(){
+			this.project.summaryEmails = ! this.project.summaryEmails;
 		}
 	}
 }

@@ -57,9 +57,9 @@ component
             "isActive",
             "isApproved",
 			"isAdministrator",
-			"avatar"
+			"avatar",
+			"allowLogin"
 		],
-
         "defaults" :{
             "id" : ""
         },

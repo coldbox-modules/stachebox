@@ -56,6 +56,13 @@ component{
 		return true;
 	}
 
+	// application end
+	public void function onApplicationEnd( struct appScope ) {
+		if( arguments.appScope.keyExists( "cbBootstrap" ) ){
+			arguments.appScope.cbBootstrap.onApplicationEnd( arguments.appScope );
+		}
+	}
+
 	// request start
 	public boolean function onRequestStart(String targetPage){
 

@@ -28,6 +28,17 @@ app.config.productionTip = false;
 
 app.config.globalProperties.$filters = filters;
 
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend( utc );
+dayjs.extend( timezone );
+dayjs.extend( localizedFormat );
+dayjs.tz.setDefault( dayjs.tz.guess() );
+
+app.config.globalProperties.dayjs = dayjs;
+
 // Global event bus
 window.Event = new EventBus();
 

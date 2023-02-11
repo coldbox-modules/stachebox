@@ -130,6 +130,13 @@ component {
 
 		routes = [
 			{
+				pattern : "/api/v1/tokens",
+				handler : "api.v1.Settings",
+				action : {
+					"POST" : "generateToken"
+				}
+			},
+			{
 				pattern : "/api/v1/logs/suppress/:field/:id",
 				handler : "api.v1.Logs",
 				action : {

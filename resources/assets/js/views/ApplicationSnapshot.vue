@@ -30,13 +30,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { BarChart } from 'vue-chart-3';
 import { mapState } from "vuex";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import ColorScheme from "color-scheme";
-dayjs.extend( utc );
-dayjs.extend( timezone );
-dayjs.tz.setDefault( dayjs.tz.guess() );
 import Tab from "@/components/Tab";
 import Tabs from "@/components/Tabs";
 import EntryList from '@/components/entries/EntryList';
@@ -93,7 +87,7 @@ export default {
 		hourlyData(){
 			if( !this.aggregations ) return;
 
-			var hourStart = dayjs( new Date() ).subtract( this.hourRange, "hours" ).startOf( "hour" );
+			var hourStart = this.dayjs( new Date() ).subtract( this.hourRange, "hours" ).startOf( "hour" );
 			var aggs = this.aggregations.hourly_occurrences;
 
 			var chartData = {
@@ -110,7 +104,7 @@ export default {
 			for( var i = 0; i <= this.hourRange; i++ ){
 				var thisHour = hourStart.clone().add( i, "hours" );
 				chartData.labels.push( thisHour.format( "M/D " ) + thisHour.format( "hA" ) + "-" + thisHour.clone().add( 1, "hour" ).format( "hA" )   );
-				let hourKey = thisHour.utc().format( "YYYY-MM-DDTHH:mm:ss[Z]" );
+				let hourKey = thisHour.utc().format( "YYYY-MM-DDTHH:mm:ss.SSS[Z]" );
 				chartData.datasets[ 0 ].data.push( aggs[ hourKey ] ? aggs[ hourKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}
@@ -120,7 +114,7 @@ export default {
 		dailyData(){
 			if( !this.aggregations ) return;
 
-			var dayStart = dayjs( new Date() ).subtract( this.dayRange, "days" ).startOf( "day" );
+			var dayStart = this.dayjs( new Date() ).subtract( this.dayRange, "days" ).startOf( "day" );
 			var aggs = this.aggregations.daily_occurrences;
 
 			var chartData = {
@@ -137,7 +131,7 @@ export default {
 			for( var i = 0; i <= this.dayRange; i++ ){
 				var thisDay = dayStart.clone().add( i, "days" );
 				chartData.labels.push( thisDay.format( "ddd M/D" ) );
-				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss[Z]" );
+				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss.SSS[Z]" );
 				chartData.datasets[ 0 ].data.push( aggs[ dayKey ] ? aggs[ dayKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}
