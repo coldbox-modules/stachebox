@@ -174,7 +174,7 @@ component{
 	}
 
 	function runMigrations(){
-		var migrationService = new cfmigrations.models.migrationService(
+		var migrationService = new cfmigrations.models.MigrationService(
 			manager = "cbelasticsearch.models.migrations.Manager",
 			migrationsDirectory = "/stachebox/resources/migrations",
 			properties = {
