@@ -87,7 +87,9 @@ jobs:
       - name: Failure Debugging Log
         if: ${{ failure() }}
         run: |
+          cd test-harness
           box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
+          cd ../
 
       - name: Upload Debugging Log To Artifacts
         if: ${{ failure() }}
@@ -95,8 +97,8 @@ jobs:
         with:
           name: Failure Debugging Info - ${{ matrix.cfengine }}
           path: |
-            .engine/**/logs/*
-            .engine/**/WEB-INF/cfusion/logs/*
+            test-harness/.engine/**/logs/*
+            test-harness/.engine/**/WEB-INF/cfusion/logs/*
 
       - name: Slack Notifications
         # Only on failures and NOT in pull requests
