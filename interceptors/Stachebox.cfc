@@ -13,6 +13,7 @@ component{
 				.ensureUserIndex()
 				.ensureDefaultAdminUser()
 				.ensureTokenReporter();
+			runMigrations();
 		}
 	}
 
@@ -146,7 +147,7 @@ component{
 				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
 				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() ),
 				"i18nLocales" : locales,
-				"projects" : settingServce.getByName( "projects" ).value.reduce(
+				"projects" : settingServce.getByName( "projects" ).getMemento().value.reduce(
 					function( acc, value ){
 						structDelete( value, "owner" );
 						structDelete( value, "emailDistributionList" );
@@ -170,5 +171,17 @@ component{
 			variables.wirebox.clearSingletons();
 			variables.moduleService.reload( "stachebox" );
 		}
+	}
+
+	function runMigrations(){
+		var migrationService = new cfmigrations.models.migrationService(
+			manager = "cbelasticsearch.models.migrations.Manager",
+			migrationsDirectory = "/stachebox/resources/migrations",
+			properties = {
+				migrationsIndex : ".stachebox-migrations"
+			}
+		);
+		getWirebox().autowire( migrationService );
+		migrationService.runAllMigrations( "up" );
 	}
 }

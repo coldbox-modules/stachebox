@@ -62,6 +62,8 @@
 		"webpack-cli": "^4.10.0"
 	},
 	"dependencies": {
+		"resolve-url-loader": "^5.0.0",
+		"url-loader": "^4.1.1",
 		"vue-jwt-decode": "^0.1.0"
 	}
 }

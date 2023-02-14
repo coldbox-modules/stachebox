@@ -1,8 +1,8 @@
 {
 	"elasticsearch": {
-        "manager": "modules.cbelasticsearch.models.migrations.Manager",
+        "manager": "modules.logstash.modules.cbelasticsearch.models.migrations.Manager",
         "migrationsDirectory": "resources/migrations/elasticsearch",
-		"seedsDirectory": "resources/migrations/seeds",
+		"seedsDirectory": "test-harness/resources/migrations/seeds",
         "properties": {}
     }
 }

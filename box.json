@@ -1,6 +1,6 @@
 {
     "name":"stachebox",
-    "version":"1.0.6",
+    "version":"@build.version@",
     "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/stachebox/@build.version@/stachebox-@build.version@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/stachebox",
@@ -30,7 +30,8 @@
         "BCrypt":"^3",
         "logstash":"be",
         "cbi18n":"^3.2.0+12",
-        "cbmailservices":"^2.7.0-snapshot"
+        "cbmailservices":"^2.7.0-snapshot",
+        "cfmigrations":"^3.0.8"
     },
     "ignore":[
         "**/.*",
@@ -53,6 +54,7 @@
         "BCrypt":"modules/BCrypt/",
         "logstash":"modules/logstash/",
         "cbi18n":"modules/cbi18n/",
-        "cbmailservices":"modules/cbmailservices/"
+        "cbmailservices":"modules/cbmailservices/",
+        "cfmigrations":"modules/cfmigrations/"
     }
 }

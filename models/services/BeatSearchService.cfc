@@ -130,7 +130,7 @@ component {
 				applyDynamicSearchArgs( builder, searchCollection );
 			}
 
-			var termFilters = [  "input.type","agent.hostname", "url.original", "host.hostname", "http.request.method", "http.response.status_code", "event.kind", "event.type", "event.outcome", "event.dataset", "event.module" ];
+			var termFilters = [  "input.type","agent.hostname", "url.original", "host.hostname", "http.request.method", "http.response.status_code", "event.kind", "event.type", "event.outcome", "event.dataset", "event.module", "fields.application" ];
 
 			termFilters.each( function( term ){
 				if( searchCollection.keyExists( term ) && len( searchCollection[ term ] ) ){

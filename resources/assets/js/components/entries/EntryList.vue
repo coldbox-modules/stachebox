@@ -47,7 +47,7 @@
 					style="width: 150px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					{{entry.labels.application || 'N/A'}}
+					{{entry.labels.application || $t( 'N/A' )}}
 				</td>
 
 				<td

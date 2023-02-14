@@ -36,26 +36,31 @@
 					<template v-if="entry.log">
 						<tr v-if="entry.log.level">
 							<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
-							<td class="w-2/3">{{entry.log.level.toUpperCase() || 'N/A'}}</td>
+							<td class="w-2/3">{{entry.log.level.toUpperCase() || $t( 'N/A' )}}</td>
 						</tr>
 						<tr v-if="entry.log.file">
 							<th class="w-1/3 align-top">{{ $t( "Machine File Path" ) }}:</th>
 							<td class="w-2/3">{{ entry.log.file.path }}</td>
 						</tr>
 					</template>
-					<tr v-if="entry.labels.application">
+					<tr v-if="entry.fields.application">
+						<th class="w-1/3 align-top">{{ $t( "Application ID" ) }}:</th>
+						<td class="w-2/3">{{ entry.fields.application }}</td>
+					</tr>
+					<tr v-else-if="entry.labels && entry.labels.application">
 						<th class="w-1/3 align-top">{{ $t( "Application ID" ) }}:</th>
 						<td class="w-2/3">{{ entry.labels.application }}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Release Version" ) }}:</th>
-						<td class="w-2/3">{{ entry.package.version || 'N/A' }}</td>
+						<td class="w-2/3" v-if="entry.package && entry.package.version">entry.package.version</td>
+						<td class="w-2/3" v-else>{{ $t( "N/A" ) }}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
-						<td class="w-2/3">{{entry.log.level || 'N/A'}} <span v-if="entry.event.severity">( Severity {{entry.event.severity}} )</span></td>
+						<td class="w-2/3">{{entry.log.level || $t( 'N/A' )}} <span v-if="entry.event && entry.event.severity">( Severity {{entry.event.severity}} )</span></td>
 					</tr>
-					<tr v-if="entry.error.type">
+					<tr v-if="entry.error && entry.error.type">
 						<th class="w-1/3 align-top">{{ $t( "Type" ) }}:</th>
 						<td class="w-2/3">{{entry.error.type}}</td>
 					</tr>
