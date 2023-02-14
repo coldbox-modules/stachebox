@@ -43,6 +43,17 @@ jobs:
         with:
           forgeboxAPIKey: ${{ secrets.FORGEBOX_TOKEN }}
 
+      # Focal ships with node 16.x so we need to update to 18
+      - name:  Install Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Compile Release Static assets
+        run: |
+          npm install && npm run prod
+          cd $GITHUB_WORKSPACE
+
       - name: Setup Environment Variables For Build Process
         id: current_version
         run: |

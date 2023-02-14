@@ -37,6 +37,16 @@ jobs:
         run: |
           box run-script harness:install
 
+      - name:  Install Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Compile Release Static assets
+        run: |
+          npm install && npm run prod
+          cd $GITHUB_WORKSPACE
+
       - name: Setup Elasticsearch
         run: |
           docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -v $PWD/build/resources/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:${{ matrix.ELASTICSEARCH_VERSION }}
