@@ -35,7 +35,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          box run-script install:dependencies
+          box run-script harness:install
 
       - name: Setup Elasticsearch
         run: |
