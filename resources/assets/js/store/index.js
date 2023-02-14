@@ -38,7 +38,7 @@ export default createStore({
 			delete state[ key ];
 		},
 		updateGlobal : ( state, payload ) => {
-			state.globals[ payload.key ] = payload.value;
+			state.globals.stachebox[ payload.key ] = payload.value;
 		}
 	},
 	actions: {
