@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/coldbox-modules/stachebox.svg?branch=development)](https://travis-ci.org/coldbox-modules/stachebox)
-
 # StacheBox - The Log and Bug Management Platform for the Coldbox Framework
 
-This module provides a common interface for sending stachebox logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-only module, which connects to a separate instance running this module as a microservice.
+The StacheBox module for the Coldbox Platform provides you with a robust user interface, API and security infrastructure for displaying, processing, creating, and managing [Logstash](https://www.elastic.co/logstash) and [Filebeat](https://www.elastic.co/beats/filebeat) log entries.
+
 
 ## LICENSE
 
@@ -28,10 +27,10 @@ Just drop into your modules folder or use the `box` cli to install
 ```bash
 box install stachebox
 ```
-********************************************************************************
-Copyright Since 2005 ColdBox Framework by Luis Majano and Ortus Solutions, Corp
-www.ortussolutions.com
-********************************************************************************
+
+
+
+
 
 #### HONOR GOES TO GOD ABOVE ALL
 
