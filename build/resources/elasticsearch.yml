@@ -1,0 +1,5 @@
+discovery.type: "single-node"
+cluster.name: "docker-cluster"
+xpack.security.enabled: "false"
+network.host: 0.0.0.0
+path.repo: ["/tmp"]

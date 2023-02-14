@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         cfengine: [ "lucee@5", "adobe@2018", "adobe@2021" ]
-        ELASTICSEARCH_VERSION: [ "7.17.8", "8.5.3" ]
+        ELASTICSEARCH_VERSION: [ "7.17.8", "8.6.1" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.2.0
@@ -46,7 +46,9 @@ jobs:
         env:
           ENVIRONMENT: development
         run: |
+          cd test-harness
           box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
+          cd ../
           curl http://127.0.0.1:60299
 
       - name: Run Tests
