@@ -41,7 +41,7 @@
 						style="width: 150px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-						{{entry.labels.application || 'N/A'}}
+						{{entry.fields.application || $t( 'N/A' )}}
 					</td>
 
 					<td
@@ -72,7 +72,7 @@
 						style="max-width:400px!important"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-						<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message || 'N/A',  truncate ? 200 : ( entry.message || 'N/A' ).length + 1 ) }}</code>
+						<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message || $t( 'N/A' ),  truncate ? 200 : ( entry.message || $t( 'N/A' ) ).length + 1 ) }}</code>
 					</td>
 					<td
 						class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
@@ -126,10 +126,6 @@ export default {
 			type : Boolean,
 			default : true
 		},
-		displayOccurrences : {
-			type : Boolean,
-			default : true
-		},
 		displayDataset : {
 			type : Boolean,
 			default : true
@@ -166,7 +162,6 @@ export default {
 
 		currentColspan(){
 			let colspan = 4;
-			if( this.displayOccurrences ) colspan++;
 			if( this.displayDataset ) colspan++;
 			return colspan;
 		}

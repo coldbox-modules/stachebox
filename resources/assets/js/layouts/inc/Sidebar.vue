@@ -33,11 +33,11 @@
 				</summary>
 				<div>
 					<router-link
-						v-for="( projects, index ) in project"
+						v-for="( project, index ) in projects"
 						:key="index"
 						class="flex items-center duration-200 mt-2 py-1 px-8"
 						:class="[$route.name === 'ProjectSnapshot' && $route.params.id == project.id ? activeClass : inactiveClass]"
-						:to="`/project/${project.id}`"
+						:to="`/projects/${project.id}`"
 					>
 						<div
 							v-if="project.icon"

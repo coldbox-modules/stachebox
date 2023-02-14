@@ -192,12 +192,7 @@
 									{{ $t( "Enable Notifications" ) }}
 								</label>
 								<div class="mt-1">
-									<!-- Enabled: "bg-indigo-600", Not Enabled: "bg-gray-200" -->
-									<button type="button" @click="toggleNotifications" class="bg-gray-200 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" role="switch" :aria-checked="project.summaryEmails">
-										<span class="sr-only">Enable notifications</span>
-										<!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
-										<span aria-hidden="true" class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-									</button>
+									<toggle-switch :isActive="project.summaryEmails" @toggle="toggleNotifications"></toggle-switch>
 								</div>
 							</div>
 						</div>
@@ -309,6 +304,7 @@ import { createBase64ImageFromFile } from "@/util/image";
 import VueMultiselect from 'vue-multiselect';
 import useVuelidate from "@vuelidate/core";
 import FormErrors from "@/components/util/FormErrors";
+import ToggleSwitch from "@/components/ToggleSwitch";
 import { required, url } from "@vuelidate/validators";
 import usersAPI from "@/api/users";
 import { mapState } from "vuex";
@@ -316,7 +312,8 @@ const canvasProcessor = require( "canvas_image_processing" );
 export default {
 	components: {
 		FormErrors,
-		VueMultiselect
+		VueMultiselect,
+		ToggleSwitch
 	},
     setup(){
         return {

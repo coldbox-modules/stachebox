@@ -232,8 +232,15 @@ component {
 			var termFilters = [  "error.type", "labels.application", "package.version", "log.level", "error.level", "log.category", "log.logger", "event.name", "event.route", "event.url", "event.layout", "module", "view", "labels.environment", "stachebox.signature", "stachebox.isSuppressed" ];
 
 			termFilters.each( function( term ){
-				if( searchCollection.keyExists( term ) && len( searchCollection[ term ] ) ){
-					builder.filterTerm( term, searchCollection[ term ] )
+				if( searchCollection.keyExists( term ) && ( ( isArray( searchCollection[ term ] ) && searchCollection[ term ].len() ) || len( searchCollection[ term ] ) ) ){
+					if( isArray( searchCollection[ term ] ) ){
+						builder.filterTerms(
+							term,
+							searchCollection[ term ]
+						);
+					} else {
+						builder.filterTerm( term, searchCollection[ term ] );
+					}
 				}
 			} );
 

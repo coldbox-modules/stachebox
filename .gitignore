@@ -11,6 +11,7 @@ test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
 test-harness/lib/**
+test-harness/includes/mail/**
 test-harness/.env
 
 build/results.json

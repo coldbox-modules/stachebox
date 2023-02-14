@@ -13,8 +13,30 @@ component accessors="true"{
         "mappings": {
             "_doc": {
                 "properties": {
-					"key" : { "type" : "keyword" },
-					"value" : { "type" : "text" }
+					"id": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"key": {
+						"type": "keyword"
+					},
+					"name": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"value": {
+						"type": "text"
+					}
                 }
             }
         }

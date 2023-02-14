@@ -20,7 +20,7 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-	this.dependencies 		= [ "logstash", "BCrypt", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC" ];
+	this.dependencies 		= [ "logstash", "BCrypt", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC", "cfmigrations", "cbmailservices" ];
 
 	// App Helpers
 	this.applicationHelper = [
@@ -50,6 +50,8 @@ component {
 			"tokenReporter" : getSystemSetting( "STACHEBOX_TOKEN_REPORTER", "nologin@stachebox.io" ),
 			// Whether to promote the module UI to the root URLS of the application
 			"isStandalone" : getSystemSetting( "STACHEBOX_STANDALONE", false ),
+			// Notification Email "from"
+			"notificationsFrom" : getSystemSetting( "STACHEBOX_NOTIFICATIONS_FROM", "no-reply@stachebox.io" ),
 			// The cbSecurity configuration overrides for this module
 			"cbsecurity" : {
 				"userService" : "UserService@stachebox",
@@ -174,6 +176,30 @@ component {
 					"HEAD" : "check",
 					"POST" : "login",
 					"DELETE" : "logout"
+				}
+			},
+			{
+				pattern = "/emailTest",
+				target = function ( event, rc, prc ){
+					var project = getInstance( "SettingService@stachebox" ).getByName( "projects" ).getMemento().value[ 1 ];
+					var searchParams = {
+						"labels.application" : project.applications,
+						"stachebox.isSuppressed" : false,
+						"collapse" : "stachebox.signature",
+						"maxRows" : 25,
+						"minDate" : dateAdd( "m", -1, now() )
+					};
+					var searchResults = getInstance( "LogSearchService@stachebox" ).search( searchParams );
+					event.setView(
+						layout = "Email",
+						view = "email/projectNotification",
+						args = {
+							"errors" : searchResults,
+							"project" : project,
+							"reportPeriod" : "month",
+							"frequency" : "monthly"
+						}
+					);
 				}
 			},
 			{ pattern = "/", handler = "Main", action = "index" },

@@ -16,7 +16,7 @@ component{
         try{
             var token = listLast( authorization, " " );
 
-			var validTokens = settingService.getByName( "apiTokens" );
+			var validTokens = settingService.getByName( "apiTokens" ).getMemento();
 
 			if( validTokens.value.contains( token ) ){
 				auth().login( getInstance( "UserService@stachebox" ).retrieveUserByUsername( moduleSettings.tokenReporter ) );

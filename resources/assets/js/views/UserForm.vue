@@ -4,7 +4,7 @@
 			class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b"
 			v-if="user"
 		>
-			{{ user.id ? "Edit" : "Create" }} User
+			{{ user.id ? $t( "Edit" ) : $t( "Create" ) }} {{ $t( "User" ) }}
 		</h3>
 		<form v-if="user" class="space-y-8 divide-y divide-gray-300">
 			<div class="space-y-8 divide-y divide-gray-300">
@@ -14,7 +14,7 @@
 							<h3
 								class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 							>
-								Personal Information
+								{{ $t( "Personal Information" ) }}
 							</h3>
 						</div>
 						<div
@@ -25,7 +25,7 @@
 									for="firstName"
 									class="block text-sm font-medium text-gray-700"
 								>
-									First name
+									{{ $t( "First name" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -44,7 +44,7 @@
 									for="lastName"
 									class="block text-sm font-medium text-gray-700"
 								>
-									Last name
+									{{ $t( "Last name" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -63,7 +63,7 @@
 									for="email"
 									class="block text-sm font-medium text-gray-700"
 								>
-									Email address
+									{{ $t( "Email address" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -82,7 +82,7 @@
 									for="lastName"
 									class="block text-sm font-medium text-gray-700"
 								>
-									Title
+									{{ $t( "Title" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -96,23 +96,16 @@
 							</div>
 
 							<div class="sm:col-span-4 items-center">
-								<button
-									type="button"
-									:aria-pressed="user.isAdministrator"
-									@click="toggleAdmin"
-									aria-labelledby="toggleLabel"
-									:class="adminButtonClass"
-								>
-									<!-- On: "bg-cyan-600", Off: "bg-gray-200" -->
-									<span class="sr-only">Use setting</span>
-									<!-- On: "translate-x-5", Off: "translate-x-0" -->
-									<span
-										aria-hidden="true"
-										:class="adminToggleClass"
-									></span>
-								</button>
+								<toggle-switch :isActive="user.allowLogin" @toggle="toggleLogin"></toggle-switch>
 								<span class="ml-3" id="toggleLabel">
-									<span class="text-sm font-medium text-gray-900">User is Administrator</span>
+									<span class="text-sm font-medium text-gray-900" v-tooltip="$t( 'allowLogin.tooltip' )">{{ $t( "Allow Login" ) }}</span>
+								</span>
+							</div>
+
+							<div class="sm:col-span-4 items-center">
+								<toggle-switch :isActive="user.isAdministrator" @toggle="toggleAdmin"></toggle-switch>
+								<span class="ml-3" id="toggleLabel">
+									<span class="text-sm font-medium text-gray-900">{{ $t( "User is Administrator" ) }}</span>
 								</span>
 							</div>
 						</div>
@@ -121,7 +114,7 @@
 						<h3
 							class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 						>
-							Avatar
+							{{ $t( "Avatar" ) }}
 						</h3>
 					</div>
 					<div
@@ -137,7 +130,7 @@
 									<img
 										class="h-full w-full object-cover"
 										:src="user.avatar"
-										alt="Your avatar"
+										:alt="$t( 'Your avatar' )"
 									/>
 								</button>
 								<button
@@ -145,7 +138,7 @@
 									class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-none shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
 									@click="showFileSelect"
 								>
-									Change
+									{{ $t( "Change" ) }}
 								</button>
 
 								<input
@@ -164,7 +157,7 @@
 						<h3
 							class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 						>
-							Change Password
+							{{ $t( "Change Password" ) }}
 						</h3>
 						<div
 							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
@@ -174,7 +167,7 @@
 									for="firstName"
 									class="block text-sm font-medium text-gray-700"
 								>
-									Password
+									{{ $t( "Password" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -197,7 +190,7 @@
 									for="firstName"
 									class="block text-sm font-medium text-gray-700"
 								>
-									Verify Password
+									{{ $t( "Verify Password" ) }}
 								</label>
 								<div class="mt-1">
 									<input
@@ -217,7 +210,7 @@
 										</div>
 										<div class="ml-3">
 											<h3 class="text-sm font-medium text-red-800">
-												This form has errors and cannot be saved
+												{{ $t( "This form has errors and cannot be saved" ) }}
 											</h3>
 											<div class="mt-2 text-sm text-red-700">
 												<ul class="list-disc pl-5 space-y-1">
@@ -243,13 +236,13 @@
 						</div>
 						<div class="ml-3">
 							<p class="text-sm font-medium text-green-800">
-								Profile successfully saved!
+								{{ $t( "Profile successfully saved" ) }}
 							</p>
 						</div>
 						<div class="ml-auto pl-3">
 							<div class="-mx-1.5 -my-1.5">
 								<button type="button" @click="saveSuccess=false" class="inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">
-									<span class="sr-only">Dismiss</span>
+									<span class="sr-only">{{ $t( "Dismiss" ) }}</span>
 									<fa-icon class="h5 w5" icon="times"/>
 								</button>
 							</div>
@@ -262,7 +255,7 @@
 						class="bg-white py-2 px-4 border border-gray-300 rounded-none shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
 						@click="$router.push( { name : 'Directory' } )"
 					>
-						Cancel
+						{{ $t( "Cancel" ) }}
 					</button>
 					<button
 						type="button"
@@ -273,7 +266,7 @@
 					>
 						<fa-icon class="mr-5" v-if="isSaving" icon="spinner" spin/>
 						<fa-icon v-else  class="mr-5" icon="save"/>
-						Save
+						{{ $t( "Save" ) }}
 					</button>
 					<button
 						v-if="hasPermission( 'Administer:Users' ) && user.id != authUser.id"
@@ -284,14 +277,14 @@
 					>
 						<fa-icon class="mr-5" v-if="isSaving" icon="spinner" spin/>
 						<fa-icon v-else  class="mr-5" icon="save"/>
-						Delete User
+						{{ $t( "Delete User" ) }}
 					</button>
 				</div>
 			</div>
 		</form>
 		<div v-else class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-400" icon="circle-notch" spin fixed-width />
-			<p class="mt-4 text-gray-400">Loading User Data...</p>
+			<p class="mt-4 text-gray-400">{{ $t( "Loading User Data" ) }}...</p>
 		</div>
 		<dialog></dialog>
 	</div>
@@ -300,10 +293,12 @@
 import usersAPI from "@/api/users";
 const canvasProcessor = require( "canvas_image_processing" );
 import Dialog from "@/components/Dialog";
+import ToggleSwitch from "@/components/ToggleSwitch";
 import { mapState,mapGetters } from "vuex";
 export default {
 	components : {
-		Dialog
+		Dialog,
+		ToggleSwitch
 	},
 	data(){
 		return {
@@ -328,22 +323,14 @@ export default {
 		},
 		isValid(){
 			return this.isPasswordVerified
-		},
-		adminButtonClass(){
-			let btnClass = 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 ';
-			btnClass += this.user.isAdministrator ? 'bg-cyan-600' : 'bg-gray-300';
-			return btnClass;
-		},
-		adminToggleClass(){
-			let toggleClass = "inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 "
-			toggleClass += this.user.isAdministrator ? 'translate-x-5' : 'translate-x-0';
-			return toggleClass
-
 		}
 	},
 	methods : {
 		toggleAdmin(){
 			this.user.isAdministrator = !this.user.isAdministrator
+		},
+		toggleLogin(){
+			this.user.allowLogin = !this.user.allowLogin
 		},
 		fetchUser(){
 			usersAPI.fetch( this.$route.params.id, {}, this.authToken ).then( result => this.user = result.data )

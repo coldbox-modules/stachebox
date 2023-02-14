@@ -15,7 +15,7 @@
         ]
     },
     "app":{
-        "serverHomeDirectory":".engine/lucee5",
+        "serverHomeDirectory":"./.engine/lucee5",
         "cfengine":"lucee@5"
     },
     "web":{

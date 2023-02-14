@@ -20,7 +20,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 			return onEntityNotFoundException( argumentCollection=arguments );
 		}
 
-		prc.response.setData( entry );
+		prc.response.setData( entry.getMemento() );
 
 	}
 
@@ -36,7 +36,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 		} else if(
 			getInstance( "SearchBuilder@cbElasticsearch" )
 						.new( moduleSettings.settings.index )
-						.term( "name", rc.name )
+						.term( "name.keyword", rc.name )
 						.count()
 		){
 			throw(
@@ -73,7 +73,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 
 	// ( PUT||PATCH ) /api/v1/settings/:id
 	function update( event, rc, prc ){
-		var entry = getInstance( "Client@cbelasticsearch" ).get( rc.id, moduleSettings.settingsIndex );
+		var entry = settingService.getById( rc.id );
 
 		if( isNull( entry ) ){
 			return onEntityNotFoundException( argumentCollection=arguments );
@@ -87,7 +87,7 @@ component extends="BaseAPIHandler" secured="Administer:Settings"{
 
 	// ( DELETE ) /api/v1/settings/:id
 	function delete( event, rc, prc ) secured="StacheboxAdministrator"{
-		var entry = getInstance( "Client@cbelasticsearch" ).get( rc.id, moduleSettings.settingsIndex );
+		var entry = settingService.getById( rc.id );
 
 		if( isNull( entry ) ){
 			return onEntityNotFoundException( argumentCollection=arguments );

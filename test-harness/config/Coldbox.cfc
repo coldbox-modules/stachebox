@@ -63,7 +63,9 @@
 				console : { class : "coldbox.system.logging.appenders.ConsoleAppender" }
 			},
 			// Root Logger
-			root  : { levelmax : "DEBUG", appenders : "*" }
+			root  : { levelmax : "DEBUG", appenders : "*" },
+			error : [ "coldbox.system.web.context.InterceptorState", "coldbox.system.ioc.Injector" ],
+			fatal : [ "coldbox.system.web.context.InterceptorState", "coldbox.system.ioc.Injector" ]
 		};
 
 		moduleSettings = {
@@ -84,7 +86,26 @@
                         "seedsDirectory": "/resources/migrations/seeds"
                     }
                 }
-			}
+			},
+			"cbMailServices" : {
+                // Default protocol to use, it must be defined in the mailers configuration
+                "defaultProtocol" : "file",
+                // Here you can register one or many mailers by name
+                "mailers" : {
+                    "file" : {
+						class : "File",
+						properties : {
+							"filePath"  : "/includes/mail",
+							"autoExpand": true
+						}
+					}
+                },
+                // The defaults for all mail config payloads and protocols
+                "defaults" : {
+                    "from" : "no-reply@stachebox-io",
+                    "type" : "html"
+                }
+            }
 		};
 
 	}

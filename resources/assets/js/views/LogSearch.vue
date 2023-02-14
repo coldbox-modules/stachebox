@@ -4,7 +4,7 @@
 		<div class="entry-list">
 			<entry-list
 				:initialFilters="searchParams"
-				:displayApplication="false"
+				:displayApplication="true"
 			></entry-list>
 		</div>
 		<h3 class="mt-6 text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Results" ) }}</h3>

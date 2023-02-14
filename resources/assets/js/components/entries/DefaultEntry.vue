@@ -17,15 +17,15 @@
 					</tr>
 					<tr class="border-b">
 						<th class="w-1/3 align-top">{{ $t( "Release Version" ) }}:</th>
-						<td class="w-2/3">{{ entry.package.version || 'N/A' }}</td>
+						<td class="w-2/3">{{ entry.package.version || $t( 'N/A' ) }}</td>
 					</tr>
 					<tr class="border-b">
 						<th class="w-1/3 align-top">{{ $t( "Environment" ) }}:</th>
-						<td class="w-2/3">{{ entry.labels.environment || 'N/A' }}</td>
+						<td class="w-2/3">{{ entry.labels.environment || $t( 'N/A' ) }}</td>
 					</tr>
 					<tr class="border-b">
 						<th class="w-1/3 align-top">{{ $t( "Level" ) }}:</th>
-						<td class="w-2/3">{{entry.log.level || 'N/A'}} <span v-if="entry.event.severity">( {{ $t( "Severity" ) }} {{entry.event.severity}} )</span></td>
+						<td class="w-2/3">{{entry.log.level || $t( 'N/A' )}} <span v-if="entry.event.severity">( {{ $t( "Severity" ) }} {{entry.event.severity}} )</span></td>
 					</tr>
 					<tr class="border-b" v-if="entry.error.type">
 						<th class="w-1/3 align-top">{{ $t( "Type" ) }}:</th>

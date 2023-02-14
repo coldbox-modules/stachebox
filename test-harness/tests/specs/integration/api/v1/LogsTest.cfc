@@ -29,11 +29,11 @@ component extends="tests.resources.BaseAPITestHelper"{
 
 			variables.logstashAppender = createMock( "cbelasticsearch.models.logging.LogstashAppender" );
 			logstashAppender.init( "MockLogstashAppender" );
-			makePublic( logstashAppender, "getRotationalIndexName", "getRotationalIndexName" );
+			makePublic( logstashAppender, "getProperty", "getProperty" );
 
 			variables.logEntry = {
 				"application"  : "stachebox-test-suite",
-				"index"        : logstashAppender.getRotationalIndexName(),
+				"index"        : logstashAppender.getProperty( "dataStream" ),
 				"release"      : "1",
 				"type"         : "api",
 				"level"        : "ERROR" ,
@@ -82,7 +82,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 		getWirebox().getInstance( "Client@cbelasticsearch" )
 					.deleteByQuery(
 						getWirebox().getInstance( "SearchBuilder@cbelasticsearch" )
-									.new( variables.logstashAppender.getRotationalIndexName() )
+									.new( variables.logstashAppender.getProperty( "dataStream" ) )
 									.filterTerm( "category", "tests" )
 					);
 
