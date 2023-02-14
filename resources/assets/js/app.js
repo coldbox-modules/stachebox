@@ -7,7 +7,7 @@ import { createI18n } from 'vue-i18n';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import EventBus from "@/events/eventBus";
+import EventBus from "@/events/EventBus";
 
 // String prototype extensions
 import '@/extensions/String';
