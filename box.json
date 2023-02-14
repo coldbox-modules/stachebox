@@ -33,19 +33,6 @@
         "cbmailservices":"^2.7.0-snapshot",
         "cfmigrations":"^3.0.8"
     },
-    "ignore":[
-        "**/.*",
-        "test-harness",
-        "readme.md",
-        "docker-compose.yml"
-    ],
-    "scripts":{
-        "release":"recipe build/release.boxr",
-        "format":"cfformat run models/,test-harness/tests/ --overwrite",
-        "format:watch":"cfformat watch models/,test-harness/tests/",
-        "format:check":"cfformat check models/,test-harness/tests/",
-        "harness:install":"install --force && cd test-harness && install --force"
-    },
     "installPaths":{
         "mementifier":"modules/mementifier/",
         "cbsecurity":"modules/cbsecurity/",
@@ -56,5 +43,21 @@
         "cbi18n":"modules/cbi18n/",
         "cbmailservices":"modules/cbmailservices/",
         "cfmigrations":"modules/cfmigrations/"
+    },
+    "ignore":[
+        "**/.*",
+        "test-harness",
+        "readme.md",
+        "docker-compose.yml"
+    ],
+    "testbox":{
+        "runner":"http://localhost:60299/tests/runner.cfm"
+    },
+    "scripts":{
+        "release":"recipe build/release.boxr",
+        "format":"cfformat run models/,test-harness/tests/ --overwrite",
+        "format:watch":"cfformat watch models/,test-harness/tests/",
+        "format:check":"cfformat check models/,test-harness/tests/",
+        "harness:install":"install --force && cd test-harness && install --force"
     }
 }
