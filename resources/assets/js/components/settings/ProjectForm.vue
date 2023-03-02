@@ -284,16 +284,25 @@
 						<fa-icon v-else  class="mr-5" icon="save"/>
 						{{ $t( "Save" ) }}
 					</button>
-					<button
-						type="button"
-						class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-						:class="{'cursor-not-allowed' : !isValid }"
-						@click="confirmDeleteproject"
-					>
+					<VDropdown placement="left" distance="6">
+						<button
+							type="button"
+							class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+						>
 						<fa-icon class="mr-5" v-if="isSaving" icon="spinner" spin/>
-						<fa-icon v-else  class="mr-5" icon="save"/>
+						<fa-icon v-else  class="mr-5" icon="trash"/>
 						{{ $t( "Delete Project" ) }}
-					</button>
+						</button>
+						<template #popper>
+							<div class="p-5">
+								<p class="text-gray-700 text-sm" style="max-width:350px">{{ $t( 'project.delete.confirm.message' ) }}</p>
+								<div class="mt-2 text-right">
+									<button class="py-2 px-4 mr-1 text-center bg-gray-400 text-gray-100 text-sm" type="button" v-close-popper>Cancel</button>
+									<button class="py-2 px-4 text-center bg-green-600 text-gray-100 text-sm" type="button" v-close-popper @click="deleteProject">Yes</button>
+								</div>
+							</div>
+						</template>
+					</VDropdown>
 				</div>
 			</div>
 		</form>
@@ -417,6 +426,9 @@ export default {
 		},
 		toggleNotifications(){
 			this.project.summaryEmails = ! this.project.summaryEmails;
+		},
+		deleteProject(){
+			this.$emit( "delete-project", { data : this.project, index : this.index } );
 		}
 	}
 }
