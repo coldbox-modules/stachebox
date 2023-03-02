@@ -77,7 +77,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<project-form v-else :data="projects[ editIndex ]" :index="editIndex" @save-project="updateProject" @cancel-edit="resetForm"></project-form>
+		<project-form v-else :data="projects[ editIndex ]" :index="editIndex" @save-project="updateProject" @delete-project="deleteProject" @cancel-edit="resetForm"></project-form>
 	</div>
 </template>
 <script>
@@ -151,6 +151,12 @@ export default {
 		},
 		saveProjects(){
 			this.$emit( "update-projects", this.projects )
+		},
+		deleteProject( payload ){
+			this.projects.splice( payload.index, 1 );
+			this.saveProjects();
+			this.$store.commit( "updateGlobal", { key : "projects", value : this.projects } );
+			this.showForm = false;
 		}
 	}
 }
