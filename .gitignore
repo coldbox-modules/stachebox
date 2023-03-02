@@ -13,6 +13,7 @@ test-harness/modules/**
 test-harness/lib/**
 test-harness/includes/mail/**
 test-harness/.env
+test-harness/WEB-INF
 
 build/results.json
 changelog-latest.md

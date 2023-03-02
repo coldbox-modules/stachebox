@@ -98,8 +98,6 @@ export default {
 				.finally( () => self.isProcessing = false )
 
 		}
-	},
-	created(){
 	}
 
 }

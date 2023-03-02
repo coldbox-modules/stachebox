@@ -170,6 +170,14 @@ component {
 				}
 			},
 			{
+				pattern : "/api/v1/authentication/reset",
+				handler : "api.v1.Authentication",
+				action : {
+					"POST" : "resetRequest",
+					"PUT" : "resetCompletion"
+				}
+			},
+			{
 				pattern : "/api/v1/authentication",
 				handler : "api.v1.Authentication",
 				action : {
@@ -180,27 +188,8 @@ component {
 			},
 			{
 				pattern = "/emailTest",
-				target = function ( event, rc, prc ){
-					var project = getInstance( "SettingService@stachebox" ).getByName( "projects" ).getMemento().value[ 1 ];
-					var searchParams = {
-						"labels.application" : project.applications,
-						"stachebox.isSuppressed" : false,
-						"collapse" : "stachebox.signature",
-						"maxRows" : 25,
-						"minDate" : dateAdd( "m", -1, now() )
-					};
-					var searchResults = getInstance( "LogSearchService@stachebox" ).search( searchParams );
-					event.setView(
-						layout = "Email",
-						view = "email/projectNotification",
-						args = {
-							"errors" : searchResults,
-							"project" : project,
-							"reportPeriod" : "month",
-							"frequency" : "monthly"
-						}
-					);
-				}
+				handler = "Main",
+				action = "emailTest"
 			},
 			{ pattern = "/", handler = "Main", action = "index" },
 			// Convention Route

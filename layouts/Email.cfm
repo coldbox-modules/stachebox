@@ -6,7 +6,7 @@
 		<title>StacheBox - Email Notifications</title>
 		<!--- View Port --->
 		<cfscript>
-			mailStyles = fileRead( expandPath( "/stachebox/includes/css/email.css" ) );
+			mailStyles = fileRead( expandPath( elixirPath( "css/email.css" ) ) );
 		</cfscript>
 		<style type="text/css">
 		#mailStyles#

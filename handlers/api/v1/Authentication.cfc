@@ -28,4 +28,46 @@ component extends="BaseAPIHandler"{
 		jwtAuth().logout();
 		prc.response.setStatusCode( STATUS.NO_CONTENT );
 	}
+
+	// ( POST ) /stachebox/api/v1/authentication/reset
+	function resetRequest( event, rc, prc ){
+		var userService = getInstance( "UserService@stachebox" );
+		param rc.username = "";
+		prc.user = userService.retrieveUserByUsername( rc.username );
+
+		if( isNull( prc.user ) ){
+			return this.onEntityNotFoundException( argumentCollection = arguments );
+		} else {
+			userService.processResetRequest( prc.user );
+			prc.response.setData( { "acknowleged" : true  } ).setStatusCode( STATUS.CREATED );
+		}
+	}
+
+	// ( PUT ) /stachebox/api/v1/authentication/reset
+	function resetCompletion( event, rc, prc ){
+		var jwtService = getInstance( "JWTService@cbsecurity" );
+		if( !rc.keyExists( "resetToken" ) || !rc.keyExists( "confirmedPassword" ) ){
+			return this.onAuthenticationFailure( argumentCollection = arguments );
+		}
+
+		var parsedToken = jwtService.parseToken( token=event.getValue( "resetToken", "" ) );
+
+		prc.user = userService.retrieveUserById( parsedToken.id );
+
+		if( isNull( prc.user ) ){
+			return this.onAuthenticationFailure( argumentCollection=arguments );
+		}
+
+		prc.user.setPassword( rc.confirmedPassword )
+				.encryptPassword()
+				.setResetToken( javacast( "null", 0 ) )
+				.save();
+
+		prc.response.setData(
+			{ "acknowledged" : true }
+		).setStatusCode( STATUS.SUCCESS );
+
+
+
+	}
 }

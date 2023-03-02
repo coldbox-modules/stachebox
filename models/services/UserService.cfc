@@ -11,6 +11,8 @@ component accessors="true" {
 
 	property name="bCrypt" inject="BCrypt@BCrypt";
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
+	property name="settingService" inject="SettingService@stachebox";
+	property name="mailService" inject="MailService@cbmailservices";
 
     function getUser() provider="User@stachebox"{}
 
@@ -96,6 +98,32 @@ component accessors="true" {
 			},
 			"results" : result.getHits().map( function( user ){ var memento = user.getMemento(); memento[ "id" ] = user.getId(); return memento; } )
 		};
+	}
+
+	function processResetRequest( required User user ){
+		// Create a token with a 1 hour timeout
+		var resetToken = settingService.generateAPIToken( user=arguments.user, expiration=dateAdd( "h", 1, now() ) );
+
+		arguments.user.setResetToken( resetToken ).save();
+
+		var mailSubject = "[StacheBox] Your Password Reset Request";
+
+		var viewArgs = {
+			"user" : arguments.user.getMemento(),
+			"token" : resetToken
+		};
+
+		variables.mailService.newMail(
+									to = project.recipients,
+									from = moduleSettings.notificationsFrom,
+									subject = mailSubject
+								).setView(
+									view = "email/passwordReset",
+									module = "stachebox",
+									args = viewArgs,
+									layout = "Email",
+									layoutModule = "stachebox"
+								).send();
 	}
 
 }
