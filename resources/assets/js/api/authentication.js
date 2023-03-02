@@ -15,7 +15,10 @@ export const finalAPI = {
 	apiInstance : defaultAPI,
 	check: () => defaultAPI( { method : "HEAD" } ),
 	login: (params) => defaultAPI({ method: 'POST', data: JSON.stringify(params) }),
-	logout: ( params ) => defaultAPI( {  method: 'DELETE', data : JSON.stringify( params ), headers : { 'Authorization' : 'Bearer ' + store.state.authToken } } )
+	logout: ( params ) => defaultAPI( {  method: 'DELETE', data : JSON.stringify( params ), headers : { 'Authorization' : 'Bearer ' + store.state.authToken } } ),
+	requestReset: ( params ) => defaultAPI.post( '/reset', JSON.stringify( params ) ),
+	completeReset: ( params ) => defaultAPI.put( '/reset', JSON.stringify( params ) )
+
 };
 
 export default finalAPI;

@@ -156,6 +156,10 @@
   "Stachebox.project.errors.received.message": "The Stachebox project {project} has received {errorCount} new unique errors in the past {reportPeriod}.",
   "Stachebox.project.nofication.why": "You are receiving this email because your email has been set to receive {frequency} notifications for the <a href=\"{projectLink}\">StacheBox project {projectName}</a>. If you would like to be removed from this list, please <a href=\"mailto:{ownerEmail}#\">contact the Project owner</a>",
   "Stachebox.notification.header": "StacheBox Errors in the past {reportPeriod}",
+  "Stachebox.password.reset.header": "Stachebox Password Reset Request",
+  "Stachebox.password.reset.message": "You have requested a reset of your current StacheBox password.  If you did not make this request, you may ignore or delete this email.  Navigate to the link below to choose a new system password.",
+  "Stachebox.password.reset.create": "Create a new Password",
+  "Stachebox.password.reset.expiration": "This link is valid for one hour.",
   "Stack Frames": "Stack Frames",
   "Storage": "Storage",
   "Suppress this log message from future results": "Suppress this log message from future results",
@@ -203,5 +207,6 @@
   "Role": "Role",
   "Status": "Status",
   "Active": "Active",
-  "Inactive": "Inactive"
+  "Inactive": "Inactive",
+  "project.delete.confirm.message": "Are you sure you want to delete this project permanently?"
 }
