@@ -7,13 +7,13 @@
 				href="#"
 				class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
 			>
-				Previous
+				{{ $t( "Previous" ) }}
 			</a>
 			<a
 				href="#"
 				class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
 			>
-				Next
+				{{ $t( "Next" ) }}
 			</a>
 		</div>
 		<div
@@ -31,13 +31,13 @@
 				</p>
 			</div>
 			<div>
-				<label for="maxRows" class="inline-block text-sm font-medium text-gray-700">Max:</label>
+				<label for="maxRows" class="inline-block text-sm font-medium text-gray-700 mr-2">Max:</label>
 				<select
 					id="maxRows"
 					name="maxRows"
 					v-model="pagination.maxRows"
 					@change="setMaxRows"
-					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-none"
+					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
 					<option v-for="qty in maxRowOptions" :key="qty" :value="qty">{{qty}}</option>
 				</select>

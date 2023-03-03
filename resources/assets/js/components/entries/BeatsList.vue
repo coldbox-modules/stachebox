@@ -197,7 +197,7 @@ export default {
 			if( !pageNumber || pageNumber === this.pagination.page ) return;
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
-			this.$delete( this.searchFilters, "startRows" );
+			delete this.searchFilters[ "startRows" ];
 			this.searchFilters.page = pageNumber;
 			this.fetchBeats();
 			if( refreshEnabled ) this.toggleFollow();

@@ -1,19 +1,19 @@
 <template>
-	<div class="border-gray-600 mb-3">
-		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">
+	<div class="border-gray-600 mb-7">
+		<component :is="headingClass" class="text-gray-500 text-xl font-medium pb-2">
 			<router-link :to="`/logs/application/${application}`">
 				{{ application.toTitleCase() }}
 				<em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em>
 			</router-link>
-		</h3>
+		</component>
 		<tabs class="mt-2">
-			<tab :name="$t( 'Past 24 Hours' )">
+			<tab :name="$t( 'Past 24 Hours' )" class="bg-white">
 				<BarChart v-if="aggregations" style="max-height:350px" :chartData="hourlyData" :options="chartOptions"></BarChart>
 			</tab>
-			<tab :name="$t( 'Past 7 Days' )">
+			<tab :name="$t( 'Past 7 Days' )" class="bg-white">
 				<BarChart v-if="aggregations" style="max-height:350px" :chartData="dailyData" :options="chartOptions"></BarChart>
 			</tab>
-			<tab v-if="!chartsOnly" :name="$t( 'Recent Entries' )">
+			<tab v-if="!chartsOnly" :name="$t( 'Recent Entries' )" class="bg-gray-100">
 				<entry-list
 					wrapper-class="mt-0"
 					:initialFilters='{ sortOrder : "@timestamp DESC", collapse : "stachebox.signature", "application": application, maxrows: 5 }'
@@ -42,6 +42,10 @@ export default {
 		EntryList
 	},
 	props : {
+		headingClass: {
+			required: false,
+			default : "h3"
+		},
 		application: {
 			required : true
 		},
