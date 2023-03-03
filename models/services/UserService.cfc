@@ -13,6 +13,7 @@ component accessors="true" {
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 	property name="settingService" inject="SettingService@stachebox";
 	property name="mailService" inject="MailService@cbmailservices";
+	property name="resourceService" inject="ResourceService@cbi18n";
 
     function getUser() provider="User@stachebox"{}
 
@@ -106,7 +107,11 @@ component accessors="true" {
 
 		arguments.user.setResetToken( resetToken ).save();
 
-		var mailSubject = "[StacheBox] Your Password Reset Request";
+		var mailSubject = resourceService.getResource(
+			resource="password.reset.request.subject",
+			defaultValue="[StacheBox] Your Password Reset Request",
+			bundle = "stachebox"
+		);
 
 		var viewArgs = {
 			"user" : arguments.user.getMemento(),
@@ -114,7 +119,7 @@ component accessors="true" {
 		};
 
 		variables.mailService.newMail(
-									to = project.recipients,
+									to = user.getEmail(),
 									from = moduleSettings.notificationsFrom,
 									subject = mailSubject
 								).setView(

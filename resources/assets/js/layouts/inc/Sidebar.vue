@@ -101,17 +101,30 @@
 				</summary>
 				<div>
 					<template v-for="environment in Object.keys( aggregations.environments )" :key="`environment-${environment}`">
-						<h4 class="ml-7 mr-5 pl-1 mt-5 pb-1 text-gray-600 border-gray-800"><fa-icon icon="globe" class="mr-1" fixed-width/>{{ environment.toTitleCase() }}</h4>
-						<router-link
-							v-for="(application,index) in Object.keys( aggregations.environments[ environment ].applications ).sort( (a,b) => a.localeCompare( b ) )"
-							:key="index"
-							class="flex items-center duration-200 mt-2 py-1 px-8"
-							:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && $route.params.environment == environment ? activeClass : inactiveClass]"
-							:to="`/logs/application/${application}/${environment.toLowerCase()}`"
-						>
-							<fa-icon icon="cube" fixed-width/>
-							<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
-						</router-link>
+						<details class="group/env">
+							<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring rounded group-open:rounded-b-none group-open/env:z-[1] relative">
+							<h4 class="flex flex-1 items-center ml-6 mr-5 pl-1 mt-5 pb-1 text-gray-400 border-gray-600">
+								<span class="flex-1"><fa-icon icon="globe" class="mr-1" fixed-width/> {{ environment.toTitleCase() }}</span>
+								<div class="flex-2">
+									<div class="border-8 border-transparent border-l-gray-600
+									group-open/env:rotate-90 transition-transform origin-left
+									"></div>
+								</div>
+							</h4>
+							</summary>
+							<div>
+								<router-link
+									v-for="(application,index) in Object.keys( aggregations.environments[ environment ].applications ).sort( (a,b) => a.localeCompare( b ) )"
+									:key="index"
+									class="flex items-center duration-200 mt-2 py-1 px-8 text-sm"
+									:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && $route.params.environment == environment ? activeClass : inactiveClass]"
+									:to="`/logs/application/${application}/${environment.toLowerCase()}`"
+								>
+									<fa-icon icon="cube" fixed-width/>
+									<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
+								</router-link>
+							</div>
+						</details>
 					</template>
 				</div>
 			</details>

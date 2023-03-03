@@ -27,7 +27,6 @@ component{
 				).save();
 		}
 
-
 		var defaults = [
 			{ "name" : "applicationAliases", "value" : '{}' },
 			{ "name" : "logIndexPattern", "value" : variables.moduleSettings.logIndexPattern },
@@ -128,7 +127,6 @@ component{
 
 	function onRequestCapture( event, rc, prc ){
 
-		var moduleSettings = getModuleSettings( "stachebox" );
 		var cbSecuritySettings = getModuleSettings( "cbsecurity" );
 		param moduleSettings.isStandalone = false;
 
