@@ -34,7 +34,7 @@
           <div>
             <a
               class="block text-sm fontme text-theme hover:underline"
-              href="#"
+              @click="$router.push( { name: 'ForgotPassword' } )"
               >{{$t("Forgot your password?")}}</a
             >
           </div>

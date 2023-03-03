@@ -208,5 +208,14 @@
   "Status": "Status",
   "Active": "Active",
   "Inactive": "Inactive",
-  "project.delete.confirm.message": "Are you sure you want to delete this project permanently?"
+  "project.delete.confirm.message": "Are you sure you want to delete this project permanently?",
+  "Requesting Password Reset": "Requesting Password Reset",
+  "Enter Your Email Address": "Enter Your Email Address",
+  "Request Password Reset": "Request Password Reset",
+  "reset.request.received.message": "Your password reset request has been received and a link to reset has been sent.  Please check your email.",
+  "Return to Login": "Return to Login",
+  "Change Your Password": "Change Your Password",
+  "reset.request.token.invalid": "The reset token provided is not valid or has expired, please request a new token.",
+  "Request a new Reset Token": "Request a new Reset Token",
+  "Validating token. Please wait": "Validating token. Please wait..."
 }

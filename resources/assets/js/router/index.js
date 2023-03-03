@@ -3,6 +3,8 @@ import auth from "../api/authentication";
 
 import Dashboard from "@/views/Dashboard.vue";
 import Login from "@/views/Login.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 import NotFound from "@/views/NotFound.vue";
 import LogEntry from "@/views/LogEntry.vue";
 import BeatsEntry from "@/views/BeatsEntry.vue";
@@ -27,7 +29,19 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
-    meta: { layout: "empty" },
+    meta: { layout: "empty", whitelist : true },
+  },
+  {
+    path: "/login/forgot-password",
+    name: "ForgotPassword",
+    component: ForgotPassword,
+    meta: { layout: "empty", whitelist : true },
+  },
+  {
+    path: "/login/password-reset",
+    name: "ResetPassword",
+    component: ResetPassword,
+    meta: { layout: "empty", whitelist : true },
   },
   {
     path: "/dashboard",
@@ -122,7 +136,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-	if (to.name !== 'Login') {
+	if ( !to.meta || !to.meta.whitelist ) {
 		auth.check()
 			.then( ( response ) => {
 				store.commit( "processLoginSuccess", response );

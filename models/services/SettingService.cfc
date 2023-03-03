@@ -3,6 +3,7 @@ component singleton {
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 	property name="searchClient" inject="Client@cbelasticsearch";
 	property name="jwtService" inject="JWTService@cbsecurity";
+	property name="userService" inject="UserService@stachebox";
 
 	/**
 	 * Retreives all configured settings
@@ -60,27 +61,40 @@ component singleton {
 	/**
 	 * Generates a new API token
 	 */
-	string function generateAPIToken( user, array permissions = [ "StacheboxReporter" ], expiration ){
+	string function generateAPIToken( user, expiration ){
 		var timestamp = now();
+		param arguments.user = variables.userService.retrieveUserByUsername( variables.moduleSettings.tokenReporter );
 		var sub = !isNull( arguments.user ) ? arguments.user.getId() : createUUID();
-		if( !isNull( arguments.user ) ){
-			arguments.permissions = arguments.user.getPermissions();
-		}
+		arguments.permissions = arguments.user.getPermissions();
+		var timestamp = now();
 		var params = {
 			// Issuing authority
 			"iss" : jwtService.getSettings().jwt.issuer,
-			"iat" : dateDiff( 's', dateConvert( "utc2Local", "January 1 1970 00:00" ), now() ),
+			"iat" : javacast( "long", jwtService.toEpoch( timestamp ) ),
 			"jti"   : hash( timestamp & sub & getTickCount() & rand( "SHA1PRNG" ) ),
 			"sub" : sub,
-			"scope" : permissions.toList( " " ),
-			"exp" : arguments.expiration ?: javacast( "null", 0 )
+			"scope" : user.getJwtScopes().toList( " " ),
+			"exp" : javacast( "long", !isNull( arguments.expiration ) ? jwtService.toEpoch( arguments.expiration ) : jwtService.toEpoch( dateAdd( "yyyy", 10, now() ) ) )
 		};
 
-		if( !isNull( arguments.user ) ){
-			structAppend( params, arguments.user.getJwtCustomClaims() );
+		structAppend( params, arguments.user.getJwtCustomClaims() );
+
+		var jwtToken = jwtService.encode( params );
+
+		if( jwtService.getSettings().jwt.tokenStorage.enabled ) {
+			jwtService.getTokenStorage().set(
+				key        = params.jti,
+				token      = jwtToken,
+				expiration = dateDiff(
+					"n",
+					jwtService.fromEpoch( params.iat ),
+					jwtService.fromEpoch( params.exp )
+				),
+				payload = params
+			);
 		}
 
-		return jwtService.encode( params );
+		return jwtToken;
 	}
 
 }

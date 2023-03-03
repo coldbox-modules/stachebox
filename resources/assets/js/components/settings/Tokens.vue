@@ -36,7 +36,7 @@
 							</ul>
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-gray-500">
-							{{ item.claims.exp ? dayjs( new Date( item.claims.exp ) ).format('LLL') : $t( "Never" ) }}
+							{{ item.claims.exp ? dayjs( new Date( item.claims.exp * 1000 ) ).format('LLL') : $t( "Never" ) }}
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 							<code>{{ item.token.substring( 0, 25 ) }}...</code> <a class="text-teal-800" @click="clip( item.token )"><fa-icon icon="share" v-tooltip="$t( 'Copy token' )"></fa-icon></a>

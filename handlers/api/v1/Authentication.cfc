@@ -32,8 +32,8 @@ component extends="BaseAPIHandler"{
 	// ( POST ) /stachebox/api/v1/authentication/reset
 	function resetRequest( event, rc, prc ){
 		var userService = getInstance( "UserService@stachebox" );
-		param rc.username = "";
-		prc.user = userService.retrieveUserByUsername( rc.username );
+		param rc.email = "";
+		prc.user = userService.retrieveUserByUsername( rc.email );
 
 		if( isNull( prc.user ) ){
 			return this.onEntityNotFoundException( argumentCollection = arguments );
