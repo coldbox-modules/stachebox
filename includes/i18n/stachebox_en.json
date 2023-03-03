@@ -217,5 +217,9 @@
   "Change Your Password": "Change Your Password",
   "reset.request.token.invalid": "The reset token provided is not valid or has expired, please request a new token.",
   "Request a new Reset Token": "Request a new Reset Token",
-  "Validating token. Please wait": "Validating token. Please wait..."
+  "Validating token. Please wait": "Validating token. Please wait...",
+  "Previous": "Previous",
+  "Next": "Next",
+  "Suppress this log entry from future results": "Suppress this log entry from future results",
+  "All Levels": "All Levels"
 }

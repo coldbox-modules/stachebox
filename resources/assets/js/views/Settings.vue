@@ -1,13 +1,13 @@
 <template>
 	<div class="settings-admin">
 		<Tabs v-if="settings">
-			<Tab name="Logging">
+			<Tab name="Logging" class="bg-white">
 				<logs :settings="settings" @update-settings="applySettings"></logs>
 			</Tab>
-			<Tab name="API Tokens">
+			<Tab name="API Tokens" class="bg-white">
 				<tokens :settings="settings" @update-tokens="updateTokens"></tokens>
 			</Tab>
-			<Tab name="Projects">
+			<Tab name="Projects" class="bg-white">
 				<projects :settings="settings" @update-projects="updateProjects"></projects>
 			</Tab>
 		</Tabs>

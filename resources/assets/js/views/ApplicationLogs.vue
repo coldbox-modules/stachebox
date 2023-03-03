@@ -5,11 +5,11 @@
 				<div
 				class="align-middle inline-block min-w-full"
 				>
-					<application-snapshot :application="$route.params.id" :chartsOnly="true"></application-snapshot>
+					<application-snapshot heading-class="h2" :application="$route.params.id" :chartsOnly="true"></application-snapshot>
 				</div>
 			</div>
 		</div>
-		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Recent Entries For {application}", { application: $route.params.id.toTitleCase() } )}} <em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em></h3>
+		<h3 class="text-gray-500 text-lg font-medium pb-2 border-gray-300 border-b">{{ $t( "Recent Entries For {application}", { application: $route.params.id.toTitleCase() } )}} <em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em></h3>
 		<div class="entry-list">
 			<entry-list
 				:initialFilters="searchParams"

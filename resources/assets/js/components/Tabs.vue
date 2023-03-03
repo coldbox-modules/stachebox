@@ -1,9 +1,9 @@
 <template>
      <div>
-         <nav class="px-8 pt-2 shadow-md">
-            <div class="-mb-px flex">
+         <nav class="px-8 shadow-md bg-gray-100">
+            <div class="-mb-px pt-2 flex">
                 <a v-for="tab in tabs"
-                   class="no-underline border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8"
+                   class="no-underline border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8 py-3"
                    :class="{ 'text-gray-200': tab.isActive, 'text-theme': tab.isActive == false, 'bg-theme': tab.isActive == true, 'border-l pl-3 pr-3' : true }"
                    @click="selectTab(tab)"
                    :key="tab.name"

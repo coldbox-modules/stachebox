@@ -32,8 +32,8 @@
 					>
 						{{ $t( "Message" ) }}
 					</th>
-					<th class="px-2 py-3 border-b border-gray-200 bg-gray-50 justify-right text-right">
-						<a @click="toggleFollow" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>&nbsp;&nbsp;
+					<th class="px-2 py-3 border-b border-gray-200 bg-gray-50 justify-right text-right whitespace-nowrap">
+						<a @click="toggleFollow" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>&nbsp;
 						<a @click="toggleFilters" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
 					</th>
 				</tr>
@@ -79,7 +79,7 @@
 				</td>
 
 				<td
-					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"
+					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium whitespace-nowrap"
 				>
 					<confirmation-button
 						@confirmed="suppress( entry )"
@@ -202,7 +202,7 @@ export default {
 			if( !pageNumber || pageNumber === this.pagination.page ) return;
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
-			this.$delete( this.searchFilters, "startRows" );
+			delete this.searchFilters[ "startRows" ];
 			this.searchFilters.page = pageNumber;
 			this.fetchLogs();
 			if( refreshEnabled ) this.toggleFollow();
@@ -210,7 +210,7 @@ export default {
 		updateFilters( args ){
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
-			Object.keys( args ).forEach( ( key ) => this.searchFilters[ key ] = args[ key ] );
+			Object.keys( args ).forEach( ( key ) => this.searchFilters[ key ] = args[ key ] || null );
 			this.fetchLogs();
 			if( refreshEnabled ) this.toggleFollow();
 		},

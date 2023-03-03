@@ -6,9 +6,11 @@
 				<date-time-picker
 					v-model="dateRange"
 					:range="true"
-					color="#159CBF"
+					color="#374151"
 					label="Select a minimum date or range"
+					:noHeader="true"
 					:max-date="new Date().toISOString()"
+					position="bottom"
 					@validate="updateDateRangeFilters"
 					@input="checkDateRangeClear"
 					format="YYYY-MM-DDTHH:mm:ss.sssZ"
@@ -24,7 +26,7 @@
 					name="application"
 					v-model="searchFilters.application"
 					:value="'all'"
-					@change="onFilterChange( 'application', searchFilters.application )"
+					@change="onFilterChange( 'labels.application', searchFilters.application )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Applications" ) }}</option>
@@ -38,7 +40,7 @@
 					name="environment"
 					v-model="searchFilters.environment"
 					:value="'all'"
-					@change="onFilterChange( 'environment', searchFilters.environment )"
+					@change="onFilterChange( 'labels.environment', searchFilters.environment )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
 					<option :value="undefined">All Environments</option>
@@ -55,15 +57,15 @@
 					name="level"
 					v-model="searchFilters.level"
 					:value="'all'"
-					@change="onFilterChange( 'level', searchFilters.level )"
+					@change="onFilterChange( 'log.level', searchFilters.level )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Levels" ) }}</option>
-					<option value="FATAL">{{ $t( "Fatal" ) }}</option>
-					<option value="ERROR">{{ $t( "Error" ) }}</option>
-					<option value="WARN">{{ $t( "Warning" ) }}</option>
-					<option value="INFO">{{ $t( "Informational" ) }}</option>
-					<option value="DEBUG">{{ $t( "Debug" ) }}</option>
+					<option value="fatal">{{ $t( "Fatal" ) }}</option>
+					<option value="error">{{ $t( "Error" ) }}</option>
+					<option value="warn">{{ $t( "Warning" ) }}</option>
+					<option value="info">{{ $t( "Informational" ) }}</option>
+					<option value="debug">{{ $t( "Debug" ) }}</option>
 				</select>
 
 			</div>
