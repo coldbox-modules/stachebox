@@ -28,7 +28,7 @@
         "cbsecurity":"^2",
         "cbvalidation":"^2",
         "BCrypt":"^3",
-        "logstash":"be",
+        "logstash":"^3.0.0",
         "cbi18n":"^3.2.0+12",
         "cbmailservices":"^2.7.0-snapshot",
         "cfmigrations":"^3.0.8"
