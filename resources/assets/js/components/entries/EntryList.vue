@@ -1,7 +1,7 @@
 <template>
 	<div :class="wrapperClass">
 		<entry-list-filters v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters"></entry-list-filters>
-		<table class="min-w-full" style="table-layout:fixed" v-if="logs">
+		<table class="min-w-full table-fixed" v-if="logs">
 			<thead>
 				<tr>
 					<th
@@ -43,7 +43,7 @@
 				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }">
 				<td
 					v-if="displayApplication"
-					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
+					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 					style="width: 150px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
@@ -51,7 +51,7 @@
 				</td>
 
 				<td
-					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
+					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 					style="width: 175px"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
@@ -73,7 +73,6 @@
 				</td>
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm leading-5 text-gray-500"
-					style="max-width:400px!important"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
 					<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message, truncate ? 200 : entry.message.length + 1 ) }}</code>
