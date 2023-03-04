@@ -33,7 +33,7 @@
 
           <div>
             <a
-              class="block text-sm fontme text-theme hover:underline"
+              class="block text-sm fontme text-theme hover:underline hover:cursor-pointer"
               @click="$router.push( { name: 'ForgotPassword' } )"
               >{{$t("Forgot your password?")}}</a
             >
@@ -43,7 +43,7 @@
         <div class="mt-6">
           <button
             type="submit"
-            class="py-2 px-4 text-center bg-theme w-full text-white text-sm"
+            class="py-2 px-4 text-center bg-theme w-full text-white text-sm hover:cursor-pointer"
 			tabindex="3"
           >
 			<span v-if="!isProcessing">{{ $t("Sign in") }}</span>
