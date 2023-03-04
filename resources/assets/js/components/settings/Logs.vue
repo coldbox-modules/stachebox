@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3 class="text-gray-700 text-3xl font-medium">{{ $t( "Logging Settings" ) }}</h3>
+		<h2 class="text-gray-700 text-2xl font-medium">{{ $t( "Logging Settings" ) }}</h2>
 		<table v-if="settings" class="text-left table-fixed border-collapse mt-5">
 			<tbody>
 				<tr class="border-b">
@@ -25,7 +25,7 @@
 					<td colspan="2 items-right">
 						<button
 						@click="$emit( 'update-settings' )"
-						class="block mt-10 float-right items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+						class="float-right mt-10 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-50"
 						><fa-icon icon="save"></fa-icon> {{ $t( "Update Settings" ) }}</button>
 					</td>
 				</tr>

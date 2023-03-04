@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<h3 class="text-gray-700 text-3xl font-medium flex mb-3">
+		<h2 class="text-gray-700 text-2xl font-medium flex mb-3">
 			<span class="flex-1">{{ $t( "Projects" ) }}</span>
 			<button v-if="!showForm && hasPermission( 'Administer:Projects' )" type="button" @click="createProject" class="flex-2 justify-center p-2 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
 				<fa-icon icon="plus" fixed-width></fa-icon> {{ $t( "New Project" ) }}
 			</button>
-		</h3>
+		</h2>
 		<table v-if="!showForm" class="min-w-full divide-y divide-gray-200">
 			<thead class="bg-gray-50">
 				<tr>

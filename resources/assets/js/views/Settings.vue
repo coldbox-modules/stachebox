@@ -1,5 +1,6 @@
 <template>
 	<div class="settings-admin">
+		<h1 class="text-gray-500 text-3xl font-medium pb-2 border-gray-300 border-b mb-5">{{ $t( 'Settings Administration' ) }}</h1>
 		<Tabs v-if="settings">
 			<Tab name="Logging" class="bg-white">
 				<logs :settings="settings" @update-settings="applySettings"></logs>
