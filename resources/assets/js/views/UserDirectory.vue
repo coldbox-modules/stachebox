@@ -64,7 +64,15 @@
 							{{ user.isAdministrator ? 'Admin' : 'User' }}
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-							<router-link v-if="hasPermission( 'Administer:Users' ) || user.id == authUser.id" :to="`/users/edit/${user.id }`" class="text-cyan-600 hover:text-cyan-900">{{ $t( "Edit" ) }}</router-link>
+							<button
+								type="button"
+								class="inline-flex justify-center py-2 px-2 border border-transparent shadow-sm text-xs font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-5"
+								v-if="hasPermission( 'Administer:Users' ) || user.id == authUser.id"
+								@click="$router.push( `/users/edit/${user.id }` )"
+							>
+								<fa-icon class="mr-2" icon="edit"/>
+								{{ $t( "Edit" ) }}
+							</button>
 						</td>
 					</tr>
 				</tbody>

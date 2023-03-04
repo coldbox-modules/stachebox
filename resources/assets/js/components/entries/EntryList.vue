@@ -40,7 +40,7 @@
 			</thead>
 
 			<tbody class="bg-white" v-if="logs.length">
-				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }">
+				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }" tabindex="0" @keyup.enter="$router.push( `/logs/entry/${entry.id}` )">
 				<td
 					v-if="displayApplication"
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
