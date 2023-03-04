@@ -50,7 +50,7 @@
 				>
 					<a
 						@click="$emit( 'paginate', pagination.page - 1 )"
-						class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
 						:disabled="pagination.page == 1"
 					>
 						<span class="sr-only">Previous</span>
@@ -67,7 +67,7 @@
 					</a>
 					<a
 						@click="$emit( 'paginate', pagination.page + 1 )"
-						class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
 						:disabled="pagination.page == pagination.pages"
 					>
 						<span class="sr-only">Next</span>

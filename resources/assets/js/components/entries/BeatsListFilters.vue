@@ -6,9 +6,11 @@
 				<date-time-picker
 					v-model="dateRange"
 					:range="true"
-					color="#159CBF"
+					color="#374151"
 					:label="$t( 'Select a minimum date or range' )"
+					:noHeader="true"
 					:max-date="new Date().toISOString()"
+					position="bottom"
 					@validate="updateDateRangeFilters"
 					@input="checkDateRangeClear"
 					format="YYYY-MM-DDTHH:mm:ss.sssZ"

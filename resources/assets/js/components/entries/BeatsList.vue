@@ -27,8 +27,8 @@
 						{{ $t( "Message" ) }}
 					</th>
 					<th class="px-2 py-3 border-b border-gray-200 bg-gray-50 justify-right text-right">
-						<a @click="toggleFollow" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>&nbsp;&nbsp;
-						<a @click="toggleFilters" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
+						<a @click="toggleFollow" class="hover:cursor-pointer" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>&nbsp;&nbsp;
+						<a @click="toggleFilters" class="hover:cursor-pointer" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
 					</th>
 				</tr>
 			</thead>

@@ -116,7 +116,7 @@
 					<button
 						type="submit"
 						:disabled="!isValid || null"
-						class="py-2 px-4 text-center bg-theme w-full text-white text-sm"
+						class="py-2 px-4 text-center bg-theme w-full text-white text-sm disabled:opacity-50"
 						tabindex="3"
 					>
 						<span v-if="!isProcessing">{{
