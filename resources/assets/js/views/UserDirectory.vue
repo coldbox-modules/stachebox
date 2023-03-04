@@ -1,7 +1,7 @@
 <template>
     <div>
 		<div class="user-directory">
-			<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "User Directory" ) }}</h3>
+			<h1 class="text-gray-500 text-3xl font-medium pb-2 border-gray-300 border-b">{{ $t( "User Directory" ) }}</h1>
 		</div>
         <section>
 			<div class="float-right py-2" v-if='hasPermission( "Administer:Users" )'>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3 class="text-gray-700 text-3xl font-medium">{{ $t( "API Tokens" ) }}</h3>
+		<h2 class="text-gray-700 text-2xl font-medium">{{ $t( "API Tokens" ) }}</h2>
 		<table class="min-w-full divide-y mt-10 divide-gray-200">
 				<thead class="bg-gray-50">
 					<tr>
