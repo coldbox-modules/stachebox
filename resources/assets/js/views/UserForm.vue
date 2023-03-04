@@ -34,9 +34,10 @@
 										id="firstName"
 										autocomplete="given-name"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
-										v-model="v$.user.firstName.$model"
+										@blur="v$.user.firstName.$touch"
+										v-model="user.firstName"
 									/>
-									<form-errors :errors="v$.user.firstName.$errors"></form-errors>
+									<form-errors :errors="v$.user.firstName.$errors" :fieldName="$t( 'First name' )"></form-errors>
 								</div>
 							</div>
 
@@ -54,9 +55,10 @@
 										id="lastName"
 										autocomplete="family-name"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
-										v-model="v$.user.lastName.$model"
+										v-model="user.lastName"
+										@blur="v$.user.lastName.$touch"
 									/>
-									<form-errors :errors="v$.user.lastName.$errors"></form-errors>
+									<form-errors :errors="v$.user.lastName.$errors" :fieldName="$t( 'Last name' )"></form-errors>
 								</div>
 							</div>
 
@@ -74,9 +76,10 @@
 										type="email"
 										autocomplete="email"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
-										v-model="v$.user.email.$model"
+										v-model="user.email"
+										@blur="v$.user.email.$touch"
 									/>
-									<form-errors :errors="v$.user.email.$errors"></form-errors>
+									<form-errors :errors="v$.user.email.$errors" :fieldName="$t( 'Email address' )"></form-errors>
 								</div>
 							</div>
 
@@ -126,16 +129,13 @@
 
 						<div class="sm:col-span-6">
 							<div class="mt-2 flex items-center">
-								<button
-								@click="dropdownOpen = !dropdownOpen"
-								class="relative z-10 block h-200 w-200 rounded-full overflow-hidden shadow focus:outline-none"
-								>
+								<div class="relative z-10 block h-200 w-200 rounded-full overflow-hidden shadow">
 									<img
 										class="h-full w-full object-cover"
 										:src="user.avatar"
 										:alt="$t( 'Your avatar' )"
 									/>
-								</button>
+								</div>
 								<button
 									type="button"
 									class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-none shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
@@ -181,7 +181,7 @@
 										id="firstName"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
 										v-model="user.password"
-										@change="validatePassword"
+										@change="v$.user.password.$touch"
 									/>
 								</div>
 							</div>
@@ -204,28 +204,10 @@
 										id="firstName"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
 										v-model="user.confirmPassword"
-										@change="validatePassword"
+										@change="v$.user.confirmPassword.$touch"
 									/>
 								</div>
-								<div v-if="!isPasswordVerified && validation.errors.length" class="rounded-md bg-red-50 p-4">
-									<div class="flex">
-										<div class="flex-shrink-0">
-											<fa-icon icon="times-circle" class="h-5 w-5 text-red-400"/>
-										</div>
-										<div class="ml-3">
-											<h3 class="text-sm font-medium text-red-800">
-												{{ $t( "This form has errors and cannot be saved" ) }}
-											</h3>
-											<div class="mt-2 text-sm text-red-700">
-												<ul class="list-disc pl-5 space-y-1">
-													<li v-for="error in validation.errors">
-														{{ error }}
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
+								<form-errors :errors="v$.user.confirmPassword.$errors" :fieldName="$t( 'Password confirmation' )"></form-errors>
 							</div>
 						</div>
 					</div>
@@ -300,8 +282,9 @@ import Dialog from "@/components/Dialog";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import FormErrors from "@/components/util/FormErrors";
 import useVuelidate from "@vuelidate/core";
-import { required, email, requiredIf } from "@vuelidate/validators";
+import { required, email, requiredIf, sameAs, helpers } from "@vuelidate/validators";
 import { mapState,mapGetters } from "vuex";
+import { validPassword } from "@/extensions/vuelidate";
 export default {
 	components : {
 		Dialog,
@@ -319,7 +302,8 @@ export default {
                 "firstName" : { required },
                 "lastName" : { required },
                 "email" : { required, email },
-				"password" : { "requireIfNew" : requiredIf( !this.user || !this.user.id ) }
+				"password" : { "requireIfNew" : requiredIf( this.isExistingUser ) },
+                "confirmPassword" : { requiredIfSetting : helpers.withMessage('This field is required', requiredIf( this.user && this.user.password )), sameAsPassword: helpers.withMessage('The passwords must match', sameAs( this.user ? this.user.password : "" ) ), $lazy: true }
             }
         };
     },
@@ -343,6 +327,9 @@ export default {
 		}),
 		isPasswordVerified(){
 			return this.user.password === this.user.confirmPassword;
+		},
+		isExistingUser(){
+			return !( this.user && this.user.id );
 		},
 		isValid(){
 			return this.isPasswordVerified && !this.v$.$invalid
@@ -386,15 +373,6 @@ export default {
 		},
 		confirmDeleteUser(){
 
-		},
-		validatePassword(){
-			if( this.validation.errors.length ){
-				this.validation.errors.splice( 0, this.validation.errors.length );
-			}
-			if( this.user.password.length && (!this.user.confirmPassword || !this.user.confirmPassword.length ) ) return;
-			if( this.user.password !== this.user.confirmPassword ){
-				this.validation.errors.push( "The two passwords do not match.  Please re-confirm your new password.");
-			}
 		},
 		updateAvatar( event ){
 			var self = this;

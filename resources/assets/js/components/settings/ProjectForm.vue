@@ -25,7 +25,7 @@
 									for="name"
 									class="block text-sm font-medium text-gray-700"
 								>
-									{{ $t( "Name" ) }}
+									{{ $t( "Name" ) }}: <fa-icon size="xs" class="text-red-500" icon="asterisk"/>
 								</label>
 								<div class="mt-1">
 									<input
@@ -37,7 +37,7 @@
 										v-model="project.name"
 										@change="reSlugify"
 									/>
-									<form-errors :errors="v$.project.name.$errors"></form-errors>
+									<form-errors :errors="v$.project.name.$errors" :fieldName="$t( 'Project name' )"></form-errors>
 								</div>
 							</div>
 
@@ -90,17 +90,14 @@
 									{{ $t( "Project Icon" ) }}
 								</label>
 								<div class="mt-2 flex items-center">
-									<button
-									@click="dropdownOpen = !dropdownOpen"
-									class="relative z-10 block h-200 w-200 rounded-full overflow-hidden shadow focus:outline-none"
-									>
+									<div class="relative z-10 block h-200 w-200 rounded-full overflow-hidden shadow">
 										<img
 											v-if="project.icon"
 											class="h-full w-full object-cover"
 											:src="project.icon"
 											:alt="$t( 'Your project icon' )"
 										/>
-									</button>
+									</div>
 									<button
 										type="button"
 										class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-none shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
@@ -138,7 +135,7 @@
 									for="applications"
 									class="block text-sm font-medium text-gray-700"
 								>
-									{{ $t( "Applications" ) }}
+									{{ $t( "Applications" ) }}: <fa-icon size="xs" class="text-red-500" icon="asterisk"/>
 								</label>
 								<div class="mt-1">
 									<VueMultiselect
@@ -230,13 +227,14 @@
 								<div class="mt-1">
 									<VueMultiselect
 										:loading="!users"
-										v-model="project.recipients"
+										v-model="v$.project.recipients.$model"
 										:options="users"
 										track-by="id"
 										:multiple="true"
 										:custom-label="(val) => val.firstName + ' ' + val.lastName"
 										:placeholder="$t( 'Choose users to receive notification emails' )"
 									/>
+									<form-errors :errors="v$.project.recipients.$errors" :fieldName="$t( 'Notification Recipients' )"></form-errors>
 								</div>
 							</div>
 						</div>
@@ -315,7 +313,7 @@ import VueMultiselect from 'vue-multiselect';
 import useVuelidate from "@vuelidate/core";
 import FormErrors from "@/components/util/FormErrors";
 import ToggleSwitch from "@/components/ToggleSwitch";
-import { required, url } from "@vuelidate/validators";
+import { required, url, requiredIf, helpers } from "@vuelidate/validators";
 import usersAPI from "@/api/users";
 import { mapState } from "vuex";
 export default {
@@ -333,7 +331,9 @@ export default {
         return {
             "project" : {
                 "name" : { required },
-				"url": {  url }
+				"url": {  url },
+				"applications" : { required },
+				"recipients": { requiredIfEmails : helpers.withMessage( this.$t( 'Recipients must be assigned if summary emails are configured' ), requiredIf( this.project && this.project.summaryEmails )) }
             }
         };
     },
@@ -426,6 +426,7 @@ export default {
 		},
 		toggleNotifications(){
 			this.project.summaryEmails = ! this.project.summaryEmails;
+			this.v$.project.recipients.$touch();
 		},
 		deleteProject(){
 			this.$emit( "delete-project", { data : this.project, index : this.index } );

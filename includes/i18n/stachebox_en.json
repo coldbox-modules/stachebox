@@ -221,5 +221,10 @@
   "Previous": "Previous",
   "Next": "Next",
   "Suppress this log entry from future results": "Suppress this log entry from future results",
-  "All Levels": "All Levels"
+  "All Levels": "All Levels",
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+  "Password confirmation": "Password confirmation",
+  "Project name": "Project name",
+  "Recipients must be assigned if summary emails are configured": "Recipients must be assigned if summary emails are configured"
 }
