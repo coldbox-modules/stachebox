@@ -227,5 +227,7 @@
   "Password confirmation": "Password confirmation",
   "Project name": "Project name",
   "Recipients must be assigned if summary emails are configured": "Recipients must be assigned if summary emails are configured",
-  "No beats have been assigned": "No beats have been assigned"
+  "No beats have been assigned": "No beats have been assigned",
+  "Log Types": "Log Types",
+  "Loading module settings": "Loading module settings..."
 }

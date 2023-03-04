@@ -14,7 +14,7 @@
 
 		<div v-else class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-400" icon="circle-notch" spin fixed-width />
-			<p class="mt-4 text-gray-400">Loading module settings...</p>
+			<p class="mt-4 text-gray-400">{{ $t( "Loading module settings" ) }}</p>
 		</div>
 	</div>
 </template>
