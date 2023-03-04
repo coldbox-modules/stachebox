@@ -5,13 +5,13 @@
 		<div class="flex-1 flex justify-between sm:hidden">
 			<a
 				href="#"
-				class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
+				class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 hover:cursor-pointer"
 			>
 				{{ $t( "Previous" ) }}
 			</a>
 			<a
 				href="#"
-				class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
+				class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 hover:cursor-pointer"
 			>
 				{{ $t( "Next" ) }}
 			</a>
@@ -37,7 +37,7 @@
 					name="maxRows"
 					v-model="pagination.maxRows"
 					@change="setMaxRows"
-					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
+					class="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md hover:cursor-pointer"
 				>
 					<option v-for="qty in maxRowOptions" :key="qty" :value="qty">{{qty}}</option>
 				</select>
@@ -50,7 +50,7 @@
 				>
 					<a
 						@click="$emit( 'paginate', pagination.page - 1 )"
-						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:cursor-pointer"
 						:disabled="pagination.page == 1"
 					>
 						<span class="sr-only">Previous</span>
@@ -60,14 +60,14 @@
 						v-for="page in displayedPages"
 						:key="page"
 						@click="$emit( 'paginate', page )"
-						class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium "
+						class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium hover:cursor-pointer "
 						:class="{ 'bg-gray-700 text-gray-200 hover:bg-gray-600' : page === pagination.page, 'bg-white text-gray-700 hover:bg-gray-50' : page !== pagination.page }"
 					>
 						{{ page || '...' }}
 					</a>
 					<a
 						@click="$emit( 'paginate', pagination.page + 1 )"
-						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+						class="disabled:opacity-50 relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 hover:cursor-pointer"
 						:disabled="pagination.page == pagination.pages"
 					>
 						<span class="sr-only">Next</span>

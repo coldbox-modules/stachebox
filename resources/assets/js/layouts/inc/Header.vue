@@ -5,7 +5,7 @@
 	<div class="flex items-center">
 		<div class="flex items-center justify-center bg-gray-100">
 			<div class="flex items-center">
-				<router-link :to="{ name : 'Dashboard'}">
+				<router-link :to="{ name : 'Dashboard'}" class="hover:cursor-pointer">
 					<img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" style="width:200px"/>
 				</router-link>
 			</div>
@@ -13,7 +13,7 @@
 		<div class="relative ml-2">
 			<button
 				@click="$emit( 'toggle-sidebar' )"
-				class="text-gray-500 focus:outline-none"
+				class="text-gray-500 focus:outline-none hover:cursor-pointer hover:text-gray-600"
 				v-tooltip="'Toggle the sidebar menu'"
 			>
 				<fa-icon icon="bars" fixed-width/>
@@ -41,7 +41,7 @@
       <div class="relative" v-if="user">
         <button
           @click="dropdownOpen = !dropdownOpen"
-          class="relative z-10 block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none"
+          class="relative z-10 block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none hover:cursor-pointer"
         >
           <img
             class="h-full w-full object-cover"
@@ -62,16 +62,16 @@
         >
 			<router-link
 				:to="`/profile/${user.id}`"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white hover:cursor-pointer"
 			>Profile</router-link>
 
 			<router-link
 				:to="{name : 'Directory'}"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white hover:cursor-pointer"
 			>Directory</router-link>
 			<a
 				@click="logout"
-				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
+				class="block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white hover:cursor-pointer"
 			>
 				Log out
 			</a>
