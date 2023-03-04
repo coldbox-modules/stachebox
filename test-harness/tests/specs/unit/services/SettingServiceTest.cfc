@@ -21,21 +21,21 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		variables.userMemento = {
 			"firstName" : "Joe",
 			"lastName" : "Blow",
-			"email" : "Joe@blow.com",
+			"email" : "#createUUID()#@blow.com",
 			"password" : "Testing1234$",
 			"isAdministrator" : true
 		};
 		variables.testUser = userService.getUser()
 											.new( userMemento )
 											.encryptPassword()
-											.save( refresh=true );
+											.save();
 	}
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
 		getWirebox().getInstance( "SearchBuilder@cbElasticsearch" )
 					.new( getWirebox().getInstance( "User@stachebox" ).getSearchIndexName() )
-					.filterTerm( "email", "Joe@blow.com" )
+					.filterTerm( "email", variables.userMemento.email )
 					.execute()
 					.getHits()
 					.each( function( doc ){

@@ -16,7 +16,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 		variables.userMemento = {
 			"firstName" : "Joe",
 			"lastName" : "Blow",
-			"email" : "Joe@blow.com",
+			"email" : "#createUUID()#@blow.com",
 			"password" : "Testing1234$",
 			"isAdministrator" : true
 		};
@@ -24,14 +24,13 @@ component extends="tests.resources.BaseAPITestHelper"{
 											.new( userMemento )
 											.encryptPassword()
 											.save();
-		sleep( 1000 );
 	}
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
 		getWirebox().getInstance( "SearchBuilder@cbElasticsearch" )
 					.new( getWirebox().getInstance( "User@stachebox" ).getSearchIndexName() )
-					.filterTerm( "email", "Joe@blow.com" )
+					.filterTerm( "email", variables.userMemento.email )
 					.execute()
 					.getHits()
 					.each( function( doc ){
@@ -44,6 +43,11 @@ component extends="tests.resources.BaseAPITestHelper"{
 	function run( testResults, testBox ){
 		// all your suites go here.
 		describe( "Authentication event specs", function(){
+
+			beforeEach( function(){
+				var auth = getWirebox().getInstance( "AuthenticationService@cbauth" );
+				auth.logout();
+			});
 
 			it( "Tests the login method", function(){
 				expect( variables ).toHaveKey( "userMemento" );
