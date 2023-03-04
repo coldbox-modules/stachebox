@@ -1,5 +1,5 @@
 @import "prismjs/themes/prism-okaidia.css";
-@import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+@import "@vuepic/vue-datepicker/dist/main.css";
 @import "floating-vue/dist/style.css";
 @import "vue-multiselect/dist/dist/vue-multiselect.css";
 

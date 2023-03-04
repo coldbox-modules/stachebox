@@ -1,24 +1,17 @@
 <template>
-	<div class="grid bg-white grid-cols-3 gap-2">
+	<div class="grid bg-white grid-cols-4 gap-2">
 		<div class="my-2">
 			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Date Range" ) }}:</label>
 				<date-time-picker
 					v-model="dateRange"
-					:range="true"
-					color="#374151"
-					:label="$t( 'Select a minimum date or range' )"
-					:noHeader="true"
-					:max-date="new Date().toISOString()"
-					position="bottom"
-					@validate="updateDateRangeFilters"
-					format="YYYY-MM-DDTHH:mm:ss.sssZ"
+					@update:modelValue="updateDateRangeFilters"
 				></date-time-picker>
 			</div>
 		</div>
 
 		<div class="my-2 pl-5 border-l border-gray-300">
-			<div class="px-3 py-2 mt-2" v-if="!searchFilters.application">
+			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Application" ) }}:</label>
 				<select
 					id="application"
@@ -32,7 +25,10 @@
 					<option v-for="application in applications" :key="application" :value="application">{{application.toTitleCase()}}</option>
 				</select>
 			</div>
-			<div v-else-if="availableEnvironments" class="px-3 py-2 mt-2">
+		</div>
+
+		<div class="my-2 pl-5 border-l border-gray-300">
+			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Environment" ) }}:</label>
 				<select
 					id="environment"
@@ -72,7 +68,7 @@
 	</div>
 </template>
 <script>
-import DateTimePicker from 'vue-ctk-date-time-picker';
+import DateTimePicker from '@/components/DatePicker';
 import { mapState } from "vuex";
 export default {
 	components : {
@@ -99,26 +95,13 @@ export default {
 		onFilterChange( key, val ){
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},
-		updateDateRangeFilters(){
+		updateDateRangeFilters( e ){
 			this.$emit(
 				"apply-filter", {
-					minDate : this.dateRange.start,
-					maxDate: this.dateRange.end
+					minDate : e[ 0 ] || null,
+					maxDate: e[ 1 ] || null
 				}
 			);
-		}
-	},
-	watch : {
-		dateRange : {
-			deep : true,
-			handler( newVal, oldVal ){
-				if( !newVal ){
-					this.$emit( "apply-filter", {
-						minDate : undefined,
-						maxDate: undefined
-					} );
-				}
-			}
 		}
 	}
 

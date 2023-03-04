@@ -14,7 +14,7 @@
                 </button>
             </div>
         </nav>
-        <div class="tabs-details">
+        <div class="tabs-details block">
             <slot></slot>
         </div>
     </div>
