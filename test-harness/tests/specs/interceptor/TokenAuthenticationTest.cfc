@@ -15,7 +15,14 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			variables.model.$( method="getInstance", callback=function( dsl ){ return getWirebox().getInstance( dsl ) } );
 			variables.moduleSettings = getWirebox().getInstance( "coldbox:moduleSettings:stachebox" );
 			variables.deployUser = getWirebox().getInstance( "UserService@stachebox" ).retrieveUserByUsername( moduleSettings.tokenReporter );
-			variables.APITokens = getWirebox().getInstance( "SettingService@stachebox" ).getByName( "apiTokens" ).getMemento().value;
+			var tokenSetting = getWirebox().getInstance( "SettingService@stachebox" ).getByName( "apiTokens" );
+			variables.APITokens = tokenSetting.getMemento().value;
+			if( !variables.APITokens.len() ){
+				var settingService = getInstance( "SettingService@stachebox" );
+				variables.APITokens.append( settingService.generateAPIToken() );
+				tokenSetting.getMemento().value = tokenSetting.getClient().getUtil().toJSON( variables.APITokens );
+				tokenSetting.save( refresh=true );
+			}
 		}
 
 		// executes after all suites+specs in the run() method
@@ -36,7 +43,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 				it( "It can authenticate a valid token", function(){
 					expect( variables.APITokens ).toBeArray();
-					expect( variables.APITokens.len() ).toBeGT( 1 );
+					expect( variables.APITokens.len() ).toBeGTE( 1 );
 					var testContext = getMockRequestContext();
 					var testToken = variables.APITokens[ 1 ];
 					testContext.$(
