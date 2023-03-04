@@ -26,7 +26,7 @@
     "dependencies":{
         "mementifier":"^2",
         "cbsecurity":"^2",
-        "cbvalidation":"^2",
+        "cbvalidation":"4",
         "BCrypt":"^3",
         "logstash":"^3.0.0",
         "cbi18n":"^3.2.0+12",
