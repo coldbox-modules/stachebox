@@ -1,21 +1,21 @@
 <template>
 	<div class="user-form">
-		<h3
-			class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b"
+		<h1
+			class="text-gray-500 text-3xl font-medium pb-2 border-gray-300 border-b"
 			v-if="user"
 		>
 			{{ user && user.id ? $t( "Edit" ) : $t( "Create" ) }} {{ $t( "User" ) }}
-		</h3>
+		</h1>
 		<form v-if="user" class="space-y-8 divide-y divide-gray-300">
 			<div class="space-y-8 divide-y divide-gray-300">
 				<div>
 					<div class="pt-8">
 						<div>
-							<h3
-								class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
+							<h2
+								class="text-xl leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 							>
 								{{ $t( "Personal Information" ) }}
-							</h3>
+							</h2>
 						</div>
 						<div
 							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
@@ -117,11 +117,11 @@
 						</div>
 					</div>
 					<div class="mt-10">
-						<h3
-							class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
+						<h2
+							class="text-xl leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 						>
 							{{ $t( "Avatar" ) }}
-						</h3>
+						</h2>
 					</div>
 					<div
 						class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
@@ -157,12 +157,12 @@
 						</div>
 					</div>
 					<div class="mt-10">
-						<h3
+						<h2
 							v-if="user.id"
-							class="text-lg leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
+							class="text-xl leading-6 font-medium uppercase text-gray-500 border-gray-500 border-b"
 						>
 							{{ $t( "Change Password" ) }}
-						</h3>
+						</h2>
 						<div
 							class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
 						>
