@@ -366,13 +366,13 @@ export default {
 		...mapState({
 			authUser : ( state ) => state.authUser,
 			authToken : ( state ) => state.authToken,
-			applications : ( state ) => Object.keys( state.navAggregations.applications ),
+			applications : ( state ) => state.navAggregations ? Object.keys( state.navAggregations.applications ) : [],
 			beatsApplications : ( state ) => state.navAggregations.beatsAggregations.applications ? Object.keys( state.navAggregations.beatsAggregations.applications ) : [],
 			users : ( state ) => state.stacheboxUsers
 		})
 	},
 	beforeMount(){
-		this.project = this.data;
+		this.project = { ...this.data };
 		if( !this.project.owner ){
 			this.project.owner = { ...this.authUser };
 		}
