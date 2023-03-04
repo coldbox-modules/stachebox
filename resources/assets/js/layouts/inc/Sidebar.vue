@@ -6,7 +6,7 @@
     >
       <nav class="mt-10">
 		<h2
-			class="flex items-center duration-200 mt-2 py-2 px-4 border-l-4 text-gray-400"
+			class="flex items-center duration-200 mt-2 py-2 px-4 border-l-4"
 			:class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"
 		>
 			<router-link
@@ -22,7 +22,7 @@
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
 					<h3
-						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer"
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 hover:cursor-pointer"
 						:class="[$route.path.indexOf( 'projects' ) > -1 ? activeClass : inactiveClass]"
 					>
 					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Projects" ) }}</span>
@@ -64,8 +64,8 @@
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
 					<h3
-						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
-						:class="[$route.path.indexOf( 'logs/application' ) > -1 && $route.path.split( '/' ).length < 4  ? activeClass : inactiveClass]"
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 hover:cursor-pointer "
+						:class="[$route.path.indexOf( 'logs/application' ) > -1 && $route.path.split( '/' ).length <= 4  ? activeClass : inactiveClass]"
 					>
 					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Applications" ) }}</span>
 					<div class="flex-2">
@@ -96,7 +96,7 @@
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
 					<h3
-						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 hover:cursor-pointer "
 						:class="[$route.path.indexOf( 'logs/application' ) > -1 && $route.path.split( '/' ).length > 4 ? activeClass : inactiveClass]"
 					>
 					<span class="flex-1"><fa-icon icon="leaf" class="mr-4" fixed-width/> {{ $t( "Environments" ) }}</span>
@@ -144,7 +144,7 @@
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
 					<h3
-						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 hover:cursor-pointer "
 						:class="[$route.path.indexOf( 'logs/dataset' ) > -1 || $route.path.indexOf( 'logs/type' ) > -1 ? activeClass : inactiveClass]"
 					>
 						<span class="flex-1"><fa-icon icon="heartbeat" class="mr-4" fixed-width/> {{ $t( "FileBeats" ) }}</span>
@@ -189,7 +189,7 @@
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
 					<h3
-						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer"
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 hover:cursor-pointer"
 						:class="[inactiveClass]"
 					>
 						<span class="flex-1"><fa-icon icon="cogs" class="mr-4" fixed-width/> {{ $t( "Administration" ) }}</span>
@@ -238,8 +238,8 @@ export default{
 	},
 	data(){
 		return {
-			activeClass : "bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100",
-			inactiveClass : "border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100",
+			activeClass : "bg-gray-600 bg-opacity-25 text-white border-gray-100",
+			inactiveClass : "border-gray-900 text-gray-400 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100",
 		}
 	},
 	computed : {
