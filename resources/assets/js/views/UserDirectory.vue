@@ -64,7 +64,7 @@
 							{{ user.isAdministrator ? 'Admin' : 'User' }}
 						</td>
 						<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-							<router-link :to="`/users/edit/${user.id }`" class="text-cyan-600 hover:text-cyan-900">{{ $t( "Edit" ) }}</router-link>
+							<router-link v-if="hasPermission( 'Administer:Users' ) || user.id == authUser.id" :to="`/users/edit/${user.id }`" class="text-cyan-600 hover:text-cyan-900">{{ $t( "Edit" ) }}</router-link>
 						</td>
 					</tr>
 				</tbody>

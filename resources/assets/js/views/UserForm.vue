@@ -101,16 +101,16 @@
 								</div>
 							</div>
 
-							<div class="sm:col-span-4 items-center">
+							<div class="sm:col-span-4 items-center" v-if="hasPermission( 'Administer:Users' )">
 								<toggle-switch :isActive="user.allowLogin" @toggle="toggleLogin"></toggle-switch>
-								<span class="ml-3" id="toggleLabel">
+								<span class="ml-3">
 									<span class="text-sm font-medium text-gray-900" v-tooltip="$t( 'allowLogin.tooltip' )">{{ $t( "Allow Login" ) }}</span>
 								</span>
 							</div>
 
-							<div class="sm:col-span-4 items-center">
+							<div class="sm:col-span-4 items-center" v-if="hasPermission( 'Administer:Users' )">
 								<toggle-switch :isActive="user.isAdministrator" @toggle="toggleAdmin"></toggle-switch>
-								<span class="ml-3" id="toggleLabel">
+								<span class="ml-3">
 									<span class="text-sm font-medium text-gray-900">{{ $t( "User is Administrator" ) }}</span>
 								</span>
 							</div>
@@ -168,7 +168,7 @@
 						>
 							<div class="sm:col-span-4">
 								<label
-									for="firstName"
+									for="password"
 									class="block text-sm font-medium text-gray-700"
 								>
 									{{ $t( "Password" ) }}: <fa-icon v-if="!user.id" size="xs" class="text-red-500" icon="asterisk"/>
@@ -177,8 +177,8 @@
 									<input
 										type="password"
 										autocomplete="never-complete"
-										name="firstName"
-										id="firstName"
+										name="password"
+										id="password"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
 										v-model="user.password"
 										@change="v$.user.password.$touch"
@@ -191,7 +191,7 @@
 						>
 							<div class="sm:col-span-4">
 								<label
-									for="firstName"
+									for="confirmPassword"
 									class="block text-sm font-medium text-gray-700"
 								>
 									{{ $t( "Verify Password" ) }}: <fa-icon v-if="!user.id" size="xs" class="text-red-500" icon="asterisk"/>
@@ -200,8 +200,8 @@
 									<input
 										type="password"
 										autocomplete="never-complete"
-										name="firstName"
-										id="firstName"
+										name="confirmPassword"
+										id="confirmPassword"
 										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
 										v-model="user.confirmPassword"
 										@change="v$.user.confirmPassword.$touch"
