@@ -1,15 +1,20 @@
 <template>
 	<div class="application-logs">
 		<div class="flex flex-col">
-			<div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+			<div class="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 				<div
 				class="align-middle inline-block min-w-full"
 				>
-					<application-snapshot heading-class="h2" heading-size="3xl" :application="$route.params.id" :chartsOnly="true"></application-snapshot>
+					<application-snapshot
+						heading-class="h1"
+						heading-size="3xl"
+						:application="$route.params.id"
+						:chartsOnly="true"
+					></application-snapshot>
 				</div>
 			</div>
 		</div>
-		<h2 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Recent Entries For {application}", { application: $route.params.id.toTitleCase() } )}} <em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em></h2>
+		<h2 class="text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b mt-2">{{ $t( "Recent Entries" ) }}:</h2>
 		<div class="entry-list">
 			<entry-list
 				:initialFilters="searchParams"
