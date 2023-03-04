@@ -276,7 +276,7 @@
 					</button>
 					<button
 						type="button"
-						class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+						class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-50"
 						:class="{'cursor-not-allowed' : !isValid }"
 						@click="saveProject"
 						:disabled="!isValid"
@@ -318,7 +318,6 @@ import ToggleSwitch from "@/components/ToggleSwitch";
 import { required, url } from "@vuelidate/validators";
 import usersAPI from "@/api/users";
 import { mapState } from "vuex";
-const canvasProcessor = require( "canvas_image_processing" );
 export default {
 	components: {
 		FormErrors,

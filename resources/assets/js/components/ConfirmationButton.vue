@@ -42,7 +42,7 @@ export default {
         },
         // the default button class to use
         classString: {
-            default: ""
+            default: "disabled:opacity-50"
 		},
 		confirmClassString : {
 			type : String,

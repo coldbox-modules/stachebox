@@ -7,7 +7,7 @@
 					v-model="dateRange"
 					:range="true"
 					color="#374151"
-					label="Select a minimum date or range"
+					:label="$t( 'Select a minimum date or range' )"
 					:noHeader="true"
 					:max-date="new Date().toISOString()"
 					position="bottom"

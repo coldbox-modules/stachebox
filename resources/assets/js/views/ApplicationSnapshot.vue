@@ -63,7 +63,7 @@ export default {
 				maintainAspectRatio: false,
 				plugins: {
 					legend: {
-						position: 'bottom',
+						display: false
 					}
 				}
 			}
