@@ -10,6 +10,7 @@
 						heading-size="3xl"
 						:application="$route.params.id"
 						:chartsOnly="true"
+						:linkIcon="false"
 					></application-snapshot>
 				</div>
 			</div>

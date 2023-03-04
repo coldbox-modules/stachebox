@@ -2,7 +2,7 @@
 	<div class="border-gray-600 mb-7">
 		<component :is="headingClass" :class="`${headingColorClass} text-${headingSize} font-medium pb-2`">
 			<router-link :to="`/logs/application/${application}`">
-				<span v-if="$route.params.environment">{{ $route.params.environment.toTitleCase() }}</span> {{ $t( "Application" ) }}: {{ application.toTitleCase() }}
+				<span v-if="$route.params.environment">{{ $route.params.environment.toTitleCase() }}</span> {{ $t( "Application" ) }}: {{ application.toTitleCase() }} <fa-icon v-if="linkIcon" icon="arrow-circle-right" fixed-width/>
 			</router-link>
 		</component>
 		<tabs class="mt-2">
@@ -52,6 +52,10 @@ export default {
 		headingColorClass: {
 			required: false,
 			default: "text-gray-500"
+		},
+		linkIcon: {
+			required: false,
+			default: true
 		},
 		application: {
 			required : true

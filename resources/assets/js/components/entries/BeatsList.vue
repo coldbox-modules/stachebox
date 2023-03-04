@@ -87,6 +87,7 @@
 								<fa-icon icon="eye-slash" v-tooltip="$t( 'Suppress this log message from future results' )" fixed-width></fa-icon>
 							</template>
 						</confirmation-button>
+						<router-link class="sr-only" :to="`/logs/entry/${entry.id}`">{{ $t( "View Entry" ) }}</router-link>
 					</td>
 				</tr>
 			</tbody>

@@ -21,7 +21,10 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<h3
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer"
+						:class="[$route.path.indexOf( 'projects' ) > -1 ? activeClass : inactiveClass]"
+					>
 					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Projects" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
@@ -60,7 +63,10 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<h3
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
+						:class="[$route.path.indexOf( 'logs/application' ) > -1 && $route.path.split( '/' ).length < 4  ? activeClass : inactiveClass]"
+					>
 					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Applications" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
@@ -73,7 +79,7 @@
 					<router-link
 						v-for="( application, index ) in orderedApplications"
 						:key="index"
-						class="flex items-center duration-200 mt-2 py-1 px-8 hover:cursor-pointer"
+						class="flex items-center duration-200 mt-2 py-1 px-8 hover:cursor-pointer "
 						:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && !$route.params.environment ? activeClass : inactiveClass]"
 						:to="`/logs/application/${application}`"
 					>
@@ -89,7 +95,10 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<h3
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
+						:class="[$route.path.indexOf( 'logs/application' ) > -1 && $route.path.split( '/' ).length > 4 ? activeClass : inactiveClass]"
+					>
 					<span class="flex-1"><fa-icon icon="leaf" class="mr-4" fixed-width/> {{ $t( "Environments" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
@@ -134,7 +143,10 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<h3
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer "
+						:class="[$route.path.indexOf( 'logs/dataset' ) > -1 || $route.path.indexOf( 'logs/type' ) > -1 ? activeClass : inactiveClass]"
+					>
 						<span class="flex-1"><fa-icon icon="heartbeat" class="mr-4" fixed-width/> {{ $t( "FileBeats" ) }}</span>
 						<div class="flex-2">
 							<div class="border-8 border-transparent border-l-gray-600 ml-2
@@ -176,7 +188,10 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<h3
+						class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer"
+						:class="[inactiveClass]"
+					>
 						<span class="flex-1"><fa-icon icon="cogs" class="mr-4" fixed-width/> {{ $t( "Administration" ) }}</span>
 						<div class="flex-2">
 							<div class="border-8 border-transparent border-l-gray-600 ml-2
