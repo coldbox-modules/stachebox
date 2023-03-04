@@ -1,11 +1,11 @@
 <template>
 	<div class="project-form">
-		<h3
-			class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b"
+		<h2
+			class="text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b"
 			v-if="project"
 		>
-			{{ $t( "{action} Project", { action : project.name ? "Edit" : "Create" } ) }} Project
-		</h3>
+			{{ $t( "{action} Project", { action : project.name ? "Edit" : "Create" } ) }}
+		</h2>
 		<form v-if="project" class="space-y-8 divide-y divide-gray-300">
 			<div class="space-y-8 divide-y divide-gray-300">
 				<div>

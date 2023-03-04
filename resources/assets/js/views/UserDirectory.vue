@@ -4,7 +4,7 @@
 			<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "User Directory" ) }}</h3>
 		</div>
         <section>
-			<div class="float-right" v-if='hasPermission( "Administer:Users" )'>
+			<div class="float-right py-2" v-if='hasPermission( "Administer:Users" )'>
                 <button
                     type="button"
                     class="py-2 px-4 text-center bg-green-600 w-full text-white text-sm"
