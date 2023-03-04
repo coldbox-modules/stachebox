@@ -1,7 +1,7 @@
 <template>
 	<div class="application-logs">
 		<div class="flex flex-col">
-			<div class="overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+			<div class="sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 				<div
 				class="align-middle inline-block min-w-full"
 				>

@@ -5,15 +5,7 @@
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Date Range" ) }}:</label>
 				<date-time-picker
 					v-model="dateRange"
-					:range="true"
-					color="#374151"
-					:label="$t( 'Select a minimum date or range' )"
-					:noHeader="true"
-					:max-date="new Date().toISOString()"
-					position="bottom"
-					@validate="updateDateRangeFilters"
-					@input="checkDateRangeClear"
-					format="YYYY-MM-DDTHH:mm:ss.sssZ"
+					@update:modelValue="updateDateRangeFilters"
 				></date-time-picker>
 			</div>
 			<!-- <div class="px-3 py-2 mt-2">
@@ -103,7 +95,7 @@
 	</div>
 </template>
 <script>
-import DateTimePicker from 'vue-ctk-date-time-picker';
+import DateTimePicker from '@/components/DatePicker';
 import { mapState } from "vuex";
 export default {
 	components : {
@@ -142,17 +134,11 @@ export default {
 		onFilterChange( key, val ){
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},
-		checkDateRangeClear( val ){
-			this.$emit( "apply-filter", {
-					minDate : undefined,
-					maxDate: undefined
-				} );
-		},
 		updateDateRangeFilters(){
 			this.$emit(
 				"apply-filter", {
-					minDate : this.dateRange.start,
-					maxDate: this.dateRange.end
+					minDate : e[ 0 ] || null,
+					maxDate: e[ 1 ] || null
 				}
 			);
 		}
