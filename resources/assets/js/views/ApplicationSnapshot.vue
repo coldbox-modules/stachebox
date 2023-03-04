@@ -2,7 +2,7 @@
 	<div class="border-gray-600 mb-7">
 		<component :is="headingClass" :class="`${headingColorClass} text-${headingSize} font-medium pb-2`">
 			<router-link :to="`/logs/application/${application}`">
-				{{ application.toTitleCase() }}
+				{{ $t( "Application" ) }}: {{ application.toTitleCase() }}
 				<em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em>
 			</router-link>
 		</component>

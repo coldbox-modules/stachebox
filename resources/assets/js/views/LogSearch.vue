@@ -1,13 +1,13 @@
 <template>
 	<div class="application-logs">
-		<h3 class="text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Application Log Results" ) }}</h3>
+		<h2 class="text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Application Log Results" ) }}</h2>
 		<div class="entry-list">
 			<entry-list
 				:initialFilters="searchParams"
 				:displayApplication="true"
 			></entry-list>
 		</div>
-		<h3 class="mt-6 text-gray-500 text-xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Results" ) }}</h3>
+		<h2 class="mt-6 text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Results" ) }}</h2>
 		<div class="entry-list">
 			<beats-list
 				filter-set="filebeat"

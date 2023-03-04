@@ -27,7 +27,7 @@
 
             <div class="mx-5">
               <h4 class="text-2xl font-semibold text-gray-700">{{applicationCount}}</h4>
-              <div class="text-gray-500">Applications</div>
+              <div class="text-gray-500">{{ $t( "Applications" ) }}</div>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
 
             <div class="mx-5">
               <h4 class="text-2xl font-semibold text-gray-700">{{typeCount}}</h4>
-              <div class="text-gray-500">Log Types</div>
+              <div class="text-gray-500">{{ $t( "Log Types" ) }}</div>
             </div>
           </div>
         </div>
