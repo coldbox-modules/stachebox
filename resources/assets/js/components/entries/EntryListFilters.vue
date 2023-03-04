@@ -100,7 +100,6 @@ export default {
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},
 		updateDateRangeFilters(){
-			console.log( "update", this.dateRange );
 			this.$emit(
 				"apply-filter", {
 					minDate : this.dateRange.start,
