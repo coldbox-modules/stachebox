@@ -25,17 +25,13 @@ export default {
 		},
 		onColor:{
 			type : String,
-			default : "${this.onColor}"
-		},
-		onColor:{
-			type : String,
 			default : "gray"
 		}
 	},
 	computed : {
 		buttonClass(){
 			let btnClass = `relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${this.onColor}-500 `;
-			btnClass += this.isActive ? `bg-${this.onColor}-600` : `bg-${this.offColor}-300`;
+			btnClass += this.isActive ? `bg-${this.onColor}-600` : `bg-${this.onColor}-300`;
 			return btnClass;
 		},
 		toggleClass(){

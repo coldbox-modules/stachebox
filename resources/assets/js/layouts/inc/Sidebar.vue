@@ -12,8 +12,7 @@
 			<router-link
 			to="/dashboard"
 			>
-			<fa-icon icon="chart-pie" fixed-width/>
-			<span class="mx-4">{{ $t( "Dashboard" ) }}</span>
+			<fa-icon icon="chart-pie" class="mr-4" fixed-width/> {{ $t( "Dashboard" ) }}
 			</router-link>
 		</h2>
 
@@ -22,8 +21,8 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
-					<span class="flex-1"><fa-icon icon="cubes" class="mr-1" fixed-width/>{{ $t( "Projects" ) }}</span>
+					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Projects" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
 						group-open:rotate-90 transition-transform origin-left
@@ -35,7 +34,7 @@
 					<router-link
 						v-for="( project, index ) in projects"
 						:key="index"
-						class="flex items-center duration-200 mt-2 py-1 px-8"
+						class="flex items-center duration-200 mt-2 py-1 px-8 hover:cursor-pointer"
 						:class="[$route.name === 'ProjectSnapshot' && $route.params.id == project.id ? activeClass : inactiveClass]"
 						:to="`/projects/${project.id}`"
 					>
@@ -61,8 +60,8 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
-					<span class="flex-1"><fa-icon icon="cubes" class="mr-1" fixed-width/>{{ $t( "Applications" ) }}</span>
+					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<span class="flex-1"><fa-icon icon="cubes" class="mr-4" fixed-width/> {{ $t( "Applications" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
 						group-open:rotate-90 transition-transform origin-left
@@ -74,7 +73,7 @@
 					<router-link
 						v-for="( application, index ) in orderedApplications"
 						:key="index"
-						class="flex items-center duration-200 mt-2 py-1 px-8"
+						class="flex items-center duration-200 mt-2 py-1 px-8 hover:cursor-pointer"
 						:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && !$route.params.environment ? activeClass : inactiveClass]"
 						:to="`/logs/application/${application}`"
 					>
@@ -90,8 +89,8 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
-					<span class="flex-1"><fa-icon icon="leaf" class="mr-1" fixed-width/>{{ $t( "Environments" ) }}</span>
+					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+					<span class="flex-1"><fa-icon icon="leaf" class="mr-4" fixed-width/> {{ $t( "Environments" ) }}</span>
 					<div class="flex-2">
 						<div class="border-8 border-transparent border-l-gray-600 ml-2
 						group-open:rotate-90 transition-transform origin-left
@@ -103,8 +102,8 @@
 					<template v-for="environment in Object.keys( aggregations.environments )" :key="`environment-${environment}`">
 						<details class="group/env">
 							<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring rounded group-open:rounded-b-none group-open/env:z-[1] relative">
-							<h4 class="flex flex-1 items-center ml-6 mr-5 pl-1 mt-5 pb-1 text-gray-400 border-gray-600">
-								<span class="flex-1"><fa-icon icon="globe" class="mr-1" fixed-width/> {{ environment.toTitleCase() }}</span>
+							<h4 class="flex flex-1 items-center ml-6 mr-5 pl-1 mt-5 pb-1 text-gray-400 border-gray-600 hover:cursor-pointer hover:text-gray-300">
+								<span class="flex-1"><fa-icon icon="globe" class="mr-4" fixed-width/> {{ environment.toTitleCase() }}</span>
 								<div class="flex-2">
 									<div class="border-8 border-transparent border-l-gray-600
 									group-open/env:rotate-90 transition-transform origin-left
@@ -116,7 +115,7 @@
 								<router-link
 									v-for="(application,index) in Object.keys( aggregations.environments[ environment ].applications ).sort( (a,b) => a.localeCompare( b ) )"
 									:key="index"
-									class="flex items-center duration-200 mt-2 py-1 px-8 text-sm"
+									class="flex items-center duration-200 mt-2 py-1 px-8 text-sm hover:cursor-pointer"
 									:class="[$route.name === 'ApplicationLogs' && $route.params.id == application && $route.params.environment == environment ? activeClass : inactiveClass]"
 									:to="`/logs/application/${application}/${environment.toLowerCase()}`"
 								>
@@ -135,8 +134,8 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
-						<span class="flex-1"><fa-icon icon="heartbeat" class="mr-1" fixed-width/> {{ $t( "FileBeats" ) }}</span>
+					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+						<span class="flex-1"><fa-icon icon="heartbeat" class="mr-4" fixed-width/> {{ $t( "FileBeats" ) }}</span>
 						<div class="flex-2">
 							<div class="border-8 border-transparent border-l-gray-600 ml-2
 							group-open:rotate-90 transition-transform origin-left
@@ -149,7 +148,7 @@
 						<router-link
 							v-for="(dataset) in Object.keys( beatsAggregations.datasets )"
 							:key="dataset"
-							class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4"
+							class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4 hover:cursor-pointer"
 							:class="[$route.name === 'DatasetLogs' && $route.params.id == dataset ? activeClass : inactiveClass]"
 							:to="`/logs/dataset/${dataset}`"
 						>
@@ -160,7 +159,7 @@
 						<router-link
 							v-for="(type) in Object.keys( beatsAggregations.inputTypes )"
 							:key="type"
-							class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4"
+							class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4 hover:cursor-pointer"
 							:class="[$route.name === 'DatasetLogs' && $route.params.id == type ? activeClass : inactiveClass]"
 							:to="`/logs/type/${type}`"
 						>
@@ -177,8 +176,8 @@
 				<summary class="flex flex-wrap focus-visible:outline-none focus-visible:ring
 				rounded group-open:rounded-b-none group-open:z-[1] relative
 				">
-					<h3 class="flex flex-1 items-center ml-5 mr-5 pt-4 pb-1 pr-1 pl-1 text-gray-400">
-						<span class="flex-1"><fa-icon icon="cogs" class="mr-1" fixed-width/>{{ $t( "Administration" ) }}</span>
+					<h3 class="flex flex-1 items-center mt-2 py-2 px-4 border-l-4 text-gray-400 hover:cursor-pointer">
+						<span class="flex-1"><fa-icon icon="cogs" class="mr-4" fixed-width/> {{ $t( "Administration" ) }}</span>
 						<div class="flex-2">
 							<div class="border-8 border-transparent border-l-gray-600 ml-2
 							group-open:rotate-90 transition-transform origin-left
@@ -188,7 +187,7 @@
 				</summary>
 				<div>
 					<router-link
-					class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4"
+					class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4 hover:cursor-pointer"
 					:class="[$route.name === 'Settings' ? activeClass : inactiveClass]"
 					:to="{ name : 'Settings' }"
 					>
@@ -197,7 +196,7 @@
 					</router-link>
 
 					<router-link
-					class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4"
+					class="flex items-center duration-200 mt-2 py-2 px-6 border-l-4 hover:cursor-pointer"
 					:class="[$route.name === 'Directory' ? activeClass : inactiveClass]"
 					:to="{ name : 'Directory' }"
 					>
