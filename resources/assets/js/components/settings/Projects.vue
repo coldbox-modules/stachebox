@@ -24,7 +24,9 @@
 					<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 						{{ $t( "Notifications" ) }}
 					</th>
-					<th scope="col" class="relative"></th>
+					<th scope="col" class="relative">
+						<span class="sr-only">{{ $t( "Actions" ) }}</span>
+					</th>
 				</tr>
 			</thead>
 			<tbody v-if="!activeProjects.length">
@@ -60,7 +62,7 @@
 						<span v-for="application in project.beats" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
 							<router-link :to="`/logs/application/${application}`">{{ application.toTitleCase() }}</router-link>
 						</span>
-						<span v-if="!project.beats.length" class="text-sm text-gray-400">{{ $t( "No applications have been assigned" ) }}</span>
+						<span v-if="!project.beats.length" class="text-sm text-gray-400">{{ $t( "No beats have been assigned" ) }}</span>
 					</td>
 					<td class="px-6 py-4 whitespace-nowrap text-sm">
 						<span class="font-semibold" v-if="project.summaryEmails">{{ project.frequency.toTitleCase() }}</span>

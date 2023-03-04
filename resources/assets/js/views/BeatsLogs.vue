@@ -5,7 +5,7 @@
 			<beats-list
 				filter-set="filebeat"
 				:initialFilters="searchParams"
-				:displayDataset="false"
+				:displayDataset="true"
 			></beats-list>
 		</div>
 	</div>

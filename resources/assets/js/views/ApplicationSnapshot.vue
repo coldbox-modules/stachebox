@@ -1,6 +1,6 @@
 <template>
 	<div class="border-gray-600 mb-7">
-		<component :is="headingClass" class="text-gray-500 text-xl font-medium pb-2">
+		<component :is="headingClass" :class="`${headingColorClass} text-${headingSize} font-medium pb-2`">
 			<router-link :to="`/logs/application/${application}`">
 				{{ application.toTitleCase() }}
 				<em v-if="$route.params.environment">({{ $route.params.environment.toTitleCase() }})</em>
@@ -45,6 +45,14 @@ export default {
 		headingClass: {
 			required: false,
 			default : "h3"
+		},
+		headingSize: {
+			required: false,
+			default: "xl"
+		},
+		headingColorClass: {
+			required: false,
+			default: "text-gray-500"
 		},
 		application: {
 			required : true

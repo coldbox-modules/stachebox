@@ -37,7 +37,7 @@
 				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }">
 					<td
 						v-if="displayDataset"
-						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
+						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 						style="width: 150px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
@@ -45,7 +45,7 @@
 					</td>
 
 					<td
-						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
+						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 						style="width: 175px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
