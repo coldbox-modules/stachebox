@@ -12,7 +12,7 @@
             <slot></slot>
         </button>
 
-        <div v-if="confirmOn" class="confirm-options">
+        <div v-if="confirmOn" class="confirm-options absolute" style="margin-top: -11px;margin-left: -172px">
             <button
                 type="button"
                 :class="confirmClassString"
