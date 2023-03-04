@@ -12,7 +12,6 @@
 					:max-date="new Date().toISOString()"
 					position="bottom"
 					@validate="updateDateRangeFilters"
-					@input="checkDateRangeClear"
 					format="YYYY-MM-DDTHH:mm:ss.sssZ"
 				></date-time-picker>
 			</div>
@@ -100,19 +99,27 @@ export default {
 		onFilterChange( key, val ){
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},
-		checkDateRangeClear( val ){
-			this.$emit( "apply-filter", {
-					minDate : undefined,
-					maxDate: undefined
-				} );
-		},
 		updateDateRangeFilters(){
+			console.log( "update", this.dateRange );
 			this.$emit(
 				"apply-filter", {
 					minDate : this.dateRange.start,
 					maxDate: this.dateRange.end
 				}
 			);
+		}
+	},
+	watch : {
+		dateRange : {
+			deep : true,
+			handler( newVal, oldVal ){
+				if( !newVal ){
+					this.$emit( "apply-filter", {
+						minDate : undefined,
+						maxDate: undefined
+					} );
+				}
+			}
 		}
 	}
 
