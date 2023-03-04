@@ -284,7 +284,6 @@ import FormErrors from "@/components/util/FormErrors";
 import useVuelidate from "@vuelidate/core";
 import { required, email, requiredIf, sameAs, helpers } from "@vuelidate/validators";
 import { mapState,mapGetters } from "vuex";
-import { validPassword } from "@/extensions/vuelidate";
 export default {
 	components : {
 		Dialog,
