@@ -1,20 +1,20 @@
 <template>
 	<div class="border-gray-600 mb-3 project-snapshot">
-		<h2 class="text-gray-600 text-xl font-medium pb-2">
+		<h1 class="text-gray-600 text-3xl font-medium pb-2">
 		{{ $t( "Project" ) }}: {{ project.name }}
-		</h2>
-		<h3 class="text-gray-400 text-lg pb-2 mb-7 mt-7  border-gray-300 border-b">{{ $t( "Applications" ) }}:</h3>
+		</h1>
+		<h2 class="text-gray-600 text-2xl pb-2 mb-7 mt-7  border-gray-300 border-b">{{ $t( "Applications" ) }}:</h2>
 		<template
 			v-for="(application, index) in project.applications"
 			:key="`application-${application}`"
 		>
-			<application-snapshot heading-class="h4" heading-size="md" heading-color-class="text-teal-700" :application="application"></application-snapshot>
+			<application-snapshot heading-class="h3" heading-size="lg" heading-color-class="text-teal-700" :application="application"></application-snapshot>
 		</template>
 
 		<template v-if="project.beats.length">
-			<h3 class="text-gray-400 text-lg font-medium pb-2 border-gray-300 border-b mt-7">{{ $t( "FileBeats" ) }}:</h3>
+			<h2 class="text-gray-600 text-2xl font-medium pb-2 border-gray-300 border-b mt-7">{{ $t( "FileBeats" ) }}:</h2>
 			<template v-for="(application, index) in project.beats">
-				<h4 class="text-teal-700 text-md font-medium pb-2 border-gray-300 border-b mt-5">{{ application.toTitleCase() }}</h4>
+				<h3 class="text-teal-700 text-lg font-medium pb-2 border-gray-300 border-b mt-5">{{ application.toTitleCase() }}</h3>
 				<beats-list
 					:initialFilters='{ "fields.application" : application, sortOrder : "@timestamp DESC" }'
 				></beats-list>

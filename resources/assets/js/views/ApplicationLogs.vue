@@ -5,7 +5,7 @@
 				<div
 				class="align-middle inline-block min-w-full"
 				>
-					<application-snapshot heading-class="h2" :application="$route.params.id" :chartsOnly="true"></application-snapshot>
+					<application-snapshot heading-class="h2" heading-size="3xl" :application="$route.params.id" :chartsOnly="true"></application-snapshot>
 				</div>
 			</div>
 		</div>
