@@ -72,7 +72,7 @@
 						style="max-width:400px!important"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-						<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message || $t( 'N/A' ),  truncate ? 200 : ( entry.message || $t( 'N/A' ) ).length + 1 ) }}</code>
+						<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message.replace(/,(?=[^\s])/g, ", ") || $t( 'N/A' ),  truncate ? 200 : ( entry.message || $t( 'N/A' ) ).length + 1 ) }}</code>
 					</td>
 					<td
 						class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium"

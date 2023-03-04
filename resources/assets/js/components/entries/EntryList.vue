@@ -75,7 +75,7 @@
 					class="px-3 py-2 border-b border-gray-200 text-sm leading-5 text-gray-500"
 					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message, truncate ? 200 : entry.message.length + 1 ) }}</code>
+					<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message.replace(/,(?=[^\s])/g, ", "), truncate ? 200 : entry.message.length + 1 ) }}</code>
 				</td>
 
 				<td
