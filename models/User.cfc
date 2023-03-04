@@ -156,7 +156,7 @@ component
             userDoc.setId( getId() );
         }
 
-        userDoc.save();
+        userDoc.save( refresh=true );
 
         return this;
     }

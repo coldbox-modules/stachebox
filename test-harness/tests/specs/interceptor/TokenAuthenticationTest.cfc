@@ -29,6 +29,11 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			// all your suites go here.
 			describe( "Token Authentication", function(){
 
+				beforeEach( function(){
+					variables.authenticationService.logout();
+				});
+
+
 				it( "It can authenticate a valid token", function(){
 					expect( variables.APITokens ).toBeArray();
 					expect( variables.APITokens.len() ).toBeGT( 1 );

@@ -18,7 +18,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			variables.userMemento = {
 				"firstName" : "Joe",
 				"lastName" : "Blow",
-				"email" : "Joe@blow.com",
+				"email" : "#createUUID()#@blow.com",
 				"password" : "Testing1234$",
 				"isAdministrator" : true
 			};
@@ -27,14 +27,14 @@ component extends="coldbox.system.testing.BaseTestCase"{
 												.getUser()
 												.new( userMemento )
 												.encryptPassword()
-												.save( refresh=true );
+												.save();
 		}
 
 		// executes after all suites+specs in the run() method
 		function afterAll(){
 			getWirebox().getInstance( "SearchBuilder@cbElasticsearch" )
 						.new( getWirebox().getInstance( "User@stachebox" ).getSearchIndexName() )
-						.filterTerm( "email", "Joe@blow.com" )
+						.filterTerm( "email", "#createUUID()#@blow.com" )
 						.execute()
 						.getHits()
 						.each( function( doc ){
@@ -47,6 +47,10 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		function run( testResults, testBox ){
 			// all your suites go here.
 			describe( "Basic Authentication", function(){
+
+				beforeEach( function(){
+					variables.authenticationService.logout();
+				});
 
 				it( "It can use basic authentication for a valid user", function(){
 					var testContext = getMockRequestContext();

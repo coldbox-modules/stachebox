@@ -20,7 +20,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	function afterAll(){
 		getWirebox().getInstance( "SearchBuilder@cbElasticsearch" )
 					.new( getWirebox().getInstance( "User@stachebox" ).getSearchIndexName() )
-					.filterTerm( "email", "Joe@blow.com" )
+					.filterTerm( "email", "#createUUID()#@blow.com" )
 					.execute()
 					.getHits()
 					.each( function( doc ){
@@ -42,7 +42,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 					{
 						"firstName" : "Joe",
 						"lastName" : "Blow",
-						"email" : "Joe@blow.com",
+						"email" : "#createUUID()#@blow.com",
 						"password" : "Testing1234$",
 						"isAdministrator" : true
 					}
