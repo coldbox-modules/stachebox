@@ -12,10 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Logstash/cbElasticsearch dependencies to v2
 - Updates All log parsing and display to use [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/8.6/ecs-reference.html)
 ### Added
-- STACHEBOX-10 - Full i18n support for all application text
+- STACHEBOX-10 - Full i18n support for application text
 - STACHEBOX-11 - Added Application/Environment Log History Charting to UI
 - STACHEBOX-11 - Added Environments Navigation to Sidebar
 - STACHEBOX-9 - Added the ability to group applications and beats in to Projects
+
 ## [1.0.5] - 2022-09-16
 
 ### Fixed
