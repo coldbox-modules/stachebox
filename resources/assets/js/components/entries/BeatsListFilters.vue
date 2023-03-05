@@ -118,14 +118,14 @@ export default {
 	},
 	computed : {
 		...mapState({
-			applications : ( state ) => state.navAggregations ? Object.keys( state.navAggregations.datasets ) : [],
-			navAggregations : ( state ) => state.navAggregations,
+			applications : ( state ) => state.navAggregations.beatsAggregations ? Object.keys( state.navAggregations.beatsAggregations.datasets ) : [],
+			beatsAggregations: ( state ) => state.navAggregations.beatsAggregations,
 			hostNames( state ){
 				if( !state.navAggregations ) return;
 				if( this.searchFilters[ 'event.dataset' ] ){
-					return Object.keys( state.navAggregations.datasets[ this.searchFilters['event.dataset'] ].hostnames )
-				} else if( state.navAggregations.hostnames ) {
-					return Object.keys( state.navAggregations.hostnames );
+					return Object.keys( state.navAggregations.beatsAggregations.datasets[ this.searchFilters['event.dataset'] ].hostnames )
+				} else if( state.navAggregations.beatsAggregations.hostnames ) {
+					return Object.keys( state.navAggregations.beatsAggregations.hostnames );
 				}
 			}
 		})
@@ -134,7 +134,7 @@ export default {
 		onFilterChange( key, val ){
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},
-		updateDateRangeFilters(){
+		updateDateRangeFilters( e ){
 			this.$emit(
 				"apply-filter", {
 					minDate : e[ 0 ] || null,
