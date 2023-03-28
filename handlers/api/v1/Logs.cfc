@@ -172,11 +172,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 	private function processLuceeHTMLMessages( required struct entry, string key="message" ){
 		try{
 			return getInstance( "Util@cbelasticsearch" ).processLuceeHTMLMessages( argumentCollection=arguments );
-		} catch( any e ){
-			writeDump( arguments.entry[ arguments.key ] );
-			writeDump( e );
-			abort;
-		}
+		} catch( any e ){}
 	}
 
 }
