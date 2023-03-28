@@ -66,21 +66,23 @@ component{
 	}
 
 	function ensureTokenReporter(){
-		var reporterUsername = moduleSettings.tokenReporter;
-		if( isNull( userService.retrieveUserByUsername( reporterUsername ) ) ){
-			var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
-			var adminUser = getInstance( "User@stachebox" )
-										.new(
-											{
-												"firstName" : "Token",
-												"lastName"  : "Reporter",
-												"email"     : reporterUsername,
-												"password"  : createUUID(),
-												"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#",
-												"isAdministrator" : false,
-												"allowLogin" : false
-											}
-										).encryptPassword().save();
+		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService ) ){
+			var reporterUsername = moduleSettings.tokenReporter;
+			if( isNull( userService.retrieveUserByUsername( reporterUsername ) ) ){
+				var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
+				var adminUser = getInstance( "User@stachebox" )
+											.new(
+												{
+													"firstName" : "Token",
+													"lastName"  : "Reporter",
+													"email"     : reporterUsername,
+													"password"  : createUUID(),
+													"avatar"    : "data:image/png;base64,#toBase64( fileReadBinary( logoFile ) )#",
+													"isAdministrator" : false,
+													"allowLogin" : false
+												}
+											).encryptPassword().save();
+			}
 		}
 		return this;
 	}
