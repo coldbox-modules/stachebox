@@ -4,19 +4,20 @@ component {
     function up( searchClient ) {
 		var moduleSettings = wirebox.getInstance( "coldbox:moduleSettings:stachebox" );
 
-		var searchBuilder = searchClient.newSearchBuilder()
-								.new( moduleSettings.usersIndex )
-								.mustNotExist( "allowLogin" );
-
-		if( searchBuilder.count() ){
-			client.updateByQuery(
-				searchBuilder,
-				{
-					"lang" : "painless",
-					"source" : "ctx._source.allowLogin = true"
-				},
-				true
-			);
+		if( findNoCase( "@stachebox", moduleSettings.cbsecurity.userService ) ){
+			var searchBuilder = searchClient.newSearchBuilder()
+									.new( moduleSettings.usersIndex )
+									.mustNotExist( "allowLogin" );
+			if( searchBuilder.count() ){
+				client.updateByQuery(
+					searchBuilder,
+					{
+						"lang" : "painless",
+						"source" : "ctx._source.allowLogin = true"
+					},
+					true
+				);
+			}
 		}
 
 		var indexPattern = wirebox.getInstance( "SettingService@stachebox" ).getByName( "logIndexPattern" ).getMemento();
