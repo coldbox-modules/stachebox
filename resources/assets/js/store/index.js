@@ -6,6 +6,7 @@ import beatsAPI from "../api/beats";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import VueJwtDecode from "vue-jwt-decode";
 dayjs.extend( utc );
 dayjs.extend( timezone );
 dayjs.tz.setDefault( dayjs.tz.guess() );
@@ -67,7 +68,14 @@ export default createStore({
 		},
 		fetchAuthUser : ( context, params = {} ) => {
 			if( !context.state.globals.stachebox.internalSecurity ) {
-				return new Promise( ( resolve, reject ) => { resolve( null ) } );
+				return new Promise( ( resolve, reject ) => {
+					let userRecord = VueJwtDecode.decode( context.state.authToken );
+					if( userRecord.scope.indexOf( "Admin" ) > -1 ){
+						userRecord.isAdministrator = true;
+					}
+					context.state.authUser = userRecord;
+					resolve( context.state.authUser );
+				} );
 			}
 			return new Promise( ( resolve, reject ) => {
 				// if( !context.state.authId ) reject();

@@ -129,10 +129,9 @@ const routes = [
 ];
 
 const router = createRouter({
-  history : createWebHistory(),
-  base: store.state.globals && store.state.globals.stachebox.isStandalone ? '' : '/stachebox',
+  history : createWebHistory( store.state.globals && store.state.globals.stachebox.isStandalone ? '' : '/stachebox' ),
   routes
-})
+});
 
 router.beforeEach((to, from, next) => {
 
