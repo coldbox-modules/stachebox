@@ -88,7 +88,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 							);
 		if( rc.keyExists( "environment" ) && len( rc.environment ) ){
 			searchBuilder.filterTerm(
-				"environment",
+				"labels.environment",
 				rc.environment
 			);
 		}
@@ -141,6 +141,9 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 				if( !isNull( entry[ key ] ) && isSimpleValue( entry[ key ] ) && isJSON( entry[ key ] ) ){
 					entry[ key ] = deserializeJSON( entry[ key ] );
 				}
+				if( key == "message" ){
+					processLuceeHTMLMessages( entry, key );
+				}
 			}
 		);
 		var nested = [ "error", "user" ];
@@ -150,6 +153,9 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 					function( key ){
 						if( !isNull( entry[ path ][ key ] ) && isSimpleValue( entry[ path ][ key ] ) && isJSON( entry[ path ][ key ] ) ){
 							entry[ path ][ key ] = deserializeJSON( entry[ path ][ key ] );
+						}
+						if( key == "message" ){
+							processLuceeHTMLMessages( entry[ path ], key );
 						}
 					}
 				);
@@ -161,6 +167,16 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 		}
 
 		return arguments.entry;
+	}
+
+	private function processLuceeHTMLMessages( required struct entry, string key="message" ){
+		try{
+			return getInstance( "Util@cbelasticsearch" ).processLuceeHTMLMessages( argumentCollection=arguments );
+		} catch( any e ){
+			writeDump( arguments.entry[ arguments.key ] );
+			writeDump( e );
+			abort;
+		}
 	}
 
 }
