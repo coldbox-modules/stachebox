@@ -102,11 +102,10 @@ export default createStore({
 			return logsAPI.fetch( id, params, context.state.authToken )
 		},
 		fetchNavAggregations : ( context ) => {
-			context.dispatch( "fetchLogs", { maxrows : 0, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString() } )
+			context.dispatch( "fetchLogs", { maxrows : 0, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString(), tzOffset : dayjs().format( "Z" ) } )
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
 						context.state.navAggregations.logCount = result.data.pagination.total;
-
 						context.dispatch( "fetchBeats", { maxrows : 0 } )
 								.then( ( result ) => {
 									context.state.navAggregations.beatsCount = result.data.pagination.total;

@@ -119,7 +119,7 @@ export default {
 			for( var i = 0; i <= this.hourRange; i++ ){
 				var thisHour = hourStart.clone().add( i, "hours" );
 				chartData.labels.push( thisHour.format( "M/D " ) + thisHour.format( "hA" ) + "-" + thisHour.clone().add( 1, "hour" ).format( "hA" )   );
-				let hourKey = thisHour.utc().format( "YYYY-MM-DDTHH:mm:ss.SSS[Z]" );
+				let hourKey = thisHour.format( "YYYY-MM-DDTHH:mm:ss.SSSZ" );
 				chartData.datasets[ 0 ].data.push( aggs[ hourKey ] ? aggs[ hourKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}
@@ -146,7 +146,7 @@ export default {
 			for( var i = 0; i <= this.dayRange; i++ ){
 				var thisDay = dayStart.clone().add( i, "days" );
 				chartData.labels.push( thisDay.format( "ddd M/D" ) );
-				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss.SSS[Z]" );
+				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss.SSSZ" );
 				chartData.datasets[ 0 ].data.push( aggs[ dayKey ] ? aggs[ dayKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
 			}
