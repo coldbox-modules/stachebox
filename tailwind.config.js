@@ -1,4 +1,5 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
    purge: [
@@ -158,6 +159,11 @@ module.exports = {
 	require("@tailwindcss/forms"),
 	require("@tailwindcss/typography"),
 	require("@tailwindcss/aspect-ratio"),
+	plugin(function({ addBase }) {
+		addBase({
+		   'html': { fontSize: "18px" },
+		 })
+	})
   ]
 
 }

@@ -12,7 +12,7 @@
             <slot></slot>
         </button>
 
-        <div v-if="confirmOn" class="confirm-options absolute" style="margin-top: -11px;margin-left: -172px">
+        <div v-if="confirmOn" class="confirm-options absolute" style="margin-top: -18px;margin-left: -188px">
             <button
                 type="button"
                 :class="confirmClassString"
@@ -46,11 +46,11 @@ export default {
 		},
 		confirmClassString : {
 			type : String,
-			default : "ml-3 inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-xs font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700"
+			default : "ml-3 inline-flex justify-center py-2 px-2 border border-transparent shadow-sm text-xs font-medium rounded-none text-white bg-cyan-600 hover:bg-cyan-700"
 		},
 		cancelClassString : {
 			type : String,
-			default : "bg-white py-1 px-2 border border-gray-300 rounded-none shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2"
+			default : "bg-white py-2 px-2 border border-gray-300 rounded-none shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2"
 		},
 		confirmationMessage : {
 			type : String,

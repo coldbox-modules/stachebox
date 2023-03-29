@@ -42,7 +42,7 @@ app.config.globalProperties.dayjs = dayjs;
 // Global event bus
 window.Event = new EventBus();
 
-// require( "./util/make-errors" );
+require( "./util/make-errors" );
 
 const i18n = createI18n({
     locale: "en_US",
