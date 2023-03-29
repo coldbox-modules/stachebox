@@ -174,7 +174,7 @@
 					{{ $t( "Entry Detail" ) }}
 				</h2>
 
-				<tabs class="mt-5">
+				<tabs class="mt-5 bg-gray-100">
 					<tab v-if="entry.event" :name="$t( 'Event Detail' )">
 						<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.event ) )}}</code></pre>
 					</tab>

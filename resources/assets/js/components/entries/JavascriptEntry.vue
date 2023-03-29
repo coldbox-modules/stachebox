@@ -60,7 +60,7 @@
 				{{ $t( "Exception Detail" ) }}
 			</h2>
 
-			<tabs class="mt-5">
+			<tabs class="mt-5 bg-gray-100">
 				<tab :name="$t( 'Stack Frames' )" v-if="entry.error.frames && entry.error.frames.length">
 					<ul class="stackframes-list">
 						<li
