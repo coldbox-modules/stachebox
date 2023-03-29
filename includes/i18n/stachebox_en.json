@@ -232,5 +232,8 @@
   "Loading module settings": "Loading module settings...",
   "New Project": "New Project",
   "Settings Administration": "Settings Administration",
-  "Enable Notifications": "Enable Notifications"
+  "Enable Notifications": "Enable Notifications",
+  "Browser Snapshot": "Browser Snapshot",
+  "Where Clause": "Where Clause(s)",
+  "Occurrence Time": "Occurrence Time"
 }
