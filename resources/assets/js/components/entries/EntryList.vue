@@ -175,6 +175,9 @@ export default {
 		fetchLogs(){
 			var self = this;
 			self.isSyncing = true;
+			if( !this.searchFilters.tzOffset ){
+				this.searchFilters.tzOffset = this.dayjs().format( "Z" );
+			}
 			this.$store.dispatch( "fetchLogs", this.searchFilters )
 						.then( ( result ) => {
 							if( !self.logs ){

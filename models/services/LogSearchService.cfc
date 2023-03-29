@@ -12,6 +12,10 @@ component {
 		param searchCollection.sortOrder = "@timestamp DESC";
 		param searchCollection.maxRows = 25;
 		param searchCollection.startRow = 0;
+		param searchCollection.tzOffset = numberFormat( getTimezoneInfo().utcHourOffset, "00" ) & ":00";
+		if( searchCollection.tzOffset == "00:00" ){
+			searchCollection.tzOffset = "Z";
+		}
 
 		if( searchCollection.keyExists( "page" ) ){
 			searchCollection.page = javacast( "int", searchCollection.page );
@@ -124,14 +128,16 @@ component {
 					"date_histogram": {
 						"min_doc_count": 0,
 						"field": "@timestamp",
-						"fixed_interval": "1d"
+						"calendar_interval": "day",
+						"time_zone": searchCollection.tzOffset
 					}
 				},
 				"hourly_occurrences": {
 					"date_histogram": {
 						"min_doc_count": 0,
 						"field": "@timestamp",
-						"calendar_interval": "hour"
+						"calendar_interval": "hour",
+						"time_zone": searchCollection.tzOffset
 					}
 				},
 				"releases" : {
