@@ -49,7 +49,7 @@
 						style="width: 175px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-					{{ dayjs( entry['@timestamp' ] ).format('MM/DD/YYYY HH:mm') }}
+					{{ dayjs( entry['@timestamp' ] ).local().format('MM/DD/YYYY HH:mm') }}
 					</td>
 					<td
 						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"

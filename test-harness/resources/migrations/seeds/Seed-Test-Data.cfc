@@ -3,20 +3,20 @@ component{
 		var logBox = application.cbController.getLogbox();
 		var registry = logbox.getAppenderRegistry();
 		var appender = registry[ "logstash_appender" ];
-	
+
 
 		var testApps = mockData.mock( $num=3, $type="words" );
 		var testEnvironments = [ "development", "staging", "production" ];
 		for( var app in TestApps ){
 			var runTime = now();
-			var startDate = dateAdd( "d", -7, now() );
+			var startDate = dateAdd( "d", -3, now() );
 			var time = duplicate( startDate );
 
 			appender.setProperty( "applicationName", app );
 
 			var testErrors = [];
 
-			for( i = 1; i <= 10; i++ ){
+			for( i = 1; i <= 5; i++ ){
 				try{
 					throw( type="stachebox.mockData.error", message=mockData.sentence()  )
 				} catch( any e ){
