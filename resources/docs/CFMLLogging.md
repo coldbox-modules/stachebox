@@ -1,11 +1,25 @@
 # CFML Error Logging
 
-By default, the [Logstash appender](https://github.com/coldbox-modules/logstash#configuration) becomes enabled with the installation of stachebox into an application.  In addition, if choosing to run a stachebox instance as a standalone installation, you may install only the `logstash` module in to your application and configure it to log either directly to the elasticsearch server ( the default, will use the [Elasticsearch configuration options] ) or, to log directly to the stachebox instance API, you may a custom API configuration to your Coldbox configuration file, like so:
+By default, the [Logstash appender](https://github.com/coldbox-modules/logstash#configuration) becomes enabled with the installation of stachebox into an application.  
+
+To use the defaults while customizing the application name you can either add the `LOGSTASH_APPLICATION_NAME` environment variable, or you can provide the variable in your `config/Coldbox.cfc`:
+
+```javascript
+moduleSettings = {
+	"logstash" : {
+		"applicationName" : "My Application Name",
+	}
+}
+```
+
+
+In addition, if choosing to run a stachebox instance as a standalone installation, you may install only the `logstash` module in to your application and configure it to log either directly to the elasticsearch server ( the default, will use the [Elasticsearch configuration options] ) or, to log directly to the stachebox instance API, you may a custom API configuration to your Coldbox configuration file, like so:
 
 ```javascript
 moduleSettings = {
 	"logstash" : {
 		"transmission" : "api",
+		"applicationName" : "My Application Name",
 		"apiUrl" : "https://my.logstashmicroservice.com/logstash/api/logs,
 		"apiAuthToken : "[My SECRET Token]"
 	}
@@ -21,11 +35,10 @@ logstash = {
 	class="cbelasticsearch.models.logging.LogstashAppender",
 	properties = {
 		// Provide a unique name for the application ( optional ) - useful for filtering shared log indexes
-		"applicationName"  : "myApp-warnings",
+		"applicationName"  : "App Warnings",
 		// Optional release version
 		"releaseVersion"   : "1.0.0",
 		// the frequency of index rotation
-		"rotation"     : "weekly",
 		"levelMin"     : "WARN",
 		"levelMax"     : "WARN"
 	}
