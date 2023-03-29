@@ -18,13 +18,15 @@ moduleSettings = {
 			// The index used to to manage user accounts ( if using the StacheBox users service for cbSecurity and cbAuth )
 			"usersIndex" : getSystemSetting( "STACHEBOX_USERS_INDEX", ".stachebox_users" ),
 			// A default index pattern for logstash logs ( e.g. application exceptions). May be overriden in the UI settings admin
-			"logIndexPattern" : "logstash-*",
+			"logIndexPattern" : "logs-coldbox-*",
 			// A default index pattern for filebeat logs ( e.g. server log files/entries ). May be overriden in the UI settings admin
 			"beatIndexPattern" : "filebeat-*",
 			// An initial admin email address. When present, it will create the initial login.
 			"adminEmail" : getSystemSetting( "STACHEBOX_ADMIN_EMAIL", "" ),
 			// An initial admin password to login
 			"adminPassword" : getSystemSetting( "STACHEBOX_ADMIN_PASSWORD", "" ),
+			// A username/email to use for the default token reporter ( no login privileges )
+			"tokenReporter" : getSystemSetting( "STACHEBOX_TOKEN_REPORTER", "nologin@stachebox.io" ),
 			// Whether to promote the module UI to the root URLS of the application
 			"isStandalone" : false,
 			// The cbSecurity configuration overrides for this module
@@ -88,7 +90,23 @@ moduleSettings = {
 }
 ```
 
-When using a custom security service, the `StacheboxUser` role will need to be assigned to any user who will be allowed access to the Stachebox logs API.   In addition, any users you wish to allow to administer the StacheBox module configuration will need to have the permission `Stachebox:Administer` in order to modify settings like index search patterns or  settings index names ( which may be also configured via the environment ).
+When using a custom security service, the `StacheboxUser` role will need to be assigned to any user who will be allowed access to the Stachebox logs API.   In addition, any users you wish to allow to administer the StacheBox module configuration will need to have the permission `Stachebox:Administer` in order to modify settings like index search patterns or  settings index names ( which may be also configured via the environment ). The permissions are retrieved from the JWT that the user API endpoint supplies so ensure that these permissions are provided in the JWT interface methods in your User entity:
+
+```javascript
+	 /**
+     * A struct of custom claims to add to the JWT token
+     */
+    struct function getJwtCustomClaims(){
+		return getMemento();
+	}
+
+    /**
+     * This function returns an array of all the scopes that should be attached to the JWT token that will be used for authorization.
+     */
+    array function getJwtScopes(){
+		return getPermissions();
+	}
+```
 
 ## Web Server Configuration
 

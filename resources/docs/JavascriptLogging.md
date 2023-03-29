@@ -22,14 +22,16 @@ fetch(
 	} 
 ).then( response => {
 	window.StacheboxLogger = new Stachebox( {
-		application : "myApplicationName",
+		application : "My Application Name",
 		release : "1.0.1",
 		token : response.headers.get( "x-auth-token" ) 
 	} );
                 
 	window.onerror = function( message, source, lineno, colno, error ) {
 		if( error ){
-			let errorSignature = JSON.stringify( error );
+			if( typeof error === "string" ){
+				error = new Error( error );
+			}
 			window.StacheboxLogger.log( error );
 		}
 	};
