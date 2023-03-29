@@ -16,7 +16,10 @@ fetch(
         if( authToken ){
             window.StacheboxLogger = new Stachebox( { token : authToken } );
 
-            window.onerror = function( message, source, lineno, colno, error ) {
+            window.onerror = function( event, source, lineno, colno, error ) {
+				if( typeof error === 'string' ){
+					error = new Error( error )
+				}
                 if( error ){
                     StacheboxLogger.log( error );
                 }

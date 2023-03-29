@@ -241,7 +241,7 @@
 					<pre v-else><code class="language-javastacktrace">{{entry.error.stack_trace}}</code></pre>
 				</tab>
 
-				<tab :name="$t( 'Raw Entry Data' )" v-else>
+				<tab :name="$t( 'Raw Entry Data' )">
 					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry ) )}}</code></pre>
 				</tab>
 
