@@ -39,6 +39,14 @@
 						<th class="w-1/3 align-top py-1">{{ $t( "Category" ) }}:</th>
 						<td class="w-2/3 py-1">{{ entry.log.category }}</td>
 					</tr>
+					<tr v-if="entry.package.path">
+						<th class="w-1/3 align-top py-1">{{ $t( "Application Path" ) }}:</th>
+						<td class="w-2/3 py-1">{{ entry.package.path }}</td>
+					</tr>
+					<tr v-if="entry.package.reference">
+						<th class="w-1/3 align-top py-1">{{ $t( "Base URL" ) }}:</th>
+						<td class="w-2/3 py-1">{{ entry.package.reference }}</td>
+					</tr>
 					<tr v-if="entry.log.logger">
 						<th class="w-1/3 align-top py-1">{{ $t( "Appender" ) }}:</th>
 						<td class="w-2/3 py-1">{{ entry.log.logger }}</td>
@@ -200,7 +208,8 @@
 					</table>
 				</tab>
 				<tab :name="$t( 'Extra Info' )" v-else-if="entry.error.extrainfo">
-					<pre><code class="language-json">{{formatJSON( JSON.stringify( entry.error.extrainfo ) )}}</code></pre>
+					<pre v-if="!extraInfoIsHTML"><code class="language-json">{{formatJSON( JSON.stringify( entry.error.extrainfo ) )}}</code></pre>
+					<iframe v-else class="error-iframe" ref="errorIframe" @load="loadExtraInfoFrame" style="flex: 1; width: 100%; border: none; min-height:800px" />
 				</tab>
 
 				<tab :name="$t( 'User Info' )" v-if="entry.user && entry.user.info && Object.keys( entry.user.info ).length">
@@ -290,12 +299,21 @@ export default {
 		},
 		multipleOccurrences(){
 			return this.entry.occurrences && this.entry.occurrences > 1;
+		},
+		extraInfoIsHTML(){
+			return this.entry.error
+					&& this.entry.error.extrainfo
+					&& typeof( this.entry.error.extrainfo ) == "string"
+					&& this.entry.error.extrainfo.toLowerCase().substring(0,30) == '</td></td></td></th></th></th>';
 		}
 	},
 	methods : {
 		formatJSON : formatJSONRaw,
 		frameContext( frame ){
 			return frame.pre_context.join( "\n" ) + "\n" + frame.context_line + "\n" + frame.post_context.join( "\n" );
+		},
+		loadExtraInfoFrame(){
+			this.$nextTick( () => this.$refs.errorIframe.contentDocument.body.innerHTML = this.entry.error.extrainfo );
 		}
 	},
 	mounted() {
