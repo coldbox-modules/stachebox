@@ -43,7 +43,7 @@ services:
     ports:
       - "5044:5044"
     environment:
-      LS_JAVA_OPTS: -Xms256m -Xmx256m
-      xpack.monitoring.elasticsearch.username: 'http://elasticsearch:9200'
+      ES_JAVA_OPTS: -Xms256m -Xmx256m
+      xpack.monitoring.elasticsearch.host: 'http://elasticsearch:9200'
       xpack.monitoring.elasticsearch.username: elastic
       xpack.monitoring.elasticsearch.password: "5t4ch380x!"
