@@ -140,7 +140,9 @@ component{
 
 		prc.globalData = {
 			"stachebox" : {
+				"sesBaseURL" : event.getSESBaseURL(),
 				"baseHref" : event.getModuleRoot( "stachebox" ),
+				"apiBaseHref" : event.buildLink( to = "stachebox" ),
 				"isStandalone" : moduleSettings.isStandalone,
 				"logIndexPattern" : moduleSettings.logIndexPattern,
 				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
