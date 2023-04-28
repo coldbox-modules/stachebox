@@ -4,7 +4,7 @@
 import Stachebox from "stachebox";
 
 fetch(
-    '/stachebox/api/v1/authentication',
+    window.globalData.stachebox.apiBaseHref + '/api/v1/authentication',
     {
         method: 'HEAD'
     }

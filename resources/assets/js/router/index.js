@@ -129,7 +129,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history : createWebHistory( store.state.globals && store.state.globals.stachebox.isStandalone ? '' : '/stachebox' ),
+  history : createWebHistory( store.state.globals && store.state.globals.stachebox.isStandalone ? '' : store.state.globals.stachebox.apiBaseHref.replace( store.state.globals.stachebox.sesBaseURL, "/" ) ),
   routes
 });
 

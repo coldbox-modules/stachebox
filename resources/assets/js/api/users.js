@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const urlRoot = "/stachebox/api/v1/users";
+const urlRoot = window.globalData.stachebox.apiBaseHref + "/api/v1/users";
 
 const defaultAPI = Axios.create({
 	baseURL: urlRoot,
