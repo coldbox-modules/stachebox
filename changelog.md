@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.3] - 2023-04-28
 ### Changed
 * Bumped minimum `cbElasticsearch` dependency to 3.1.1
+* Fixes asset and js url base href handling when Coldbox is running in a nested directory
 ## [2.0.2] - 2023-04-18
 ### Fixed
 * Fixed rendering of Lucee HTML messages as extra info
