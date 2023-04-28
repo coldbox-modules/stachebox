@@ -94,7 +94,7 @@ component accessors="true" {
 				"total" : result.getHitCount(),
 				"page" : searchCollection.page,
 				"pages" : arguments.searchCollection.maxRows ? ceiling( result.getHitCount() / arguments.searchCollection.maxRows ) : 0,
-				"startRow" : searchBuilder.getStartRow(),
+				"startRow" : searchBuilder.getFrom(),
 				"maxRows" : javacast( "int", arguments.searchCollection.maxrows )
 			},
 			"results" : result.getHits().map( function( user ){ var memento = user.getMemento(); memento[ "id" ] = user.getId(); return memento; } )
