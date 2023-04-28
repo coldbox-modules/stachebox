@@ -77,7 +77,7 @@ component {
 					"total" : recordCount,
 					"page" : searchCollection.page,
 					"pages" : arguments.searchCollection.maxRows ? ceiling( recordCount / arguments.searchCollection.maxRows ) : 0,
-					"startRow" : builder.getStartRow(),
+					"startRow" : builder.getFrom(),
 					"maxRows" : javacast( "int", arguments.searchCollection.maxrows )
 				},
 				"debug" : searchResults.getCollapsedOccurrences(),
