@@ -98,7 +98,7 @@ component{
 			var adminUser = getInstance( "User@stachebox" )
 										.new(
 											{
-												"firstName" : "Stachebox",
+												"firstName" : "stachebox",
 												"lastName"  : "Admin",
 												"email"     : variables.moduleSettings.adminEmail,
 												"password"  : variables.moduleSettings.adminPassword,
@@ -138,16 +138,25 @@ component{
 			locales[ locale ] = i18nBundles[ locale ];
 		} );
 
+		var javaURI = createObject( "java", "java.net.URI" );
+		var basePath = javaURI.create( event.getSESBaseURL() ).getPath();
+		var stacheboxBasePath = basePath & "stachebox";
+		var loginUrl = !findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
+							? cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : stacheboxBasePath & "/login"
+							: stacheboxBasePath & "/login";
+
+
 		prc.globalData = {
 			"stachebox" : {
-				"sesBaseURL" : event.getSESBaseURL(),
+				"sesBaseURL" : event.buildLink( to="stachebox" ),
+				"sesBasePath" : stacheboxBasePath,
 				"baseHref" : event.getModuleRoot( "stachebox" ),
-				"apiBaseHref" : event.buildLink( to = "stachebox" ),
+				"apiBaseHref" : stacheboxBasePath,
 				"isStandalone" : moduleSettings.isStandalone,
 				"logIndexPattern" : moduleSettings.logIndexPattern,
 				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
 				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
-				"loginURL" :  event.buildLink( to = cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : '/stachebox/login' , ssl = event.isSSL() ),
+				"loginURL" :  loginUrl,
 				"i18nLocales" : locales,
 				"projects" : settingServce.getByName( "projects" ).getMemento().value.reduce(
 					function( acc, value ){
@@ -164,7 +173,7 @@ component{
 		};
 	}
 
-	function onStacheboxSettingUpdate( event, interceptData ){
+	function onstacheboxSettingUpdate( event, interceptData ){
 		lock scope="application" type="exclusive" throwontimeout="true" timeout="20"{
 			variables.moduleSettings[ interceptData.setting.name ] = interceptData.setting.value;
 			var allModuleSettings = getSetting( "moduleSettings" );
