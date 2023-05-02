@@ -148,7 +148,7 @@ component{
 
 		prc.globalData = {
 			"stachebox" : {
-				"sesBaseURL" : event.buildLink( to="stachebox" ),
+				"sesBaseURL" : stacheboxBasePath,
 				"sesBasePath" : stacheboxBasePath,
 				"baseHref" : event.getModuleRoot( "stachebox" ),
 				"apiBaseHref" : stacheboxBasePath,
