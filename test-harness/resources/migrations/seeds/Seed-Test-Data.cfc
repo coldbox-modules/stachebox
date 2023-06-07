@@ -5,7 +5,7 @@ component{
 		var appender = registry[ "logstash_appender" ];
 
 
-		var testApps = mockData.mock( $num=3, $type="words" );
+		var testApps = [ "Application One", "Application Two" ];
 		var testEnvironments = [ "development", "staging", "production" ];
 		for( var app in TestApps ){
 			var runTime = now();
@@ -16,7 +16,7 @@ component{
 
 			var testErrors = [];
 
-			for( i = 1; i <= 5; i++ ){
+			for( i = 1; i <= 4; i++ ){
 				try{
 					throw( type="stachebox.mockData.error", message=mockData.sentence()  )
 				} catch( any e ){
