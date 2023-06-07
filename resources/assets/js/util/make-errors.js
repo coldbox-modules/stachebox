@@ -14,7 +14,11 @@ fetch(
         let authToken = response.headers.get( "x-auth-token" );
 
         if( authToken ){
-            window.StacheboxLogger = new Stachebox( { token : authToken } );
+            window.StacheboxLogger = new Stachebox( {
+				token : authToken,
+				application: "Stachebox UI",
+				version : "2.0.5"
+			} );
 
             window.onerror = function( event, source, lineno, colno, error ) {
 				if( typeof error === 'string' ){
