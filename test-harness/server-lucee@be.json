@@ -1,0 +1,20 @@
+{
+    "name":"stachebox-lucee@6",
+    "app":{
+        "serverHomeDirectory":"./.engine/lucee6",
+        "cfengine":"lucee@be"
+    },
+    "web":{
+        "http":{
+            "port":"60299"
+        },
+        "rewrites":{
+            "enable":true
+        },
+        "aliases":{
+            "/moduleroot/stachebox/includes":"../includes",
+            "/stachebox/includes":"../includes"
+        }
+    },
+    "openBrowser":false
+}
