@@ -18,12 +18,14 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        cfengine: [ "lucee@5", "adobe@2018", "adobe@2021" ]
+        cfengine: [ "lucee@5", "adobe@2018", "adobe@2021", "adobe@2023" ]
         ELASTICSEARCH_VERSION: [ "7.17.8", "8.6.1" ]
         experimental: [false]
+        coldboxVersion: [ "^6.0.0", "^7.0.0" ]
         include:
-          - cfengine: "adobe@2023"
+          - cfengine: "lucee@be"
             ELASTICSEARCH_VERSION: "8.6.1"
+            coldboxVersion: "^7.0.0"
             experimental: true
     steps:
       - name: Checkout Repository
@@ -40,6 +42,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          cd test-harness && box package set dependencies.coldbox=${{ matrix.coldboxVersion }} && cd ../
           box run-script harness:install
 
       - name:  Install Node 18
