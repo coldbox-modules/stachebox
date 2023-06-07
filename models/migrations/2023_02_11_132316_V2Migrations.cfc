@@ -9,7 +9,7 @@ component {
 									.new( moduleSettings.usersIndex )
 									.mustNotExist( "allowLogin" );
 			if( searchBuilder.count() ){
-				client.updateByQuery(
+				searchClient.updateByQuery(
 					searchBuilder,
 					{
 						"lang" : "painless",
