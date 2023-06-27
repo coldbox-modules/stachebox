@@ -175,3 +175,4 @@ You will need to add a `LimitRequestFieldSize` setting in each `<VirtualHost...>
 	...
 </VirtualHost>
 ```
+In addition, if you are using `mod_proxy` you will need to add the following option to any `ProxyPassMatch` directive: `responsefieldsize=12800`
