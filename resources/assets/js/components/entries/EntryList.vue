@@ -40,12 +40,12 @@
 			</thead>
 
 			<tbody class="bg-white" v-if="logs.length">
-				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }" tabindex="0" @keyup.enter="$router.push( `/logs/entry/${entry.id}` )">
+				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }" tabindex="0" @keyup.enter="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )">
 				<td
 					v-if="displayApplication"
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 					style="width: 150px"
-					@click="$router.push( `/logs/entry/${entry.id}` )"
+					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
 					{{entry.labels.application || $t( 'N/A' )}}
 				</td>
@@ -53,29 +53,28 @@
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500 whitespace-nowrap"
 					style="width: 175px"
-					@click="$router.push( `/logs/entry/${entry.id}` )"
+					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
 				{{ dayjs( entry['@timestamp' ] ).format('MM/DD/YYYY HH:mm') }}
 				</td>
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
 					style="width: 150px"
-					@click="$router.push( `/logs/entry/${entry.id}` )"
+					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
 					{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}
 				</td>
 				<td
 					v-if="displayOccurrences"
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
-					@click="$router.push( `/logs/entry/${entry.id}` )"
+					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
 					<span class="inline-flex items-center justify-center px-2 py-1 text-xs leading-none text-white bg-theme rounded-full">{{ entry.occurrences || 1 }}</span>
 				</td>
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm leading-5 text-gray-500"
-					@click="$router.push( `/logs/entry/${entry.id}` )"
 				>
-					<code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message.replace(/,(?=[^\s])/g, ", "), truncate ? 200 : entry.message.length + 1 ) }}</code>
+					<router-link :to="{ name: 'LogEntry', params: { id: entry.id, search : $route.params.search } }"><code class="text-yellow-600 text-xs">{{ $filters.truncate( entry.message.replace(/,(?=[^\s])/g, ", "), truncate ? 200 : entry.message.length + 1 ) }}</code></router-link>
 				</td>
 
 				<td
@@ -90,7 +89,7 @@
 							<fa-icon icon="eye-slash" v-tooltip="$t( 'Suppress this log entry from future results' )" fixed-width></fa-icon>
 						</template>
 					</confirmation-button>
-					<router-link class="sr-only" :to="`/logs/entry/${entry.id}`">{{ $t( "View Entry" ) }}</router-link>
+					<router-link class="sr-only" :to="{ path: `/logs/entry/${entry.id}`}">{, params: this.$route.params { $t( "View Entry" ) }}</router-link>
 				</td>
 				</tr>
 			</tbody>
@@ -163,7 +162,6 @@ export default {
 		};
 	},
 	computed : {
-
 		currentColspan(){
 			let colspan = 4;
 			if( this.displayOccurrences ) colspan++;
@@ -245,6 +243,9 @@ export default {
 		}
 	},
 	mounted(){
+		if( this.$route.params.search ){
+			this.searchFilters.search = this.$route.params.search;
+		}
 		this.fetchLogs();
 		window.Event.$on( "on-search-filter-change", this.updateFilters );
 	}

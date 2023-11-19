@@ -210,6 +210,14 @@
 				<tab :name="$t( 'Extra Info' )" v-else-if="entry.error.extrainfo">
 					<pre v-if="!extraInfoIsHTML"><code class="language-json">{{formatJSON( JSON.stringify( entry.error.extrainfo ) )}}</code></pre>
 					<iframe v-else class="error-iframe" ref="errorIframe" @load="loadExtraInfoFrame" style="flex: 1; width: 100%; border: none; min-height:800px" />
+					<template v-if="!extraInfoIsHTML && extraInfoXML.length">
+						<hr class="my-2">
+						<h3>ExtraInfo HTML/XML</h3>
+						<div class="py-1" v-for="item in extraInfoXML">
+							<h4><code class="text-yellow-600 text-lg">{{ item.key }}</code></h4>
+							<pre><code class="language-xml">{{formatXML( item.value )}}</code></pre>
+						</div>
+					</template>
 				</tab>
 
 				<tab :name="$t( 'User Info' )" v-if="entry.user && entry.user.info && Object.keys( entry.user.info ).length">
@@ -253,7 +261,7 @@
 				<tab v-if="multipleOccurrences" :name="$t( 'Other Occurrences' )">
 					<entry-list
 						v-if="multipleOccurrences"
-						:initialFilters='{ "stachebox.signature" : entry.stachebox.signature, exclude : entry.id, sortOrder : "@timestamp DESC" }'
+						:initialFilters="occurrenceParams"
 						:displayOccurrences="false"
 						:displayApplication="false"
 					></entry-list>
@@ -265,7 +273,7 @@
 </template>
 <script>
 import Prism from "prismjs";
-import { formatJSONRaw } from "@/util/udf";
+import udf from "@/util/udf";
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-sql';
@@ -291,6 +299,7 @@ export default {
 	data(){
 		return {
 			activeTab : 0,
+			occurrenceParams : {}
 		}
 	},
 	computed : {
@@ -305,16 +314,43 @@ export default {
 					&& this.entry.error.extrainfo
 					&& typeof( this.entry.error.extrainfo ) == "string"
 					&& this.entry.error.extrainfo.toLowerCase().substring(0,30) == '</td></td></td></th></th></th>';
+		},
+		extraInfoXML(){
+			if( !this.extraInfoIsHTML ){
+				let extraInfo = this.entry.error.extrainfo;
+				return Object.keys( extraInfo )
+								.filter( key => this.isXML( extraInfo[ key ] ) )
+								.map( key => { return { "key" : key, "value" : extraInfo[ key ] }; } )
+			} else {
+				return [];
+			}
+
 		}
 	},
 	methods : {
-		formatJSON : formatJSONRaw,
+		formatJSON : udf.formatJSONRaw,
+		formatXML : udf.prettifyXML,
 		frameContext( frame ){
 			return frame.pre_context.join( "\n" ) + "\n" + frame.context_line + "\n" + frame.post_context.join( "\n" );
 		},
-		loadExtraInfoFrame(){
-			this.$nextTick( () => this.$refs.errorIframe.contentDocument.body.innerHTML = this.entry.error.extrainfo );
+		loadExtraInfoFrame( content ){
+			this.$nextTick( () => this.$refs.errorIframe.contentDocument.body.innerHTML = content || this.entry.error.extrainfo );
+		},
+		isXML( str ){
+			let parser = new DOMParser();
+			let doc = parser.parseFromString(str, "application/xml");
+			let errorNode = doc.querySelector('parsererror');
+			return errorNode ? false : true;
 		}
+	},
+	beforeMount(){
+		console.log( udf );
+		this.occurrenceParams = {
+			"stachebox.signature" : this.entry.stachebox.signature,
+			exclude : this.entry.id,
+			sortOrder : "@timestamp DESC",
+			search: this.$route.params.search
+		};
 	},
 	mounted() {
 		Prism.highlightAll();
