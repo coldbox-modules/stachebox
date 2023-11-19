@@ -296,7 +296,7 @@ component {
 		var matchText = [
 			"message^20",
 			"error.extrainfo^15",
-			"error.stack_trace^10",
+			"error.stack_trace^10"
 		];
 
 		arguments.builder.multiMatch(
