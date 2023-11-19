@@ -106,11 +106,7 @@ export default {
 						)
 		},
 		sendToSearchPage( e ){
-			if( this.$route.name != 'LogSearch' ){
-				this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
-			} else {
-				window.Event.$emit( "on-search-filter-change", { search : this.searchText } )
-			}
+			this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
 		}
 	}
 };

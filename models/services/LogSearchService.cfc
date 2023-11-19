@@ -284,7 +284,7 @@ component {
 	}
 
 	function applyDynamicSearchArgs( required SearchBuilder builder, required struct searchCollection ){
-		if( !searchCollection.keyExists( "search" ) ) return;
+		if( !searchCollection.keyExists( "search" ) || !len( searchCollection.search ) ) return;
 		listToArray( searchCollection.search, "+" )
 							.each( function( item ){
 								var scopedArgs = listToArray( item, ":" );
@@ -295,15 +295,15 @@ component {
 		// Note the `^` boosts the field by the following multiplier
 		var matchText = [
 			"message^20",
-			"error.stack_trace",
-			"error.frames"
+			"error.extrainfo^15",
+			"error.stack_trace^10",
 		];
 
 		arguments.builder.multiMatch(
 			matchText,
 			trim( searchCollection.search ),
-			20.00,
-			'phrase'
+			50.00,
+			'best_fields'
 		);
 
 

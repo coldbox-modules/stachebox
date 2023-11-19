@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ----
+## [2.0.6] - 2023-11-19
+
+### Fixed
+* Fixed permalinks on search and added ability to open log entries in new tab
+
+### Changed
+* Improved waiting and searchability of extra info XML
+* Changed default PrismJS theme to "Tomorrow Night"
+
+### Added
+* Search form submission is now permalinked for sharing
+* Added Additional formatted display for XML packets nested in extra info struct
+
 ## [2.0.5] - 2023-06-07
 ### Fixed
 * Fixes an incorrect variable reference in the v2 migrations
