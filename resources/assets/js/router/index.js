@@ -49,12 +49,12 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/logs/entry/:id",
+    path: "/logs/entry/:id/:search?",
     name: "LogEntry",
     component: LogEntry,
   },
   {
-    path: "/beats/entry/:id",
+    path: "/beats/entry/:id/:search?",
     name: "BeatsEntry",
     component: BeatsEntry,
   },
@@ -84,7 +84,7 @@ const routes = [
     component: BeatsLogs,
   },
   {
-    path: "/logs/search",
+    path: "/logs/search/:search?",
     name: "LogSearch",
     component: LogSearch,
   },
