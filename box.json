@@ -30,7 +30,7 @@
         "BCrypt":"^3",
         "logstash":"^3.0.2",
         "cbi18n":"^3.2.0+12",
-        "cbmailservices":"^2.7.0-snapshot",
+        "cbmailservices":"^2.8.0",
         "cfmigrations":"^3.0.8"
     },
     "installPaths":{
