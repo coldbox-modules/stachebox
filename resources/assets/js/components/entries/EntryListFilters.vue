@@ -1,6 +1,6 @@
 <template>
-	<div class="grid bg-white grid-cols-4 gap-2">
-		<div class="my-2">
+	<div class="entry-search-filters grid bg-white grid-cols-4 gap-2">
+		<div class="my-1">
 			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Date Range" ) }}:</label>
 				<date-time-picker
@@ -10,7 +10,7 @@
 			</div>
 		</div>
 
-		<div class="my-2 pl-5 border-l border-gray-300">
+		<div class="my-1 pl-5 border-l border-gray-300">
 			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Application" ) }}:</label>
 				<select
@@ -19,7 +19,7 @@
 					v-model="searchFilters.application"
 					:value="'all'"
 					@change="onFilterChange( 'labels.application', searchFilters.application )"
-					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
+					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Applications" ) }}</option>
 					<option v-for="application in applications" :key="application" :value="application">{{application.toTitleCase()}}</option>
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 
-		<div class="my-2 pl-5 border-l border-gray-300">
+		<div class="my-1 pl-5 border-l border-gray-300">
 			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Environment" ) }}:</label>
 				<select
@@ -36,7 +36,7 @@
 					v-model="searchFilters.environment"
 					:value="'all'"
 					@change="onFilterChange( 'labels.environment', searchFilters.environment )"
-					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
+					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">All Environments</option>
 					<option v-for="environment in availableEnvironments" :value="environment.toLowerCase()">{{ environment.toTitleCase() }}</option>
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 
-		<div class="my-2 pl-5 border-l border-gray-300" >
+		<div class="my-1 pl-5 border-l border-gray-300" >
 			<div class="px-3 py-2 mt-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Log Level" ) }}:</label>
 				<select
@@ -53,7 +53,7 @@
 					v-model="searchFilters.level"
 					:value="'all'"
 					@change="onFilterChange( 'log.level', searchFilters.level )"
-					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
+					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Levels" ) }}</option>
 					<option value="fatal">{{ $t( "Fatal" ) }}</option>
