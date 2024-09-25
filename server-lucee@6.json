@@ -2,7 +2,7 @@
     "name":"stachebox-lucee@6",
     "app":{
         "serverHomeDirectory":"./.engine/lucee6",
-        "cfengine":"lucee@be"
+        "cfengine":"lucee@6"
     },
     "web":{
         "http":{
@@ -12,9 +12,10 @@
             "enable":true
         },
         "aliases":{
-            "/moduleroot/stachebox/includes":"../includes",
-            "/stachebox/includes":"../includes"
-        }
+            "/moduleroot/stachebox/includes":"includes",
+            "/stachebox/includes":"includes"
+        },
+		"webroot" : "test-harness"
     },
     "openBrowser":false
 }
