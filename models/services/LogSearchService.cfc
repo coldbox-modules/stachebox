@@ -44,7 +44,9 @@ component {
 
 		if( arguments.searchCollection.keyExists( "collapse" ) ){
 			builder.collapseToField( field=searchCollection.collapse, includeOccurrences=true );
-		} else if( arguments.includeAggregations ){
+		}
+
+		if( arguments.includeAggregations ){
 			applyCommonAggregations( builder, arguments.searchCollection );
 		}
 
@@ -297,7 +299,7 @@ component {
 			"message^50",
 			"error.stack_trace",
 			"error.frames",
-			"event.url.path"
+			"event.url.path",
 			"error.extrainfo^15",
 			"error.stack_trace^10"
 		];

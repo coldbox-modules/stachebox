@@ -5,7 +5,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 	// ( GET ) /api/v1/logs
 	function index( event, rc, prc ){
 
-		var searchResult = getInstance( "LogSearchService@stachebox" ).search( rc );
+		var searchResult = getInstance( "LogSearchService@stachebox" ).search( rc, event.getValue( "includeAggregations", false ) );
 		searchResult.results = searchResult.results.map( function( item ){ return expandEntry( item ); } );
 
 		prc.response.setData( searchResult );

@@ -1,6 +1,6 @@
 <template>
 	<div class="application-logs">
-		<h2 class="text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b"><span v-if="this.$route.params.applicationId">{{ this.$route.params.applicationId }} </span>{{ $t( "Application Log Results" ) }}</h2>
+		<h2 class="text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b"><span v-if="this.$route.params.applicationId">{{ this.$route.params.applicationId }}</span> {{ $t( "Application Log Results" ) }}</h2>
 		<div class="entry-list">
 			<entry-list
 				:initialFilters="searchParams"
