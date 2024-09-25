@@ -106,7 +106,19 @@ export default {
 						)
 		},
 		sendToSearchPage( e ){
-			this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
+			if( this.$route.name != 'LogSearch' ){
+				let eventName = "LogSearch";
+				let params = { search : this.searchText }
+				console.log( this.$route );
+				let isApplicationFocus = this.$route.name == "ApplicationLogs" || this.$route.name == "ApplicationEnvironmentLogs";
+				if( isApplicationFocus && this.$route.params.id ){
+					eventName = "ApplicationLogSearch";
+					params.applicationId = this.$route.params.id;
+				}
+				this.$router.push( { name : eventName, params : params } );
+			} else {
+				this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
+			}
 		}
 	}
 };

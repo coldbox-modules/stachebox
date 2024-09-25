@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 import auth from "../api/authentication";
 
-import Dashboard from "@/views/Dashboard.vue";
-import Login from "@/views/Login.vue";
-import ForgotPassword from "@/views/ForgotPassword.vue";
-import ResetPassword from "@/views/ResetPassword.vue";
-import NotFound from "@/views/NotFound.vue";
-import LogEntry from "@/views/LogEntry.vue";
-import BeatsEntry from "@/views/BeatsEntry.vue";
 import ApplicationLogs from "@/views/ApplicationLogs.vue";
-import ProjectSnapshot from "@/views/ProjectSnapshot.vue";
-import DatasetLogs from "@/views/DatasetLogs.vue";
+import BeatsEntry from "@/views/BeatsEntry.vue";
 import BeatsLogs from "@/views/BeatsLogs.vue";
+import Dashboard from "@/views/Dashboard.vue";
+import DatasetLogs from "@/views/DatasetLogs.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue";
+import LogEntry from "@/views/LogEntry.vue";
 import LogSearch from "@/views/LogSearch.vue";
+import Login from "@/views/Login.vue";
+import NotFound from "@/views/NotFound.vue";
+import ProjectSnapshot from "@/views/ProjectSnapshot.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 import Settings from "@/views/Settings.vue";
 import UserDirectory from "@/views/UserDirectory.vue";
 import UserForm from "@/views/UserForm.vue";
@@ -84,7 +84,12 @@ const routes = [
     component: BeatsLogs,
   },
   {
-    path: "/logs/search/:search?",
+    path: "/logs/search/application/:applicationId",
+    name: "ApplicationLogSearch",
+    component: LogSearch,
+  },
+  {
+    path: "/logs/search",
     name: "LogSearch",
     component: LogSearch,
   },

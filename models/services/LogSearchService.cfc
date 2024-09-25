@@ -294,7 +294,10 @@ component {
 							} );
 		// Note the `^` boosts the field by the following multiplier
 		var matchText = [
-			"message^20",
+			"message^50",
+			"error.stack_trace",
+			"error.frames",
+			"event.url.path"
 			"error.extrainfo^15",
 			"error.stack_trace^10"
 		];
