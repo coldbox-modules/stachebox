@@ -5,19 +5,17 @@
 			<!----------------------------------------------------------------------------------------->
 			<!--- Top Left Exception Area --->
 			<!----------------------------------------------------------------------------------------->
-			<h2 class="text-3xl font-medium text-gray-500"><fa-icon icon="bomb" fixed-width />
+			<h2 class="text-3xl font-medium text-gray-500"><fa-icon :icon="entrySeverity <= 2 ? 'bomb' : 'file-alt'" fixed-width />
 				{{ $t( "Log Entry Information" ) }}
 				<entry-export-button :entry="entry"/>
 			</h2>
 			<table class="ml-4 text-left table-fixed border-collapse mt-5">
 				<tbody>
-					<tr v-if="entry.labels.application">
-						<th class="w-1/3 align-top py-1">{{ $t( "Application ID" ) }}:</th>
-						<td class="w-2/3 py-1">{{ entry.labels.application }}</td>
-					</tr>
 					<tr>
-						<th class="w-1/3 align-top py-1">{{ $t( "Release Version" ) }}:</th>
-						<td class="w-2/3 py-1">{{ entry.package.version || $t( 'N/A' ) }}</td>
+						<th class="w-1/3 align-top py-1">{{ $t( "Message" ) }}:</th>
+						<td class="w-2/3 py-1">
+							<code class="text-yellow-600 text-xs">{{ entry.message }}</code>
+						</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top py-1">{{ $t( "Environment" ) }}:</th>
@@ -27,9 +25,13 @@
 						<th class="w-1/3 align-top py-1">{{ $t( "Level" ) }}:</th>
 						<td class="w-2/3 py-1">{{entry.log.level ? entry.log.level.toUpperCase() : $t( 'N/A' )}} <span v-if="entry.event.severity">( {{ $t( "Severity" ) }} {{entry.event.severity}} )</span></td>
 					</tr>
-					<tr v-if="entry.error.type">
-						<th class="w-1/3 align-top py-1">{{ $t( "Type" ) }}:</th>
-						<td class="w-2/3 py-1">{{entry.error.type}}</td>
+					<tr>
+						<th class="w-1/3 align-top py-1">{{ $t( "Release Version" ) }}:</th>
+						<td class="w-2/3 py-1">{{ entry.package.version || $t( 'N/A' ) }}</td>
+					</tr>
+					<tr v-if="entry.labels.application">
+						<th class="w-1/3 align-top py-1">{{ $t( "Application ID" ) }}:</th>
+						<td class="w-2/3 py-1">{{ entry.labels.application }}</td>
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top py-1">{{ $t( "Occurred At" ) }}:</th>
@@ -51,22 +53,16 @@
 						<th class="w-1/3 align-top py-1">{{ $t( "Appender" ) }}:</th>
 						<td class="w-2/3 py-1">{{ entry.log.logger }}</td>
 					</tr>
-					<tr>
-						<th class="w-1/3 align-top py-1">{{ $t( "Message" ) }}:</th>
-						<td class="w-2/3 py-1">
-							<code class="text-yellow-600 text-xs">{{ entry.message }}</code>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
 
 
-		<div class="entry-detail mt-20" v-if="entry.error.extrainfo || entry.event || entry.snapshot || entry.error.stacktrace">
-			<h2 class="text-3xl font-medium text-gray-500">
+		<div class="entry-detail mt-5" v-if="entry.error.extrainfo || entry.event || entry.snapshot || entry.error.stacktrace">
+			<h3 class="text-2xl font-medium text-gray-500">
 				<fa-icon icon="search" fixed-width />
 				{{ $t( "Exception Detail" ) }}
-			</h2>
+			</h3>
 
 			<tabs class="mt-5 bg-gray-100">
 				<tab :name="$t( 'Event Details' )">
@@ -89,9 +85,9 @@
 								<th class="w-1/3 align-top py-1">{{ $t( "Route" ) }}:</th>
 								<td class="w-2/3 py-1">{{entry.event.route}}</td>
 							</tr>
-							<tr v-if="entry.event.url">
+							<tr v-if="entry.url && entry.url.path">
 								<th class="w-1/3 align-top py-1">{{ $t( "URL" ) }}:</th>
-								<td class="w-2/3 py-1">{{entry.event.url}}</td>
+								<td class="w-2/3 py-1">{{entry.url.path}}</td>
 							</tr>
 							<tr v-if="entry.event.layout">
 								<th class="w-1/3 align-top py-1">{{ $t( "Layout" ) }}:</th>
@@ -218,6 +214,14 @@
 							<pre><code class="language-xml">{{formatXML( item.value )}}</code></pre>
 						</div>
 					</template>
+					<template v-else-if="extraInfoContainsObjects">
+						<hr class="my-2">
+						<h3>ExtraInfo Objects</h3>
+						<div class="py-1" v-for="item in extraInfoObjects">
+							<h4><code class="text-yellow-600 text-lg">{{ item.key }}</code></h4>
+							<pre><code class="language-json">{{formatJSON( JSON.stringify( item.value ) )}}</code></pre>
+						</div>
+					</template>
 				</tab>
 
 				<tab :name="$t( 'User Info' )" v-if="entry.user && entry.user.info && Object.keys( entry.user.info ).length">
@@ -264,6 +268,7 @@
 						:initialFilters="occurrenceParams"
 						:displayOccurrences="false"
 						:displayApplication="false"
+						:allowFilters="false"
 					></entry-list>
 				</tab>
 
@@ -272,16 +277,16 @@
 	</div>
 </template>
 <script>
-import Prism from "prismjs";
 import udf from "@/util/udf";
+import Prism from "prismjs";
 import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-javastacktrace';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-javastacktrace';
 import Tab from "../../components/Tab";
 import Tabs from "../../components/Tabs";
-import EntryList from './EntryList';
 import EntryExportButton from './EntryExportButton';
+import EntryList from './EntryList';
 
 export default {
 	components : {
@@ -303,6 +308,9 @@ export default {
 		}
 	},
 	computed : {
+		entrySeverity(){
+			return this.entry.event.severity || 3;
+		},
 		reversedFrames(){
 			return this.entry.error.frames ? this.entry.error.frames.reverse() : []
 		},
@@ -325,6 +333,21 @@ export default {
 				return [];
 			}
 
+		},
+		extraInfoContainsObjects(){
+			return !this.extraInfoIsHTML
+				&& !this.extraInfoXML.length
+				&& Object.keys( this.entry.error.extrainfo ).filter( key => typeof( this.entry.error.extrainfo[ key ] ) == "object" || Array.isArray( this.entry.error.extrainfo[ key ] ) ).length;
+		},
+		extraInfoObjects(){
+			if( this.extraInfoContainsObjects ){
+				let extraInfo = this.entry.error.extrainfo;
+				return Object.keys( extraInfo )
+								.filter( key => typeof( extraInfo[ key ] ) == "object" || Array.isArray( extraInfo[ key ] ) )
+								.map( key => { return { "key" : key, "value" : extraInfo[ key ] }; } )
+			} else {
+				return [];
+			}
 		}
 	},
 	methods : {

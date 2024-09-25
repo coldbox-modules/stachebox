@@ -1,12 +1,12 @@
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import VueJwtDecode from "vue-jwt-decode";
 import { createStore } from "vuex";
 import authAPI from "../api/authentication";
-import usersAPI from "../api/users";
-import logsAPI from "../api/logs";
 import beatsAPI from "../api/beats";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import VueJwtDecode from "vue-jwt-decode";
+import logsAPI from "../api/logs";
+import usersAPI from "../api/users";
 dayjs.extend( utc );
 dayjs.extend( timezone );
 dayjs.tz.setDefault( dayjs.tz.guess() );
@@ -102,11 +102,11 @@ export default createStore({
 			return logsAPI.fetch( id, params, context.state.authToken )
 		},
 		fetchNavAggregations : ( context ) => {
-			context.dispatch( "fetchLogs", { maxrows : 0, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString(), tzOffset : dayjs().format( "Z" ) } )
+			context.dispatch( "fetchLogs", { maxrows : 0, includeAggregations: true, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString(), tzOffset : dayjs().format( "Z" ) } )
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
 						context.state.navAggregations.logCount = result.data.pagination.total;
-						context.dispatch( "fetchBeats", { maxrows : 0 } )
+						context.dispatch( "fetchBeats", { maxrows : 0, includeAggregations : true } )
 								.then( ( result ) => {
 									context.state.navAggregations.beatsCount = result.data.pagination.total;
 									context.state.navAggregations.beatsAggregations = result.data.aggregations;

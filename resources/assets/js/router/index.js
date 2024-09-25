@@ -84,12 +84,12 @@ const routes = [
     component: BeatsLogs,
   },
   {
-    path: "/logs/search/application/:applicationId",
+    path: "/logs/search/application/:applicationId/:search?",
     name: "ApplicationLogSearch",
     component: LogSearch,
   },
   {
-    path: "/logs/search",
+    path: "/logs/search/:search?",
     name: "LogSearch",
     component: LogSearch,
   },

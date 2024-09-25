@@ -2,7 +2,7 @@
   <div class="flex transform z-30" :class="isOpen ? 'opacity-100' : 'opacity-0 hidden'">
     <div
       :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-      class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-800 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0"
+      class="fixed z-30 inset-y-0 left-0 transition duration-300 transform bg-gray-800 overflow-y-auto overflow-x-auto lg:translate-x-0 lg:static lg:inset-0"
     >
       <nav class="mt-10">
 		<h2
@@ -84,7 +84,7 @@
 						:to="`/logs/application/${application}`"
 					>
 						<fa-icon icon="cube" fixed-width/>
-						<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
+						<span class="mx-4">{{ application.toTitleCase() }}</span>
 					</router-link>
 				</div>
 			</details>
@@ -129,7 +129,7 @@
 									:to="`/logs/application/${application}/${environment.toLowerCase()}`"
 								>
 									<fa-icon icon="cube" fixed-width/>
-									<span class="mx-4">{{ $filters.truncate( application.toTitleCase(), 15 ) }}</span>
+									<span class="mx-4">{{ application.toTitleCase() }}</span>
 								</router-link>
 							</div>
 						</details>
@@ -164,7 +164,7 @@
 							:class="[$route.name === 'DatasetLogs' && $route.params.id == dataset ? activeClass : inactiveClass]"
 							:to="`/logs/dataset/${dataset}`"
 						>
-							<span class="mx-4">{{ $filters.truncate( $filters.datasetName( dataset ), 15 ) }}</span>
+							<span class="mx-4">{{ $filters.truncate( $filters.datasetName( dataset ), 30 ) }}</span>
 						</router-link>
 					</template>
 					<template v-if="Object.keys( beatsAggregations.inputTypes ).length">

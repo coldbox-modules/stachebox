@@ -1,6 +1,6 @@
 <template>
 	<div :class="wrapperClass">
-		<entry-list-filters v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters"></entry-list-filters>
+		<entry-list-filters v-if="allowFilters" v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters"></entry-list-filters>
 		<table class="min-w-full table-fixed" v-if="logs">
 			<thead>
 				<tr>
@@ -34,7 +34,7 @@
 					</th>
 					<th class="px-2 py-3 border-b border-gray-200 bg-gray-50 justify-right text-right whitespace-nowrap">
 						<a @click="toggleFollow" class="hover:cursor-pointer" v-tooltip="followInterval ? $t( 'Disable auto-refresh' ) : $t( 'Enable auto-refresh' )" ><fa-icon icon="sync" :spin="isSyncing" :class="{ 'text-gray-300' : !followInterval, 'text-theme' : followInterval }"></fa-icon></a>&nbsp;
-						<a @click="toggleFilters" class="hover:cursor-pointer" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
+						<a v-if="allowFilters" @click="toggleFilters" class="hover:cursor-pointer" v-tooltip="$t( 'Toggle filter options' )"><fa-icon class="text-gray-400" icon="filter"/></a>
 					</th>
 				</tr>
 			</thead>
@@ -111,9 +111,9 @@
 
 </template>
 <script>
+import ConfirmationButton from "@/components/ConfirmationButton";
 import Pagination from "@/components/Pagination";
 import EntryListFilters from "@/components/entries/EntryListFilters";
-import ConfirmationButton from "@/components/ConfirmationButton";
 export default {
 	components : {
 		Pagination,
@@ -134,6 +134,10 @@ export default {
 			default : true
 		},
 		displayApplication : {
+			type : Boolean,
+			default : true
+		},
+		allowFilters : {
 			type : Boolean,
 			default : true
 		},

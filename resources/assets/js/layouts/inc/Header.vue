@@ -106,18 +106,18 @@ export default {
 						)
 		},
 		sendToSearchPage( e ){
-			if( this.$route.name != 'LogSearch' ){
-				let eventName = "LogSearch";
-				let params = { search : this.searchText }
-				console.log( this.$route );
-				let isApplicationFocus = this.$route.name == "ApplicationLogs" || this.$route.name == "ApplicationEnvironmentLogs";
-				if( isApplicationFocus && this.$route.params.id ){
-					eventName = "ApplicationLogSearch";
-					params.applicationId = this.$route.params.id;
-				}
-				this.$router.push( { name : eventName, params : params } );
+			let searchRoute = "LogSearch";
+			let params = { search : this.searchText };
+			let isApplicationFocus = this.$route.name == "ApplicationLogs" || this.$route.name == "ApplicationEnvironmentLogs";
+			if( isApplicationFocus && this.$route.params.id ){
+				params.applicationId = this.$route.params.id;
+				searchRoute = "ApplicationLogSearch";
+			}
+
+			if( this.$route.name != 'LogSearch' && this.$route.name != 'ApplicationLogSearch' ){
+				this.$router.push( { name : searchRoute, params : params, state : params } );
 			} else {
-				this.$router.push( { name : 'LogSearch', params : { search : this.searchText } } );
+				this.$router.push( { name : this.$route.name, params : params, state : params } );
 			}
 		}
 	}
