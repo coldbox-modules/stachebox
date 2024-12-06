@@ -27,6 +27,10 @@ jobs:
             ELASTICSEARCH_VERSION: "8.14.1"
             coldboxVersion: "^7.0.0"
             experimental: true
+          - cfengine: "boxlang@1"
+            ELASTICSEARCH_VERSION: "8.14.1"
+            coldboxVersion: "be"
+            experimental: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.2.0
