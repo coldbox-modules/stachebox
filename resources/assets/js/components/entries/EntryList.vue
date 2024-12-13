@@ -1,6 +1,6 @@
 <template>
 	<div :class="wrapperClass">
-		<entry-list-filters v-if="allowFilters" v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters"></entry-list-filters>
+		<entry-list-filters v-if="allowFilters" v-show="displayFilters" :searchFilters="searchFilters" @apply-filter="updateFilters" @apply-term="updateTerms"></entry-list-filters>
 		<table class="min-w-full table-fixed" v-if="logs">
 			<thead>
 				<tr>
@@ -13,7 +13,7 @@
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						{{ $t( "Time" ) }}
+						{{ $t( "Time" ) }} <a @click="toggleTimeSort" class="text-sm ml-3 inline-block"><fa-icon :class="{ 'text-cyan-500' : isTimeSort, 'text-gray-200' : !isTimeSort }" :icon="isAscending ? 'chevron-up' : 'chevron-down'"/></a>
 					</th>
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
@@ -24,7 +24,7 @@
 						v-if="displayOccurrences"
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						{{ $t( "Qty" ) }}
+						{{ $t( "Qty" ) }} <a @click="toggleOccurrenceSort" class="text-sm ml-3 inline-block"><fa-icon :class="{ 'text-cyan-500' : isOccurrenceSort, 'text-gray-200' : !isOccurrenceSort }" :icon="isAscending ? 'chevron-up' : 'chevron-down'"/></a>
 					</th>
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
@@ -40,6 +40,12 @@
 			</thead>
 
 			<tbody class="bg-white" v-if="logs.length">
+				<tr v-show="!followInterval && isSyncing">
+					<td :colspan="currentColspan" class="px-3 py-2 border-b border-gray-200 text-xs text-center text-gray-500">
+						<fa-icon size="1x" class="text-gray-400" icon="spinner" spin fixed-width />
+						<p class="mt-4 text-gray-400">{{loaderMessage}}</p>
+					</td>
+				</tr>
 				<tr v-for="(entry, index) in logs" :key="index" class="hover:bg-gray-50 cursor-pointer" :class="{ 'opacity-60' : entry.stachebox && entry.stachebox.isSuppressed  }" tabindex="0" @keyup.enter="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )">
 				<td
 					v-if="displayApplication"
@@ -81,6 +87,7 @@
 					class="px-3 py-2 text-right border-b border-gray-200 text-sm leading-5 font-medium whitespace-nowrap"
 				>
 					<confirmation-button
+						v-if="allowSuppress"
 						@confirmed="suppress( entry )"
 						:confirmation-message="$t( 'Click to Suppress' )"
 						class-string="text-gray-300 hover:text-cyan-900"
@@ -102,7 +109,7 @@
 			</tbody>
 
 		</table>
-		<pagination v-if="pagination" :pagination="pagination" @update-maxrows="updateMax" @paginate="paginate"></pagination>
+		<pagination v-if="pagination && logs.length != pagination.total" :pagination="pagination" @update-maxrows="updateMax" @paginate="paginate"></pagination>
 		<div v-if="!logs" class="mt-4 text-center items-center">
 			<fa-icon size="3x" class="text-gray-400" icon="circle-notch" spin fixed-width />
 			<p class="mt-4 text-gray-400">{{loaderMessage}}</p>
@@ -130,6 +137,10 @@ export default {
 			default : true
 		},
 		displayOccurrences : {
+			type : Boolean,
+			default : true
+		},
+		allowSuppress : {
 			type : Boolean,
 			default : true
 		},
@@ -171,7 +182,16 @@ export default {
 			if( this.displayOccurrences ) colspan++;
 			if( this.displayApplication ) colspan++;
 			return colspan;
-		}
+		},
+		isAscending(){
+			return this.searchFilters.sortOrder && this.searchFilters.sortOrder.includes( "ASC" );
+		},
+		isTimeSort(){
+			return this.searchFilters.sortOrder && this.searchFilters.sortOrder.includes( "@timestamp" );
+		},
+		isOccurrenceSort(){
+			return this.searchFilters.sortOrder && this.searchFilters.sortOrder.includes( "occurrences" );
+		},
 	},
 	methods : {
 		fetchLogs(){
@@ -180,17 +200,14 @@ export default {
 			if( !this.searchFilters.tzOffset ){
 				this.searchFilters.tzOffset = this.dayjs().format( "Z" );
 			}
+			if( this.searchFilters.terms && Object.keys( this.searchFilters.terms ).length === 0 ){
+				delete this.searchFilters.terms;
+			}
 			this.$store.dispatch( "fetchLogs", this.searchFilters )
 						.then( ( result ) => {
-							if( !self.logs ){
-								self.isSyncing = false
-							} else {
-								setTimeout( () => self.isSyncing = false, 1500 );
-							}
+							self.isSyncing = false
 							self.logs = result.data.results;
 							self.pagination = result.data.pagination;
-
-
 						} )
 		},
 		toggleFollow(){
@@ -203,6 +220,14 @@ export default {
 		},
 		toggleFilters(){
 			this.displayFilters = !this.displayFilters;
+		},
+		toggleTimeSort(){
+			this.searchFilters.sortOrder = ( !this.isTimeSort || this.isAscending ) ? "@timestamp DESC" : "@timestamp ASC";
+			this.fetchLogs();
+		},
+		toggleOccurrenceSort(){
+			this.searchFilters.sortOrder = ( !this.isOccurrenceSort || this.isAscending ) ? "occurrences DESC" : "occurrences ASC";
+			this.fetchLogs();
 		},
 		paginate( pageNumber ){
 			if( !pageNumber || pageNumber === this.pagination.page ) return;
@@ -217,6 +242,16 @@ export default {
 			let refreshEnabled = !!this.followInterval;
 			if( refreshEnabled ) this.toggleFollow();
 			Object.keys( args ).forEach( ( key ) => this.searchFilters[ key ] = args[ key ] || null );
+			this.fetchLogs();
+			if( refreshEnabled ) this.toggleFollow();
+		},
+		updateTerms( args ){
+			let refreshEnabled = !!this.followInterval;
+			if( refreshEnabled ) this.toggleFollow();
+			if( !this.searchFilters.terms ){
+				this.searchFilters.terms = {};
+			}
+			Object.keys( args ).forEach( ( key ) => args[ key ] ? this.searchFilters.terms[ key ] = args[ key ] : delete this.searchFilters.terms[ key ] );
 			this.fetchLogs();
 			if( refreshEnabled ) this.toggleFollow();
 		},
@@ -248,7 +283,13 @@ export default {
 	},
 	mounted(){
 		if( this.$route.params.search ){
-			this.searchFilters.search = this.$route.params.search;
+			try{
+				this.searchFilters = JSON.parse( window.atob( this.$route.params.search ) );
+			} catch( e ) {
+				// legacy permalinks catch
+				// TODO: remove in future release
+				this.searchFilters.search = this.$route.params.search;
+			}
 		}
 		this.fetchLogs();
 		window.Event.$on( "on-search-filter-change", this.updateFilters );

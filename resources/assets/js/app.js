@@ -1,13 +1,13 @@
-import Vue, { createApp } from "vue";
-import App from './App.vue';
-import store from './store';
-import router from './router';
-import filters from './filters';
-import { createI18n } from 'vue-i18n';
+import EventBus from "@/events/EventBus";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import EventBus from "@/events/EventBus";
+import { createApp } from "vue";
+import { createI18n } from 'vue-i18n';
+import App from './App.vue';
+import filters from './filters';
+import router from './router';
+import store from './store';
 
 // String prototype extensions
 import '@/extensions/String';
@@ -29,9 +29,9 @@ app.config.productionTip = false;
 app.config.globalProperties.$filters = filters;
 
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 dayjs.extend( utc );
 dayjs.extend( timezone );
 dayjs.extend( localizedFormat );
@@ -52,7 +52,6 @@ const i18n = createI18n({
 app.use( i18n );
 app.use( store );
 app.use( router );
-app.mount( "#app" );
 
 import FloatingVue from 'floating-vue';
 app.use(
@@ -83,3 +82,7 @@ app.use(
         }
     }
 );
+
+router.isReady().then(() => {
+	app.mount('#app')
+})

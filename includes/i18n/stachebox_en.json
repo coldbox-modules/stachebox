@@ -239,5 +239,21 @@
   "File Path": "File Path",
   "Application Path": "Application Path",
   "Base URL": "Base URL",
-  "for": "for"
+  "for": "for",
+  "Tracing": "Tracing",
+  "Shared Tracing": "Shared Tracing",
+  "Toggle Filters": "Toggle Filters",
+  "Click to search": "Click to search",
+  "New Filter": "New Filter",
+  "Search Filters": "Search Filters",
+  "is greater than": "is greater than",
+  "is less than": "is less than",
+  "is gte": "is gte",
+  "is lte": "is lte",
+  "does not equal": "does not equal",
+  "equals": "equals",
+  "Remove Filter": "Remove Filter",
+  "Apply Filters": "Apply Filters",
+  "contains": "contains",
+  "Reset Filters": "Reset Filters"
 }

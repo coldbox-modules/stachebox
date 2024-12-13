@@ -20,7 +20,7 @@ component {
     this.cfmapping			= "stachebox";
 
     // Dependencies
-	this.dependencies 		= [ "logstash", "BCrypt", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "JSONToRC", "cfmigrations", "cbmailservices" ];
+	this.dependencies 		= [ "logstash", "BCrypt", "cbrestbasehandler", "cbsecurity", "cbvalidation", "mementifier", "cfmigrations", "cbmailservices" ];
 
 	// App Helpers
 	this.applicationHelper = [
@@ -101,8 +101,8 @@ component {
         }
 
         interceptors = [
-            { class="stachebox.interceptors.Stachebox" },
-            { class="stachebox.interceptors.BasicAuthentication" }
+            { class="stachebox.interceptors.BasicAuthentication" },
+            { class="stachebox.interceptors.Stachebox" }
 		];
 
 		interceptorSettings = {
@@ -111,90 +111,6 @@ component {
 				"ensureStacheboxMappings"
 			]
 		};
-
-		resources = [
-			{
-				resource : "/api/v1/users",
-				handler : "api.v1.Users"
-
-			},
-			{
-				resource : "/api/v1/settings",
-				handler : "api.v1.Settings"
-
-			},
-			{
-				resource : "/api/v1/beats",
-				handler : "api.v1.Beats"
-
-			}
-		];
-
-		routes = [
-			{
-				pattern : "/api/v1/tokens",
-				handler : "api.v1.Settings",
-				action : {
-					"POST" : "generateToken"
-				}
-			},
-			{
-				pattern : "/api/v1/logs/suppress/:field/:id",
-				handler : "api.v1.Logs",
-				action : {
-					"DELETE" : "suppress"
-				}
-			},
-			{
-				pattern : '/api/v1/logs/:id',
-				handler : "api.v1.Logs",
-				action : {
-					"HEAD" : "show",
-					"GET" : "show",
-					"PUT" : "update",
-					"PATCH" : "update",
-					"DELETE" : "delete",
-					"POST" : "onInvalidHTTPMethod"
-				}
-			},
-			{
-				pattern : '/api/v1/logs',
-				handler : "api.v1.Logs",
-				action : {
-					"POST" : "create",
-					"GET" : "index",
-					"HEAD" : "index",
-					"PUT" : "onInvalidHTTPMethod",
-					"PATCH" : "onInvalidHTTPMethod",
-					"DELETE" : "onInvalidHTTPMethod"
-				}
-			},
-			{
-				pattern : "/api/v1/authentication/reset",
-				handler : "api.v1.Authentication",
-				action : {
-					"POST" : "resetRequest",
-					"PUT" : "resetCompletion"
-				}
-			},
-			{
-				pattern : "/api/v1/authentication",
-				handler : "api.v1.Authentication",
-				action : {
-					"HEAD" : "check",
-					"POST" : "login",
-					"DELETE" : "logout"
-				}
-			},
-			{
-				pattern = "/emailTest",
-				handler = "Main",
-				action = "emailTest"
-			},
-			{ pattern = "/", handler = "Main", action = "index" },
-			// Convention Route
-			{ pattern="(.*?)", handler = "Main", action = "index" }
-		];
 
     }
 
@@ -224,16 +140,10 @@ component {
 	*  Snipped and morphed from contentbox-ui:ModuleConfig.cfc:onLoad()
 	*/
 	private function scopeRoutingToRoot(){
-		// Get ses handle
-		try{
-			//Coldbox 5
-			var ses = controller.getInterceptorService().getInterceptor('SES',true);
-		} catch( any e ){
-			var ses = controller.getRoutingService().getRouter();
-		}
+		var router = controller.getRoutingService().getRouter();
 
 		// get parent routes so we can re-mix them later
-		var parentRoutes 		= ses.getRoutes();
+		var parentRoutes 		= router.getRoutes();
 		var newRoutes			= [];
 
 		// iterate and only keep module routing
@@ -244,19 +154,18 @@ component {
 			}
 		}
 		// override new cleaned routes
-		ses.setRoutes( newRoutes );
+		router.setRoutes( newRoutes );
 
-		// Add routes manually to take over parent routes
-		for(var x=1; x LTE arrayLen( variables.routes ); x++){
+		router.getModuleRoutingTable().stachebox.each( function( route ){
 			// append module location to it so the route is now system wide
-			var args = duplicate( variables.routes[ x ] );
+			var args = duplicate( route );
 			// Check if handler defined
-			if( structKeyExists(args,"handler" ) ){
+			if( structKeyExists( args, "handler" ) ){
 				args.handler = "stachebox:#args.handler#";
 			}
 			// add it as main application route.
-			ses.addRoute(argumentCollection=args);
-		}
+			router.addRoute( argumentCollection=args );
+		});
 
 		// change the default event of the entire app
 		controller.setSetting( "DefaultEvent","stachebox:index" );

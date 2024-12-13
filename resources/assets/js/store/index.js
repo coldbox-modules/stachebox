@@ -113,6 +113,9 @@ export default createStore({
 								} );
 					} );
 		},
+		fetchMappings( params ){
+			return logsAPI.mappings( params, context.state.authToken );
+		},
 		suppressEntry : ( context, { field, id, environment } ) => {
 			return logsAPI.suppress( field, id, context.state.authToken, environment );
 		}

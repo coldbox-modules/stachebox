@@ -6,18 +6,18 @@
     "description":"",
     "dependencies":{},
     "devDependencies":{
-        "coldbox":"^6",
+        "coldbox":"7",
         "testbox":"^4",
         "route-visualizer":"^1",
         "cfmigrations":"^3.0.7",
-		"elastic-apm-agent" : "jar:https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/1.35.0/elastic-apm-agent-1.35.0.jar"
+        "elastic-apm-agent":"jar:https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/1.35.0/elastic-apm-agent-1.35.0.jar"
     },
     "installPaths":{
         "coldbox":"coldbox/",
         "testbox":"testbox/",
         "route-visualizer":"modules/route-visualizer/",
         "cfmigrations":"modules/cfmigrations/",
-		"elastic-apm-agent" : "lib/elastic-apm-agent/"
+        "elastic-apm-agent":"lib/elastic-apm-agent/"
     },
     "testbox":{
         "runner":"http://localhost:60299/tests/runner.cfm"

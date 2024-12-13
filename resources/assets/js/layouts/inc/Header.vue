@@ -21,19 +21,7 @@
 		</div>
 	</div>
     <div class="flex items-center w-2/3">
-      <div class="relative mx-4 lg:mx-0 w-full">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-			<fa-icon class="text-gray-400 h-9 text-xs" icon="search" fixed-width />
-        </span>
-
-        <input
-          class="form-input rounded-none block w-5/6 py-2 px-2 pl-10 pr-4 focus:border-cyan-600"
-          type="text"
-          placeholder="Search"
-		  v-model="searchText"
-		  @keyup.enter="sendToSearchPage"
-        />
-      </div>
+		<search-form :initialParams="searchFilters" @onSearchUpdate="sendToSearchPage" />
     </div>
 
     <div class="flex items-center" v-if="internalSecurityEnabled">
@@ -82,13 +70,22 @@
 </template>
 
 <script>
+import SearchForm from "@/components/search/SearchForm";
 import { mapState } from "vuex";
+
 export default {
+	components : {
+		SearchForm
+	},
 	data(){
 		return {
 			dropdownOpen : false,
 			isOpen : false,
-			searchText : ''
+			searchText : '',
+			searchFilters : {
+				search : "",
+				terms : []
+			}
 		}
 	},
 	computed : {
@@ -98,6 +95,17 @@ export default {
 			internalSecurityEnabled : ( state ) => state.globals.stachebox.internalSecurity
 		})
 	},
+	mounted(){
+		if( this.$route.params.search ){
+			try{
+				this.searchFilters = JSON.parse( window.atob( this.$route.params.search ) );
+			} catch( e ) {
+				// legacy permalinks catch
+				// TODO: remove in future release
+				this.searchFilters.search = this.$route.params.search;
+			}
+		}
+	},
 	methods : {
 		logout(){
 			this.$store.dispatch( "logout" )
@@ -105,19 +113,19 @@ export default {
 							() => this.$router.push( { name : "Login" } )
 						)
 		},
-		sendToSearchPage( e ){
+		sendToSearchPage( params ){
 			let searchRoute = "LogSearch";
-			let params = { search : this.searchText };
 			let isApplicationFocus = this.$route.name == "ApplicationLogs" || this.$route.name == "ApplicationEnvironmentLogs";
+			let routeParams = { search: window.btoa( JSON.stringify( params ) ) };
 			if( isApplicationFocus && this.$route.params.id ){
-				params.applicationId = this.$route.params.id;
+				routeParams.applicationId = this.$route.params.id;
 				searchRoute = "ApplicationLogSearch";
 			}
 
 			if( this.$route.name != 'LogSearch' && this.$route.name != 'ApplicationLogSearch' ){
-				this.$router.push( { name : searchRoute, params : params, state : params } );
+				this.$router.push( { name : searchRoute, params : routeParams, state : routeParams } );
 			} else {
-				this.$router.push( { name : this.$route.name, params : params, state : params } );
+				this.$router.push( { name : this.$route.name, params : routeParams, state : routeParams } );
 			}
 		}
 	}

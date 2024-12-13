@@ -2,7 +2,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 
 	property name="moduleSettings" inject="coldbox:moduleSettings:stachebox";
 
-	// ( GET ) /api/v1/logs
+	// ( GET/POST ) /api/v1/logs
 	function index( event, rc, prc ){
 
 		var searchResult = getInstance( "LogSearchService@stachebox" ).search( rc, event.getValue( "includeAggregations", false ) );
@@ -133,6 +133,20 @@ component extends="BaseAPIHandler" secured="StacheboxUser,StacheboxLog"{
 		entry.delete();
 
 		prc.response.setStatusCode( STATUS.NO_CONTENT );
+	}
+
+	/**
+	 * ( POST ) /api/v1/logs/mappings
+	 * Function to search for mappings in an index or an index pattern
+	 */
+	function mappings( event, rc, prc ){
+		if( !rc.keyExists( "index" ) ){
+			rc.index = variables.moduleSettings.logIndexPattern;
+		}
+		prc.response.setData(
+			getInstance( "Client@cbelasticsearch" )
+				.getMappings( rc.index, rc.field ?: nullValue() )
+		);
 	}
 
 	function expandEntry( required struct entry ){

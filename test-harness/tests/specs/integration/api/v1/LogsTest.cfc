@@ -239,7 +239,7 @@ component extends="tests.resources.BaseAPITestHelper"{
 					"event"        : { "foo" : "bar" }
 				};
 
-				var testEventArgs = newEventArgs( "POST" );
+				var testEventArgs = newEventArgs( "PUT" );
 				testEventArgs.rc.entry = logEntry;
 
 				var event = execute(

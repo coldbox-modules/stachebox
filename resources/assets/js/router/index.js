@@ -144,25 +144,41 @@ router.beforeEach((to, from, next) => {
 		auth.check()
 			.then( ( response ) => {
 				store.commit( "processLoginSuccess", response );
-				store.dispatch( "fetchAuthUser" ).then(
-					() => {
-						if( !store.state.navAggregations ){
-							store.dispatch( "fetchNavAggregations" );
-						}
-						if( to.meta && to.meta.permission && to.meta.permission == "Edit:User" ){
-							if( store.getters.hasPermission( to.meta.permission ) || to.params.id === store.state.authId ){
-								next();
+				if( !store.state.navAggregations ){
+					store.dispatch( "fetchNavAggregations" );
+				}
+				if( !store.state.authUser ){
+					store.dispatch( "fetchAuthUser" ).then(
+						() => {
+							if( to.meta && to.meta.permission && to.meta.permission == "Edit:User" ){
+								if( store.getters.hasPermission( to.meta.permission ) || to.params.id === store.state.authId ){
+									next();
+								} else {
+									next( "/permission-denied" );
+								}
+							}
+							else if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
+								next( '/permission-denied' );
 							} else {
-								next( "/permission-denied" );
+								next();
 							}
 						}
-						else if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
-							next( '/permission-denied' );
-						} else {
+					);
+				} else {
+					if( to.meta && to.meta.permission && to.meta.permission == "Edit:User" ){
+						if( store.getters.hasPermission( to.meta.permission ) || to.params.id === store.state.authId ){
 							next();
+						} else {
+							next( "/permission-denied" );
 						}
 					}
-				);
+					else if( to.meta && to.meta.permission && !store.getters.hasPermission( to.meta.permission ) ){
+						next( '/permission-denied' );
+					} else {
+						next();
+					}
+				}
+
 			} )
 			.catch(() => {
 				if( store.state.globals.stachebox.internalSecurity ){

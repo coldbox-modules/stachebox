@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import authAPI from "../api/authentication";
 import { mapState } from "vuex";
+import authAPI from "../api/authentication";
 
 export default {
   data() {
@@ -87,7 +87,7 @@ export default {
         .requestReset({ email: this.email })
         .then(() => self.requestReceived = true )
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           self.errors.splice(0, self.errors.length);
           if (err.response) {
             err.response.data.messages.forEach((message) => self.errors.push(message));
