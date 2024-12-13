@@ -268,7 +268,18 @@
 						:initialFilters="occurrenceParams"
 						:displayOccurrences="false"
 						:displayApplication="false"
+						:allowFilters="true"
+						:allowSuppress="false"
+					></entry-list>
+				</tab>
+
+				<tab v-if="entry['trace.id']" :name="$t( 'Shared Tracing' )">
+					<entry-list
+						:initialFilters="traceParams"
+						:displayOccurrences="false"
+						:displayApplication="false"
 						:allowFilters="false"
+						:allowSuppress="false"
 					></entry-list>
 				</tab>
 
@@ -303,11 +314,21 @@ export default {
 	},
 	data(){
 		return {
-			activeTab : 0,
-			occurrenceParams : {}
+			activeTab : 0
 		}
 	},
 	computed : {
+		occurrenceParams : function(){
+			return this.occurrenceParams = {
+				"stachebox.signature" : this.entry.stachebox.signature,
+				exclude : this.entry.id,
+				sortOrder : "@timestamp DESC",
+				search: this.$route.params.search
+			}
+		},
+		traceParams(){
+			return this.entry[ 'trace.id' ] ? { "trace.id" : this.entry[ 'trace.id' ] } : {};
+		},
 		entrySeverity(){
 			return this.entry.event.severity || 3;
 		},
@@ -365,15 +386,6 @@ export default {
 			let errorNode = doc.querySelector('parsererror');
 			return errorNode ? false : true;
 		}
-	},
-	beforeMount(){
-		console.log( udf );
-		this.occurrenceParams = {
-			"stachebox.signature" : this.entry.stachebox.signature,
-			exclude : this.entry.id,
-			sortOrder : "@timestamp DESC",
-			search: this.$route.params.search
-		};
 	},
 	mounted() {
 		Prism.highlightAll();

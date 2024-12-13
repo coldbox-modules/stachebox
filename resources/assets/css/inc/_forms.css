@@ -1,3 +1,29 @@
 .form-input{
 	border-color: #d2d6dc;
 }
+
+div.simple-typeahead{
+    input.simple-typeahead-input{
+	}
+    div.simple-typeahead-list{
+		@apply absolute bg-gray-100 max-h-64 overflow-y-auto pt-2 rounded-b-md shadow-sm;
+
+		.simple-typeahead-list-header{
+			@apply text-gray-500;
+		}
+        .simple-typeahead-list-item{
+			@apply border-b  text-gray-500 text-xs font-mono font-normal pr-5 pl-5 pb-2 pt-2 hover:bg-gray-200;
+			&.simple-typeahead-list-item-active{
+				@apply text-cyan-700;
+			}
+		}
+
+        .simple-typeahead-list-item-text{
+			@apply p-2;
+		}
+        .simple-typeahead-list-footer{
+			@apply text-gray-500;
+		}
+	}
+
+}

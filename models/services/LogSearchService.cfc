@@ -13,6 +13,7 @@ component {
 		param searchCollection.maxRows = 25;
 		param searchCollection.startRow = 0;
 		param searchCollection.tzOffset = numberFormat( getTimezoneInfo().utcHourOffset, "00" ) & ":00";
+		var isOccurrenceSort = searchCollection.keyExists( "sortOrder" ) && listFirst( searchCollection.sortOrder, " " ) == "occurrences";
 		if( searchCollection.tzOffset == "00:00" ){
 			searchCollection.tzOffset = "Z";
 		}
@@ -27,12 +28,15 @@ component {
 		var builder = searchBuilder()
 						.new( searchCollection.index )
 						.setMaxRows( searchCollection.maxRows )
-						.setStartRow( searchCollection.startRow )
-						.sort( "_score DESC" )
-						.sort( searchCollection.sortOrder );
+						.setStartRow( searchCollection.startRow );
+
+		if( searchCollection.keyExists( "sortOrder" ) ){
+			if( !isOccurrenceSort ){
+				builder.sort( searchCollection.sortOrder );
+			}
+		}
 
 		applyCommonSearchArgs( builder, arguments.searchCollection );
-
 
 		if( structIsEmpty( builder.getQuery() ) ){
 			builder.setQuery( { "match_all" : {} } );
@@ -56,6 +60,9 @@ component {
 			function( doc ){
 				var docMemento = doc.getMemento();
 				docMemento[ "id"] = doc.getId();
+				docMemento[ "@search" ] = {
+					"score" : doc.getScore()
+				};
 				if( searchCollection.keyExists( "collapse" ) ){
 					var occurrences = searchResults.getCollapsedOccurrences();
 					var nestedPath = docMemento;
@@ -71,6 +78,15 @@ component {
 				}
 				return docMemento;
 			} );
+
+		// TODO: find a way to do this with a script sort on the query as this only sorts the page of results retrieved
+		if( isOccurrenceSort ){
+			if( findNoCase( "ASC", searchCollection.sortOrder ) ){
+				results = results.sort( ( a, b ) => compare( a.occurrences, b.occurrences ) );
+			} else {
+				results = results.sort( ( a, b ) => compare( b.occurrences, a.occurrences) );
+			}
+		}
 
 		var recordCount = arguments.searchCollection.keyExists( "collapse" ) ? searchResults.getCollapsedCount() : searchResults.getHitCount();
 
@@ -237,20 +253,68 @@ component {
 				applyDynamicSearchArgs( builder, searchCollection );
 			}
 
-			var termFilters = [  "error.type", "labels.application", "package.version", "log.level", "error.level", "log.category", "log.logger", "event.name", "event.route", "event.url", "event.layout", "module", "view", "labels.environment", "stachebox.signature", "stachebox.isSuppressed" ];
+			if( searchCollection.keyExists( "terms" ) ){
+				searchCollection.terms.each( function( term ){
+					var key = term.key;
+					var value = term.value;
+					var operator = term.operator ?: "must";
 
-			termFilters.each( function( term ){
-				if( searchCollection.keyExists( term ) && ( ( isArray( searchCollection[ term ] ) && searchCollection[ term ].len() ) || len( searchCollection[ term ] ) ) ){
-					if( isArray( searchCollection[ term ] ) ){
-						builder.filterTerms(
-							term,
-							searchCollection[ term ]
-						);
-					} else {
-						builder.filterTerm( term, searchCollection[ term ] );
+					switch( operator ){
+						case "wildcard" : {
+							builder.wildCard(
+								key,
+								value
+							);
+							break;
+						}
+						case "lt":
+						case "gt":
+						case "lte":
+						case "gte":{
+							var matchProperties = {
+								"#operator#" : value
+							}
+							builder.match(
+								key,
+								matchProperties,
+								"range"
+							);
+							break;
+
+						}
+						default : {
+							if( isArray( value ) ){
+								builder.filterTerms(
+									key,
+									value,
+									operator
+								);
+							} else {
+								builder.filterTerm(
+									key,
+									value,
+									operator
+								);
+							}
+						}
 					}
-				}
-			} );
+				} );
+			} else {
+				var termFilters = [  "error.type", "labels.application", "package.version", "log.level", "error.level", "log.category", "log.logger", "event.name", "event.route", "event.url", "event.layout", "module", "view", "labels.environment", "stachebox.signature", "stachebox.isSuppressed", "trace.id", "span.id" ];
+
+				termFilters.each( function( term ){
+					if( searchCollection.keyExists( term ) && ( ( isArray( searchCollection[ term ] ) && searchCollection[ term ].len() ) || len( searchCollection[ term ] ) ) ){
+						if( isArray( searchCollection[ term ] ) ){
+							builder.filterTerms(
+								term,
+								searchCollection[ term ]
+							);
+						} else {
+							builder.filterTerm( term, searchCollection[ term ] );
+						}
+					}
+				} );
+			}
 
 			if( searchCollection.keyExists( "minDate" ) && len( searchCollection.minDate ) ){
 
@@ -287,30 +351,38 @@ component {
 
 	function applyDynamicSearchArgs( required SearchBuilder builder, required struct searchCollection ){
 		if( !searchCollection.keyExists( "search" ) || !len( searchCollection.search ) ) return;
-		listToArray( searchCollection.search, "+" )
-							.each( function( item ){
-								var scopedArgs = listToArray( item, ":" );
-								if( scopedArgs.len() > 1 ){
-									searchCollection[ scopedArgs[ 1 ] ] = scopedArgs[ 2 ]
-								}
-							} );
 		// Note the `^` boosts the field by the following multiplier
-		var matchText = [
-			"message^50",
+		var looseMatches = [
+			"message^5",
 			"error.stack_trace",
 			"error.frames",
 			"event.url.path",
-			"error.extrainfo^15",
-			"error.stack_trace^10"
+			"error.extrainfo^3",
+			"error.stack_trace.text^2"
 		];
-
-		arguments.builder.multiMatch(
-			matchText,
-			trim( searchCollection.search ),
-			50.00,
-			'best_fields'
-		);
-
+		var phraseMatches = [
+			"message^5",
+			"error.extrainfo^2"
+		];
+		listToArray( searchCollection.search, "+" )
+							.each( function( item ){
+								var matchType = "match";
+								var scopedArgs = listToArray( item, ":" );
+								if( scopedArgs.len() > 1 ){
+									searchCollection[ scopedArgs[ 1 ] ] = scopedArgs[ 2 ]
+								} else {
+									if( left( item , 1 ) == '"' ){
+										matchType = "phrase";
+									}
+									builder.match(
+										name=matchType == "match" ? looseMatches : phraseMatches,
+										value=item,
+										boost=1,
+										matchType=matchType,
+										type= matchType == "match" ? "best_fields" : "phrase"
+									)
+								}
+							} );
 
 	}
 

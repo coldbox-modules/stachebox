@@ -18,7 +18,7 @@
 					name="application"
 					v-model="searchFilters.application"
 					:value="'all'"
-					@change="onFilterChange( 'labels.application', searchFilters.application )"
+					@change="onTermChange( 'labels.application', searchFilters.application )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Applications" ) }}</option>
@@ -35,7 +35,7 @@
 					name="environment"
 					v-model="searchFilters.environment"
 					:value="'all'"
-					@change="onFilterChange( 'labels.environment', searchFilters.environment )"
+					@change="onTermChange( 'labels.environment', searchFilters.environment )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">All Environments</option>
@@ -52,7 +52,7 @@
 					name="level"
 					v-model="searchFilters.level"
 					:value="'all'"
-					@change="onFilterChange( 'log.level', searchFilters.level )"
+					@change="onTermChange( 'log.level', searchFilters.level )"
 					class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 text-xs rounded-md"
 				>
 					<option :value="undefined">{{ $t( "All Levels" ) }}</option>
@@ -92,6 +92,9 @@ export default {
 		})
 	},
 	methods: {
+		onTermChange( key, val ){
+			this.$emit( "apply-term", { [key] :  val && val !== 'all' ? val : undefined } )
+		},
 		onFilterChange( key, val ){
 			this.$emit( "apply-filter", { [key] :  val && val !== 'all' ? val : undefined } )
 		},

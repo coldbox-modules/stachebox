@@ -1,4 +1,5 @@
 component{
+	property name="jwtService" inject="JwtService@cbsecurity";
 	/**
 	* If a Basic authentication header exists, attempts to log the user in.
 	* If the credentials are invalid, logs any currently logged in user out.
@@ -13,9 +14,12 @@ component{
 
             if( credentials.len() != 2 ){ return; }
 
-            auth().authenticate( credentials[ 1 ], credentials[ 2 ] );
+            event.setHTTPHeader(
+				name=jwtService.getSettings().jwt.customAuthHeader,
+				value=jwtService.attempt( credentials[ 1 ], credentials[ 2 ] )
+			);
 
-            prc.authenticationMethod = "basic";
+			auth().login( jwtService.getUser() );
 
         }  catch ( InvalidCredentials e ) {
             event.overrideEvent( "stachebox:api.v1.Authentication.onAuthenticationFailure" );
@@ -25,9 +29,4 @@ component{
         }
     }
 
-	void function postProcess( event, rc, prc ){
-		if( prc.keyExists( "authenticationMethod" ) && prc.authenticationMethod == "basic" ){
-			auth().logout()
-		}
-	}
 }

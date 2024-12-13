@@ -12,7 +12,8 @@ const defaultAPI = Axios.create({
 
 export const finalAPI = {
 	apiInstance : defaultAPI,
-	list :( params, token ) => defaultAPI.get( '', { params : params, headers : { 'Authorization' : 'Bearer ' + token } } ),
+	list :( params, token ) => defaultAPI.post( '', JSON.stringify( params ), {  headers : { 'Authorization' : 'Bearer ' + token } } ),
+	mappings :( params, token ) => defaultAPI.post( '/mappings', JSON.stringify( params ), {  headers : { 'Authorization' : 'Bearer ' + token } } ),
 	fetch :( id, params, token ) => defaultAPI.get( '/' + id, { params : params, headers : { 'Authorization' : 'Bearer ' + token } } ),
 	update : ( params, token ) => defaultAPI.put( '/' + params.id, JSON.stringify( params ), { headers : { 'Authorization' : 'Bearer ' + token } }  ),
 	suppress : ( field, id , token, environment ) => defaultAPI.delete( `/suppress/${field}/${id}`,  { headers : { 'Authorization' : 'Bearer ' + token }, params : { environment : environment } }  ),

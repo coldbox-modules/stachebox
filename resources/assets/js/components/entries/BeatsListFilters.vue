@@ -124,7 +124,7 @@ export default {
 				if( !state.navAggregations ) return;
 				if( this.searchFilters[ 'event.dataset' ] ){
 					return Object.keys( state.navAggregations.beatsAggregations.datasets[ this.searchFilters['event.dataset'] ].hostnames )
-				} else if( state.navAggregations.beatsAggregations.hostnames ) {
+				} else if( state.navAggregations.beatsAggregations && state.navAggregations.beatsAggregations.hostnames ) {
 					return Object.keys( state.navAggregations.beatsAggregations.hostnames );
 				}
 			}

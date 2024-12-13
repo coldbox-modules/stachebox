@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import authAPI from "../api/authentication";
 import { mapState } from "vuex";
 
 export default {
@@ -89,7 +88,6 @@ export default {
 					self.$router.push( referer );
 				}  )
 				.catch( ( err ) => {
-					console.log( err );
 					self.errors.splice( 0, self.errors.length );
 					if( err.response ){
 						err.response.data.messages.forEach( message => self.errors.push( message ) );

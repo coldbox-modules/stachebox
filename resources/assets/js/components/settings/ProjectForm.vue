@@ -308,13 +308,13 @@
 	</div>
 </template>
 <script>
-import { createBase64ImageFromFile } from "@/util/image";
-import VueMultiselect from 'vue-multiselect';
-import useVuelidate from "@vuelidate/core";
-import FormErrors from "@/components/util/FormErrors";
-import ToggleSwitch from "@/components/ToggleSwitch";
-import { required, url, requiredIf, helpers } from "@vuelidate/validators";
 import usersAPI from "@/api/users";
+import ToggleSwitch from "@/components/ToggleSwitch";
+import FormErrors from "@/components/util/FormErrors";
+import { createBase64ImageFromFile } from "@/util/image";
+import useVuelidate from "@vuelidate/core";
+import { helpers, required, requiredIf, url } from "@vuelidate/validators";
+import VueMultiselect from 'vue-multiselect';
 import { mapState } from "vuex";
 export default {
 	components: {
@@ -404,7 +404,7 @@ export default {
 				).then( response => console.log( response ) )
 				.then( blob => {
 					var reader = new FileReader() ;
-					reader.onload = function(){ console.log( this.result ) }; // <--- `this.result` contains a base64 data URI
+					// reader.onload = function(){ console.log( this.result ) }; // <--- `this.result` contains a base64 data URI
 					reader.readAsDataurl( blob );
 				})
 				.catch( err => console.error( err ) );

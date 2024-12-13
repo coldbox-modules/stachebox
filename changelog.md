@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 ## [Unreleased]
+
+### Added
+
+* Added additional search and keyword filtering to main search bar
+* Fixed sort issues on timestamps when scoring is present
+* Added mappings endpoint to API for fields typeahead
+
+### Changed
+
+* Updated to modern Coldbox router
+* Changed Log API method POST to PUT to allow for create requests
+
 ## [2.0.6] - 2023-11-19
 
 ### Fixed

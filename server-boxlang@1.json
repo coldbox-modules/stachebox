@@ -1,0 +1,24 @@
+{
+    "name":"stachebox-boxlang@1",
+    "app":{
+        "serverHomeDirectory":"./.engine/boxlang",
+        "cfengine":"boxlang@be"
+    },
+    "web":{
+        "http":{
+            "port":"60299"
+        },
+        "rewrites":{
+            "enable":true
+        },
+        "aliases":{
+            "/moduleroot/stachebox/includes":"includes",
+            "/stachebox/includes":"includes"
+        },
+        "webroot":"test-harness"
+    },
+	"scripts":{
+        "onServerInitialInstall":"install bx-mail,bx-compat-cfml@be,bx-esapi --noSave"
+    },
+    "openBrowser":false
+}

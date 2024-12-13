@@ -146,9 +146,9 @@
 </template>
 
 <script>
+import usersAPI from "@/api/users";
 import GenericLoader from "@/components/GenericLoader";
 import VueJwtDecode from "vue-jwt-decode";
-import usersAPI from "@/api/users";
 import { mapState } from "vuex";
 
 export default {
@@ -212,14 +212,12 @@ export default {
 	},
 	mounted() {
 		let query = this.$route.query;
-		console.log(query);
 		if(	query.token ) {
 			try{
 				var requestUser = VueJwtDecode.decode( query.token );
 			} catch( e ){
 				return;
 			}
-			console.log( requestUser );
 			this.isProcessing = true;
 			usersAPI.fetch( requestUser.id, {}, query.token )
 					.then( response => this.user = response.data )

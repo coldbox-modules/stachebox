@@ -13,10 +13,10 @@ component extends="coldbox.system.EventHandler" {
 
 	// Default REST Security for ColdBox Resources
 	this.allowedMethods = {
-		"index"  : "GET",
+		"index"  : "GET,POST",
 		"new"    : "GET",
 		"get"    : "GET",
-		"create" : "POST",
+		"create" : "POST,PUT",
 		"show"   : "GET",
 		"list"   : "GET",
 		"edit"   : "GET",

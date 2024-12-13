@@ -45,12 +45,26 @@ export default{
 	},
 	created(){
 		if( this.$route.params.search ){
-			this.searchParams.search = this.$route.params.search;
-			this.beatParams.search = this.$route.params.search;
+			try{
+				this.searchParams = JSON.parse( window.atob( this.$route.params.search ) );
+				this.beatParams = this.searchParams;
+			} catch( e ) {
+				// legacy permalinks catch
+				// TODO: remove in future release
+				this.searchParams.search = this.$route.params.search;
+				this.beatParams.search = this.searchParams.search;
+			}
 		}
 		if( this.$route.params.applicationId ){
-			this.searchParams[ "labels.application" ] = this.$route.params.applicationId;
-			this.beatParams[ "labels.application" ] = this.$route.params.applicationId;
+			if( !this.searchParams.terms ){
+				this.searchParams.terms = [];
+			}
+			this.searchParams.terms.push( { key: "labels.application", operator: "must", value : this.$route.params.applicationId } );
+
+			if( !this.beatParams.terms ){
+				this.beatParams.terms = [];
+			}
+			this.beatParams.terms.push( { key: "labels.application", operator: "must", value : this.$route.params.applicationId } );
 		}
 	}
 }
