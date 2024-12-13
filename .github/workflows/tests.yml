@@ -68,9 +68,7 @@ jobs:
         env:
           ENVIRONMENT: development
         run: |
-          cd test-harness
           box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
-          cd ../
           curl http://127.0.0.1:60299
 
       - name: Run Tests
@@ -99,9 +97,7 @@ jobs:
       - name: Failure Debugging Log
         if: ${{ failure() }}
         run: |
-          cd test-harness
           box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
-          cd ../
 
       - name: Upload Debugging Log To Artifacts
         if: ${{ failure() }}
