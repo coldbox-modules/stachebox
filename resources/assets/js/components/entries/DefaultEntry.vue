@@ -53,6 +53,14 @@
 						<th class="w-1/3 align-top py-1">{{ $t( "Appender" ) }}:</th>
 						<td class="w-2/3 py-1">{{ entry.log.logger }}</td>
 					</tr>
+					<tr v-if="entry['trace.id']">
+						<th class="w-1/3 align-top py-1">{{ $t( "Trace ID" ) }}:</th>
+						<td class="w-2/3 py-1 text-yellow-600 text-xs font-mono">{{ entry['trace.id'] }}</td>
+					</tr>
+					<tr v-if="entry['span.id']">
+						<th class="w-1/3 align-top py-1">{{ $t( "Span ID" ) }}:</th>
+						<td class="w-2/3 py-1 text-yellow-600 text-xs font-mono">{{ entry['span.id'] }}</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

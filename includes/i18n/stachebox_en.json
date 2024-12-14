@@ -255,5 +255,7 @@
   "Remove Filter": "Remove Filter",
   "Apply Filters": "Apply Filters",
   "contains": "contains",
-  "Reset Filters": "Reset Filters"
+  "Reset Filters": "Reset Filters",
+  "Trace ID": "Trace ID",
+  "Span ID": "Span ID"
 }
