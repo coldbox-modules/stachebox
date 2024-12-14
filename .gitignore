@@ -3,6 +3,7 @@
 .engine/**
 .artifacts/**
 .tmp/**
+.env
 
 modules/**
 test-harness/.engine/**
