@@ -1,6 +1,6 @@
 {
 	"name": "stachebox-cfml",
-	"version": "1.0.0",
+	"version": "2.1.0",
 	"private": true,
 	"scripts": {
 		"dev": "webpack --node-env development",
@@ -27,7 +27,7 @@
 		"@vuelidate/validators": "^2.0.0",
 		"@vuepic/vue-datepicker": "^4.2.0",
 		"autoprefixer": "^10.0.4",
-		"axios": "^0.21.0",
+		"axios": "^1.7.9",
 		"babel-eslint": "^10.1.0",
 		"canvas_image_processing": "0.0.5",
 		"chai": "^4.2.0",
@@ -42,7 +42,7 @@
 		"eslint-plugin-vue": "^6.2.2",
 		"file-saver": "^2.0.5",
 		"floating-vue": "^2.0.0-beta.20",
-		"postcss": "^8.1.10",
+		"postcss": "^8.4.49",
 		"postcss-import": "^13.0.0",
 		"postcss-loader": "^4.1.0",
 		"postcss-nesting": "^7.0.1",
@@ -64,7 +64,7 @@
 		"vue-router": "^4.0.12",
 		"vue3-simple-typeahead": "^1.0.11",
 		"vuex": "^4.1.0",
-		"webpack": "^5.74.0",
-		"webpack-cli": "^4.10.0"
+		"webpack": "^5.97.1",
+		"webpack-cli": "^5.1.4"
 	}
 }

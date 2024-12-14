@@ -1,7 +1,7 @@
 @import "prismjs/themes/prism-tomorrow.css";
 @import "@vuepic/vue-datepicker/dist/main.css";
 @import "floating-vue/dist/style.css";
-@import "vue-multiselect/dist/dist/vue-multiselect.css";
+@import "vue-multiselect/dist/vue-multiselect.css";
 
 @tailwind base;
 @tailwind components;
