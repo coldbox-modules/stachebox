@@ -4,7 +4,7 @@ component {
     function up( searchClient ) {
 		var moduleSettings = wirebox.getInstance( "coldbox:moduleSettings:stachebox" );
 
-		if( findNoCase( "@stachebox", moduleSettings.cbsecurity.userService ) ){
+		if( findNoCase( "@stachebox", moduleSettings.cbsecurity.authentication.userService ) ){
 			var searchBuilder = searchClient.newSearchBuilder()
 									.new( moduleSettings.usersIndex )
 									.mustNotExist( "allowLogin" );
