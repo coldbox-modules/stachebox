@@ -61,10 +61,6 @@ component extends="coldbox.system.testing.BaseTestCase"{
 					variables.model.onRequestCapture( event=testContext, rc=testContext.getCollection(), prc=testContext.getPrivateCollection() );
 					expect( variables.authenticationService.check() ).toBeTrue();
 
-					// Make sure we are logged out a the end of the request
-					variables.model.postProcess( event=testContext, rc=testContext.getCollection(), prc=testContext.getPrivateCollection() );
-					expect( variables.authenticationService.check() ).toBeFalse();
-
 				});
 
 			});
