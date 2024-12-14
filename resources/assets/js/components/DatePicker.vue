@@ -1,63 +1,90 @@
 <template>
 	<div class="pr-5">
-		<date-time-picker
+		<vue-date-picker
 			v-model="dateRange"
 			:range="true"
+			:multi-calendars="true"
 			:auto-apply="true"
-			:preset-ranges="filterRanges"
+			:preset-dates="filterRanges"
+			:clearable="true"
 			:label="$t( 'Select a minimum date or range' )"
-			:max-date="new Date().toISOString()"
+			:max-date="endOfWeek"
 			@update:model-value="$emit('update:modelValue', $event || [ null, null ] )"
 		>
-			<template #clear-icon="{ clear }">
-				<fa-icon icon="undo" size="sm" fixed-width class="text-red-500 hover:cursor-pointer absolute" style="right:-25px;top:-7px" @click="clear"/>
-			</template>
-		</date-time-picker>
+		</vue-date-picker>
 	</div>
 </template>
 <script>
-import DateTimePicker from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker';
 export default {
 	components: {
-		DateTimePicker
+		VueDatePicker
 	},
 	props: {
 		modelValue : {
-			required : false
+			required : false,
+			twoWay : true
 		}
 	},
 	emits: ['update:modelValue'],
-	beforeMount(){
-		this.dateRange = this.modelValue;
+	watch: {
+		modelValue : {
+			handler( val ){
+				if( Array.isArray( val ) && val.length == 2 && (  val[ 0 ] || val[ 1 ] ) ){
+					this.dateRange = val;
+				} else {
+					this.dateRange = null;
+				}
+			}
+		}
+	},
+	computed : {
+		endOfWeek(){
+			return this.dayjs(new Date()).endOf( "week" ).toDate();
+		}
 	},
 	data(){
 		return {
-			dateRange: null,
+			dateRange: this.modelValue,
 			filterRanges : [
 				{
 					label: 'Today',
-					range: [
+					value: [
 						this.dayjs(new Date()).startOf( "day" ).toDate(),
 						new Date()
 					]
 				},
 				{
 					label: 'Yesterday',
-					range: [
+					value: [
 						this.dayjs(new Date()).subtract( 1, "day" ).startOf( "day" ).toDate(),
+						this.dayjs(new Date()).endOf( "day" ).toDate()
+					]
+				},
+				{
+					label: 'Last 2 days',
+					value: [
+						this.dayjs(new Date()).subtract( 2, "day" ).startOf( "day" ).toDate(),
 						this.dayjs(new Date()).subtract( 1, "day" ).endOf( "day" ).toDate()
 					]
 				},
 				{
+					label: 'This week',
+					value: [
+						this.dayjs(new Date()).startOf( "week" ).toDate(),
+						this.dayjs(new Date()).endOf( "week" ).toDate()
+					]
+				},
+				{
 					label: 'This month',
-					range: [
+					value: [
 						this.dayjs(new Date()).startOf( "month" ).toDate(),
 						new Date()
 					]
 				},
 				{
 					label: 'Last month',
-					range: [
+					value: [
 						this.dayjs(new Date()).subtract( 1, "month" ).startOf( "month" ).toDate(),
 						this.dayjs(new Date()).subtract( 1, "month" ).endOf( "month" ).toDate()
 					]

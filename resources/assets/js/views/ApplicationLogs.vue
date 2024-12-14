@@ -20,6 +20,7 @@
 			<entry-list
 				:initialFilters="searchParams"
 				:displayApplication="false"
+				:allowFilters="false"
 			></entry-list>
 		</div>
 	</div>

@@ -5,13 +5,15 @@
 			<entry-list
 				:initialFilters="searchParams"
 				:displayApplication="!this.$route.params.applicationId"
+				:allowFilters="false"
 			></entry-list>
 		</div>
-		<h2 class="mt-6 text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Results" ) }}<span v-if="this.$route.params.applicationId"> {{ $t( "for" ) }} {{ this.$route.params.applicationId }}</span></h2>
-		<div class="entry-list">
+		<h2 v-if="beatsEnabled" class="mt-6 text-gray-500 text-2xl font-medium pb-2 border-gray-300 border-b">{{ $t( "Filebeat Results" ) }}<span v-if="this.$route.params.applicationId"> {{ $t( "for" ) }} {{ this.$route.params.applicationId }}</span></h2>
+		<div v-if="beatsEnabled" class="entry-list">
 			<beats-list
 				filter-set="filebeat"
 				:initialFilters="beatParams"
+				:allowFilters="false"
 			></beats-list>
 		</div>
 	</div>
@@ -19,6 +21,7 @@
 <script>
 import BeatsList from "@/components/entries/BeatsList";
 import EntryList from "@/components/entries/EntryList";
+import { mapState } from "vuex";
 export default{
 	components : {
 		EntryList,
@@ -41,7 +44,10 @@ export default{
 	computed : {
 		applicationName(){
 			return this.$route.params.id;
-		}
+		},
+		...mapState( {
+			beatsEnabled : state => state.beatsEnabled
+		} )
 	},
 	created(){
 		if( this.$route.params.search ){

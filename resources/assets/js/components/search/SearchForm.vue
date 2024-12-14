@@ -51,6 +51,7 @@ export default{
 			required : false,
 			default : function(){
 				return {
+					collapse : "stachebox.signature",
 					search : "",
 					terms : [],
 					minDate : null,
@@ -65,6 +66,7 @@ export default{
 			indexMappings: {},
 			indexFields : [],
 			searchParams : {
+				collapse : "stachebox.signature",
 				search : "",
 				terms : [],
 				minDate : null,

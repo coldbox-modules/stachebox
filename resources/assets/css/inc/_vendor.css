@@ -13,7 +13,8 @@ pre[class*="language-"] > code {
 .dp__instance_calendar {
 	font-size: .8em;
 }
-.dp__preset_ranges{
-	font-size: .8em;
-	color: grey;
+
+.dp--preset-range{
+	display:block;width:100%;padding:5px;text-align:left;white-space:nowrap;
+	@apply text-xs font-normal text-cyan-600 hover:text-cyan-700;
 }

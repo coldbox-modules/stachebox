@@ -252,8 +252,19 @@ export default{
 			aggregations : ( state ) => state.navAggregations,
 			beatsAggregations : ( state ) => state.navAggregations ? state.navAggregations.beatsAggregations : null,
 			baseHref : ( state ) => state.globals.stachebox.baseHref,
-			projects : ( state ) => state.globals.stachebox.projects
+			projects : ( state ) => state.globals.stachebox.projects,
+			beatsEnabled : ( state ) => state.beatsEnabled
 		})
+	},
+	watch : {
+		beatsAggregations : {
+			handler( newVal ){
+				if( newVal && !newVal.datasets && !newVal.inputTypes ){
+					this.$store.commit( "setBeatsEnabled", false );
+				}
+			},
+			deep : true
+		}
 	}
 }
 

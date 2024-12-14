@@ -29,7 +29,6 @@ component {
 
 		applyCommonSearchArgs( builder, arguments.searchCollection );
 
-
 		if( structIsEmpty( builder.getQuery() ) ){
 			builder.setQuery( { "match_all" : {} } );
 		}

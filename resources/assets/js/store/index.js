@@ -17,6 +17,7 @@ export default createStore({
 		authToken: null,
 		authUser : null,
 		navAggregations : null,
+		beatsEnabled : true,
 		globals : window ? window.globalData : {}
 	},
 	getters:{
@@ -40,6 +41,9 @@ export default createStore({
 		},
 		updateGlobal : ( state, payload ) => {
 			state.globals.stachebox[ payload.key ] = payload.value;
+		},
+		setBeatsEnabled : ( state, value ) => {
+			state.beatsEnabled = value;
 		}
 	},
 	actions: {
@@ -93,7 +97,9 @@ export default createStore({
 			return logsAPI.list( params, context.state.authToken )
 		},
 		fetchBeats : ( context, params = {} ) => {
-			return beatsAPI.list( params, context.state.authToken )
+			let beatsParams = Object.assign( {}, params );
+			delete beatsParams.collapse;
+			return beatsAPI.list( beatsParams, context.state.authToken )
 		},
 		fetchBeatsEntry : ( context, id, params= {} ) => {
 			return beatsAPI.fetch( id, params, context.state.authToken )
@@ -106,6 +112,7 @@ export default createStore({
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
 						context.state.navAggregations.logCount = result.data.pagination.total;
+						// TODO: Move log aggregations to separate key so that beats can dispatch independently
 						context.dispatch( "fetchBeats", { maxrows : 0, includeAggregations : true } )
 								.then( ( result ) => {
 									context.state.navAggregations.beatsCount = result.data.pagination.total;
