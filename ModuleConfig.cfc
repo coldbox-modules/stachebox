@@ -54,20 +54,24 @@ component {
 			"notificationsFrom" : getSystemSetting( "STACHEBOX_NOTIFICATIONS_FROM", "no-reply@stachebox.io" ),
 			// The cbSecurity configuration overrides for this module
 			"cbsecurity" : {
-				"userService" : "UserService@stachebox",
-				// Module Relocation when an invalid access is detected, instead of each rule declaring one.
-				"invalidAuthenticationEvent" 	: "stachebox:api.v1.BaseAPIHandler.onAuthenticationFailure",
-				// Default Auhtentication Action: override or redirect when a user has not logged in
-				"defaultAuthenticationAction"	: "override",
-				// Module override event when an invalid access is detected, instead of each rule declaring one.
-				"invalidAuthorizationEvent"		: "stachebox:api.v1.BaseAPIHandler.onAuthorizationFailure",
-				// Default Authorization Action: override or redirect when a user does not have enough permissions to access something
-				"defaultAuthorizationAction"	: "override",
-				"validator" : "JWTService@cbsecurity",
-				// You can define your security rules here
-				"rules"							: [],
+				"authentication" : {
+					"userService" : "UserService@stachebox"
+				},
+				"firewall" : {
+					// Module Relocation when an invalid access is detected, instead of each rule declaring one.
+					"invalidAuthenticationEvent" 	: "stachebox:api.v1.BaseAPIHandler.onAuthenticationFailure",
+					// Default Auhtentication Action: override or redirect when a user has not logged in
+					"defaultAuthenticationAction"	: "override",
+					// Module override event when an invalid access is detected, instead of each rule declaring one.
+					"invalidAuthorizationEvent"		: "stachebox:api.v1.BaseAPIHandler.onAuthorizationFailure",
+					// Default Authorization Action: override or redirect when a user does not have enough permissions to access something
+					"defaultAuthorizationAction"	: "override"
+				},
 				"jwt" : {
-					"expiration"       : 20
+					"validator" : "JWTService@cbsecurity",
+					"expiration"       : 120,
+					"enableRefreshTokens" : true,
+					"enableAutoRefreshValidator" : true
 				}
 			},
 			// the cbauth overrides for this module

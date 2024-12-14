@@ -53,7 +53,7 @@ component{
 
 	function ensureUserIndex(){
 
-		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService ) && !searchClient.indexExists( variables.moduleSettings.usersIndex ) ){
+		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.authentication.userService ) && !searchClient.indexExists( variables.moduleSettings.usersIndex ) ){
 			getInstance( "IndexBuilder@cbelasticsearch" )
 				.new(
 					name=variables.moduleSettings.usersIndex,
@@ -66,7 +66,7 @@ component{
 	}
 
 	function ensureTokenReporter(){
-		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService ) ){
+		if( findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.authentication.userService ) ){
 			var reporterUsername = moduleSettings.tokenReporter;
 			if( isNull( userService.retrieveUserByUsername( reporterUsername ) ) ){
 				var logoFile = expandPath( '/stachebox/includes/images/stachebox-icon.png' );
@@ -89,7 +89,7 @@ component{
 
 	function ensureDefaultAdminUser(){
 		if(
-			findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
+			findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.authentication.userService )
 			&&
 			len( variables.moduleSettings.adminEmail )
 			&& isNull( userService.retrieveUserByUsername( variables.moduleSettings.adminEmail ) )
@@ -141,7 +141,7 @@ component{
 		var javaURI = createObject( "java", "java.net.URI" );
 		var basePath = javaURI.create( event.getSESBaseURL() ).getPath();
 		var stacheboxBasePath = basePath & "stachebox";
-		var loginUrl = !findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.userService )
+		var loginUrl = !findNoCase( "@stachebox", variables.moduleSettings.cbsecurity.authentication.userService )
 							? cbSecuritySettings.keyExists( "invalidAuthenticationEvent" ) ? cbSecuritySettings.invalidAuthenticationEvent : stacheboxBasePath & "/login"
 							: stacheboxBasePath & "/login";
 
@@ -155,7 +155,7 @@ component{
 				"isStandalone" : moduleSettings.isStandalone,
 				"logIndexPattern" : moduleSettings.logIndexPattern,
 				"beatsIndexPattern" : moduleSettings.beatsIndexPattern,
-				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.userService ) ),
+				"internalSecurity" :  javacast( "boolean", findNoCase( "@stachebox",  moduleSettings.cbsecurity.authentication.userService ) ),
 				"loginURL" :  loginUrl,
 				"i18nLocales" : locales,
 				"projects" : settingServce.getByName( "projects" ).getMemento().value.reduce(
