@@ -341,7 +341,7 @@ export default {
 			return this.entry.event.severity || 3;
 		},
 		reversedFrames(){
-			return this.entry.error.frames ? this.entry.error.frames.reverse() : []
+			return this.entry.error.frames ? [...this.entry.error.frames].reverse() : []
 		},
 		multipleOccurrences(){
 			return this.entry.occurrences && this.entry.occurrences > 1;
