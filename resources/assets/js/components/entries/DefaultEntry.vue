@@ -288,6 +288,7 @@
 						:displayApplication="false"
 						:allowFilters="false"
 						:allowSuppress="false"
+						:applySearch="false"
 					></entry-list>
 				</tab>
 
