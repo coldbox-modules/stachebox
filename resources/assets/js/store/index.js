@@ -111,7 +111,7 @@ export default createStore({
 			context.dispatch( "fetchLogs", { maxrows : 0, includeAggregations: true, minDate: dayjs( new Date() ).subtract( "14", "days" ).toISOString(), tzOffset : dayjs().format( "Z" ) } )
 					.then( ( result ) => {
 						context.state.navAggregations = result.data.aggregations;
-						context.state.navAggregations.logCount = result.data.pagination.total;
+						context.state.navAggregations.logCount = result.data.aggregations.types.message.count;
 						// TODO: Move log aggregations to separate key so that beats can dispatch independently
 						context.dispatch( "fetchBeats", { maxrows : 0, includeAggregations : true } )
 								.then( ( result ) => {
