@@ -96,7 +96,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.cfengine }}
+          name: test-results-${{ matrix.cfengine }}-${{ matrix.coldboxVersion }}-${{ matrix.ELASTICSEARCH_VERSION }}
           path: |
             test-harness/tests/results/**/*
 
@@ -109,7 +109,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: Failure Debugging Info - ${{ matrix.cfengine }}
+          name: Failure Debugging Info - ${{ matrix.cfengine }}-${{ matrix.coldboxVersion }}-${{ matrix.ELASTICSEARCH_VERSION }}
           path: |
             test-harness/.engine/**/logs/*
             test-harness/.engine/**/WEB-INF/cfusion/logs/*
