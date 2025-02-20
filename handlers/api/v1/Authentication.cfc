@@ -25,7 +25,11 @@ component extends="BaseAPIHandler"{
 	// ( DELETE ) /stachebox/api/v1/authentication
 	function logout( event, rc, prc ){
 		auth().logout();
-		jwtAuth().logout();
+		try{
+			jwtAuth().logout();
+		} catch( any e ){
+			// In the latest build of cbSecurity these are the same
+		}
 		prc.response.setStatusCode( STATUS.NO_CONTENT );
 	}
 
