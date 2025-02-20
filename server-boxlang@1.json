@@ -4,7 +4,7 @@
         "serverHomeDirectory":"./.engine/boxlang",
         "cfengine":"boxlang@be"
     },
-	"java": {
+	"jvm": {
 		"javaVersion":"openjdk21_jdk"
 	},
     "web":{
