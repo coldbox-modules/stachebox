@@ -76,7 +76,7 @@
 				"userServiceClass" : "UserService@stachebox"
 			},
 			"logstash" : {
-				"enableAppenders" : true
+				"enableAppenders" : getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true )
 			},
 			"cfmigrations" : {
 				"managers": {

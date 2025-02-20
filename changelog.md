@@ -6,7 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ----
-## [Unreleased]
+
+## [2.1.1] - 2024-12-14
+
+### Fixed
+
+* Fixed incorrect results on Trace and Related when search was present
+* Fixed responsive widths in search bar and fields
+* Fixed JWT bloat from avatar inclusion in claims
+* Fixed log count being incorrect on dashboard widget
+
+### Changed
+
+* UI adjustments to decrease font size on navigations
+* UI enhancements and updates
+
+## [2.1.0] - 2024-12-14
 
 ### Added
 

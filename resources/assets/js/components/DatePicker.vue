@@ -51,7 +51,7 @@ export default {
 					label: 'Today',
 					value: [
 						this.dayjs(new Date()).startOf( "day" ).toDate(),
-						new Date()
+						this.dayjs(new Date()).endOf( "day" ).toDate()
 					]
 				},
 				{
@@ -65,7 +65,7 @@ export default {
 					label: 'Last 2 days',
 					value: [
 						this.dayjs(new Date()).subtract( 2, "day" ).startOf( "day" ).toDate(),
-						this.dayjs(new Date()).subtract( 1, "day" ).endOf( "day" ).toDate()
+						this.dayjs(new Date()).endOf( "day" ).toDate()
 					]
 				},
 				{
@@ -73,6 +73,13 @@ export default {
 					value: [
 						this.dayjs(new Date()).startOf( "week" ).toDate(),
 						this.dayjs(new Date()).endOf( "week" ).toDate()
+					]
+				},
+				{
+					label: 'Last week',
+					value: [
+						this.dayjs(new Date()).subtract( 1, "week" ).startOf( "week" ).toDate(),
+						this.dayjs(new Date()).subtract( 1, "week" ).endOf( "week" ).toDate()
 					]
 				},
 				{

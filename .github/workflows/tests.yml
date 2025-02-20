@@ -15,6 +15,8 @@ jobs:
       ELASTICSEARCH_PROTOCOL: http
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
+      LOGSTASH_ENABLE_APPENDERS: "false"
+      ENVIRONMENT: development
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
@@ -23,7 +25,7 @@ jobs:
         experimental: [false]
         coldboxVersion: [ "^6.0.0", "^7.0.0" ]
         include:
-          - cfengine: "lucee@be"
+          - cfengine: "lucee@6"
             ELASTICSEARCH_VERSION: "8.14.1"
             coldboxVersion: "^7.0.0"
             experimental: true
@@ -43,6 +45,11 @@ jobs:
 
       - name: Setup CommandBox CLI
         uses: Ortus-Solutions/setup-commandbox@v2.0.1
+
+      - name: Reinstall CommandBox-Boxlang Module
+        working-directory: ./test-harness
+        run: |
+          box install --force commandbox-boxlang
 
       - name: Install Dependencies
         run: |
@@ -88,9 +95,9 @@ jobs:
 
       - name: Upload Test Results to Artifacts
         if: always()
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.cfengine }}
+          name: test-results-${{ matrix.cfengine }}-${{ matrix.coldboxVersion }}-${{ matrix.ELASTICSEARCH_VERSION }}
           path: |
             test-harness/tests/results/**/*
 
@@ -101,9 +108,9 @@ jobs:
 
       - name: Upload Debugging Log To Artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
-          name: Failure Debugging Info - ${{ matrix.cfengine }}
+          name: Failure Debugging Info - ${{ matrix.cfengine }}-${{ matrix.coldboxVersion }}-${{ matrix.ELASTICSEARCH_VERSION }}
           path: |
             test-harness/.engine/**/logs/*
             test-harness/.engine/**/WEB-INF/cfusion/logs/*

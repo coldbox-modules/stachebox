@@ -163,6 +163,10 @@ export default {
 		emptyStateMessage : {
 			type : String,
 			default : "No records matched your search criteria"
+		},
+		applySearch: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data(){
@@ -282,9 +286,10 @@ export default {
 		}
 	},
 	mounted(){
-		if( this.$route.params.search ){
+		if( this.applySearch && this.$route.params.search ){
 			try{
-				this.searchFilters = JSON.parse( window.atob( this.$route.params.search ) );
+				let searchParams = JSON.parse( window.atob( this.$route.params.search ) );
+				Object.assign( this.searchFilters, searchParams );
 			} catch( e ) {
 				// legacy permalinks catch
 				// TODO: remove in future release

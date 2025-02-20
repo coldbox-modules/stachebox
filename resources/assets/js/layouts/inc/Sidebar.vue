@@ -4,7 +4,7 @@
       :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
       class="fixed z-30 inset-y-0 left-0 transition duration-300 transform bg-gray-800 overflow-y-auto overflow-x-auto lg:translate-x-0 lg:static lg:inset-0"
     >
-      <nav class="mt-10">
+      <nav class="mt-10 text-sm">
 		<h2
 			class="flex items-center duration-200 mt-2 py-2 px-4 border-l-4"
 			:class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"

@@ -270,7 +270,8 @@ component
      * A struct of custom claims to add to the JWT token
      */
     struct function getJwtCustomClaims(){
-		return getMemento();
+        // we don't need avatar in jwt token
+		return getMemento( excludes = 'avatar' );
 	}
 
     /**

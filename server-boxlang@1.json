@@ -4,6 +4,9 @@
         "serverHomeDirectory":"./.engine/boxlang",
         "cfengine":"boxlang@be"
     },
+	"jvm": {
+		"javaVersion":"openjdk21_jdk"
+	},
     "web":{
         "http":{
             "port":"60299"

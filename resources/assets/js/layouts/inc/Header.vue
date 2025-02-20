@@ -1,12 +1,12 @@
 <template>
   <header
-    class="flex justify-between items-center py-5 px-6 bg-gray-100 border-b-2 border-gray-800"
+    class="flex justify-between items-start py-5 px-6 bg-gray-100 border-b-2 border-gray-800"
   >
 	<div class="flex items-center">
-		<div class="flex items-center justify-center bg-gray-100">
-			<div class="flex items-center">
+		<div class="flex items-start justify-center bg-gray-100">
+			<div class="flex items-start">
 				<router-link :to="{ name : 'Dashboard'}" class="hover:cursor-pointer">
-					<img :src="`${baseHref}/includes/images/stachebox-logo-h.png`" style="width:200px"/>
+					<img :src="sidebarOpen ? `${baseHref}/includes/images/stachebox-logo-h.png` : `${baseHref}/includes/images/stachebox-logo.png`" :style="sidebarOpen ? `width:200px` : `width: 75px`"/>
 				</router-link>
 			</div>
 		</div>
@@ -20,11 +20,11 @@
 			</button>
 		</div>
 	</div>
-    <div class="flex items-center w-2/3">
+    <div class="flex items-start w-2/3">
 		<search-form :initialParams="searchFilters" @onSearchUpdate="sendToSearchPage" />
     </div>
 
-    <div class="flex items-center" v-if="internalSecurityEnabled">
+    <div class="flex items-start" v-if="internalSecurityEnabled">
 
       <div class="relative" v-if="user">
         <button
@@ -76,6 +76,12 @@ import { mapState } from "vuex";
 export default {
 	components : {
 		SearchForm
+	},
+	props: {
+		sidebarOpen : {
+			type : Boolean,
+			default : false
+		}
 	},
 	data(){
 		return {
