@@ -16,6 +16,7 @@ jobs:
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
       LOGSTASH_ENABLE_APPENDERS: "false"
+      ENVIRONMENT: development
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:

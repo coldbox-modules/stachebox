@@ -252,12 +252,12 @@ component extends="coldbox.system.EventHandler" {
 		}
 
 		// Log Locally
-		// log.error(
-		// 	"Error in base handler (#arguments.faultAction#): #arguments.exception.message# #arguments.exception.detail#",
-		// 	{
-		// 		"exception" : arguments.exception
-		// 	}
-		// );
+		log.error(
+			"Error in base handler (#arguments.faultAction#): #arguments.exception.message# #arguments.exception.detail#",
+			{
+				"exception" : arguments.exception
+			}
+		);
 
 		// Setup General Error Response
 		arguments.prc.response
