@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-4" v-if="aggregations">
+    <div class="mt-4 sm:hidden" v-if="aggregations">
       <div class="flex flex-wrap -mx-6">
         <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
           <div
@@ -76,8 +76,8 @@
 </template>
 
 <script>
-import ApplicationSnapshot from "./ApplicationSnapshot";
 import { mapGetters, mapState } from "vuex";
+import ApplicationSnapshot from "./ApplicationSnapshot";
 export default {
   components : {
 	  ApplicationSnapshot

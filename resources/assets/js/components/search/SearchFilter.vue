@@ -1,5 +1,5 @@
 <template>
-	<div class="sm:flex w-1/3">
+	<div class="flex w-full">
 		<div class="flex w-full rounded-md">
 			<simple-typeahead
 				ref="keyInput"
@@ -19,10 +19,10 @@
 				<option value="lte">{{ $t( 'is lte' ) }}</option>
 			</select>
 			<input type="text" v-model="filter.value" class="h-10 text-gray-700 border-none p-2 text-xs block w-1/2 rounded-l-none rounded-r-md ml-0 focus:border-gray-300 focus:ring-gray-300" placeholder="Value" @keydown.enter="$emit( 'applyFilter', this.filter )" />
+			<a @click="$emit( 'removeFilter' )" class="float-right block ml-2" v-tooltip="$t( 'Remove Filter' )">
+				<fa-icon class="text-red-600 h-9 text-xs" icon="circle-xmark" fixed-width />
+			</a>
 		</div>
-		<a @click="$emit( 'removeFilter' )" class="float-right block ml-2" v-tooltip="$t( 'Remove Filter' )">
-			<fa-icon class="text-red-600 h-9 text-xs" icon="circle-xmark" fixed-width />
-		</a>
 	</div>
 </template>
 <script>

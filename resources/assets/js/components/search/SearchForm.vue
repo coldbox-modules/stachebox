@@ -27,9 +27,11 @@
 			</h4>
 			<search-params :searchFilters="searchParams" @apply-filter="updateParams" @apply-term="updateTerms"></search-params>
 			<div ref="active-filters" class="search-filters mt-2">
-				<div class="w-full relative">
+				<div class="w-full grid grid-cols-1 xl:grid-cols-2">
 					<SearchFilter v-for="( filter, index ) in availableTerms" :key="index" :filter="searchParams.terms[index]" :indexFields="indexFields" @removeFilter="removeFilter( index )"/>
 				</div>
+			</div>
+			<div class="mt-4 w-full">
 				<button class="bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold py-1 px-3 rounded float-right" @click="$emit( 'onSearchUpdate', searchParams )">{{ $t( "Apply Filters" ) }}</button>
 			</div>
 		</div>

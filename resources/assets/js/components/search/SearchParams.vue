@@ -1,5 +1,5 @@
 <template>
-	<div class="entry-search-filters grid grid-cols-4">
+	<div class="entry-search-filters grid xl:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
 		<div class="my-1">
 			<div class="px-3 py-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Date Range" ) }}:</label>
@@ -10,7 +10,7 @@
 			</div>
 		</div>
 
-		<div class="my-1 pl-5">
+		<div class="my-1">
 			<div class="px-3 py-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Application" ) }}:</label>
 				<select
@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="my-1 pl-5">
+		<div class="my-1">
 			<div class="px-3 py-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Environment" ) }}:</label>
 				<select
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-		<div class="my-1 pl-5" >
+		<div class="my-1" >
 			<div class="px-3 py-2">
 				<label class="text-gray-400 text-xs uppercase leading-5">{{ $t( "Log Level" ) }}:</label>
 				<select

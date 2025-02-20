@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Header v-on:toggle-sidebar="sidebarIsOpen = !sidebarIsOpen" />
+		<Header v-on:toggle-sidebar="sidebarIsOpen = !sidebarIsOpen" :sidebarOpen="sidebarIsOpen" />
 		<div class="flex h-screen bg-gray-200 font-roboto">
 			<Sidebar :isOpen="sidebarIsOpen" />
 
@@ -17,8 +17,8 @@
 	</div>
 </template>
 <script>
-import Sidebar from "./inc/Sidebar.vue";
 import Header from "./inc/Header.vue";
+import Sidebar from "./inc/Sidebar.vue";
 
 export default {
 	components: {
