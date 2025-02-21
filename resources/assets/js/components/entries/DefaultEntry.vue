@@ -278,6 +278,7 @@
 						:displayApplication="false"
 						:allowFilters="true"
 						:allowSuppress="false"
+						:applySearch="false"
 					></entry-list>
 				</tab>
 
@@ -328,12 +329,24 @@ export default {
 	},
 	computed : {
 		occurrenceParams : function(){
-			return this.occurrenceParams = {
+			let params = {
 				"stachebox.signature" : this.entry.stachebox.signature,
 				exclude : this.entry.id,
-				sortOrder : "@timestamp DESC",
-				search: this.$route.params.search
+				sortOrder : "@timestamp DESC"
+			};
+			let searchParams = {};
+			if( this.$route.params.search ){
+				try{
+					searchParams = JSON.parse( window.atob( this.$route.params.search ) );
+				} catch( e ) {}
 			}
+
+			delete searchParams.collapse;
+			delete searchParams.sortOrder;
+
+			Object.assign( params, searchParams );
+
+			return params;
 		},
 		traceParams(){
 			return this.entry[ 'trace.id' ] ? { "trace.id" : this.entry[ 'trace.id' ] } : {};
