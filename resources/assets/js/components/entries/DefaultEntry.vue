@@ -260,7 +260,7 @@
 								<h3 class="stacktrace-location">
 									{{frame.filename}}:<span class="stacktrace-line-number">{{frame.lineno}}</span>
 								</h3>
-								<pre><code class="language-javascript" v-html="frameContext( frame )"></code></pre>
+								<pre :class="['line-numbers', `error-line-${getFrameErrorLine(frame)}`]" :data-start="getFrameStartLine(frame)"><code class="language-javascript" v-html="frameContext( frame )"></code></pre>
 							</div>
 						</li>
 					</ol>
@@ -304,6 +304,8 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-javastacktrace';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-sql';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import Tab from "../../components/Tab";
 import Tabs from "../../components/Tabs";
 import EntryExportButton from './EntryExportButton';
@@ -355,7 +357,16 @@ export default {
 			return this.entry.event.severity || 3;
 		},
 		reversedFrames(){
-			return this.entry.error.frames ? [...this.entry.error.frames].reverse() : []
+			const frames = this.entry.error.frames ? [...this.entry.error.frames].reverse() : [];
+			// Deduplicate consecutive frames with same filename and line number
+			const deduplicated = frames.filter((frame, index) => {
+				if (index === 0) return true;
+				const previousFrame = frames[index - 1];
+				return frame.filename !== previousFrame.filename || frame.lineno !== previousFrame.lineno;
+			});
+			console.log('Original frames count:', frames.length);
+			console.log('Deduplicated frames count:', deduplicated.length);
+			return deduplicated;
 		},
 		multipleOccurrences(){
 			return this.entry.occurrences && this.entry.occurrences > 1;
@@ -399,6 +410,12 @@ export default {
 		frameContext( frame ){
 			return frame.pre_context.join( "\n" ) + "\n" + frame.context_line + "\n" + frame.post_context.join( "\n" );
 		},
+		getFrameStartLine( frame ){
+			return frame.lineno && frame.pre_context ? frame.lineno - frame.pre_context.length : 1;
+		},
+		getFrameErrorLine( frame ){
+			return frame.pre_context ? frame.pre_context.length + 1 : 1;
+		},
 		loadExtraInfoFrame( content ){
 			this.$nextTick( () => this.$refs.errorIframe.contentDocument.body.innerHTML = content || this.entry.error.extrainfo );
 		},
@@ -410,7 +427,12 @@ export default {
 		}
 	},
 	mounted() {
-		Prism.highlightAll();
+		this.$nextTick(() => {
+			this.$el.querySelectorAll('pre:not(.prism-highlighted) code').forEach((codeElement) => {
+				codeElement.parentElement.classList.add('prism-highlighted');
+				Prism.highlightElement(codeElement);
+			});
+		});
 	}
 
 }
