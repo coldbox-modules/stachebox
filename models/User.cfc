@@ -57,7 +57,6 @@ component
             "isActive",
             "isApproved",
 			"isAdministrator",
-			"avatar",
 			"allowLogin"
 		],
         "defaults" :{
@@ -145,7 +144,7 @@ component
     function save(){
         var userDoc = newDocument().new(
             index=getSearchIndexName()
-        ).populate( this.getMemento( includes="password,resetToken" ) );
+        ).populate( this.getMemento( includes="password,resetToken,avatar" ) );
 
         if( !isNull( getId() ) && len( getId() ) ){
             userDoc.setId( getId() );
@@ -167,6 +166,81 @@ component
 
     function encryptPassword(){
         variables.password = getBCrypt().hashPassword( variables.password );
+        return this;
+    }
+
+    function processAvatar(){
+        if( !isNull( variables.avatar ) && len( variables.avatar ) ){
+            try {
+                // Check if it's a valid data URI
+                if( !reFindNoCase( "^data:image/", variables.avatar ) ){
+                    throw(
+                        type = "ValidationException",
+                        message = "Invalid avatar format. Must be a base64-encoded image."
+                    );
+                }
+
+                // Extract the base64 data (everything after the comma)
+                var base64Data = listLast( variables.avatar, "," );
+
+                // Decode base64 to binary
+                var imageData = toBinary( base64Data );
+
+                // Validate max upload size (10MB for raw upload)
+                var maxUploadSize = 10 * 1024 * 1024; // 10MB
+                if( arrayLen( imageData ) > maxUploadSize ){
+                    throw(
+                        type = "ValidationException",
+                        message = "Avatar image is too large. Maximum upload size is 10MB."
+                    );
+                }
+
+                // Create image object from binary data
+                var img = imageNew( imageData );
+
+                // Get image dimensions
+                var width = imageGetWidth( img );
+                var height = imageGetHeight( img );
+
+                // Resize if necessary (max 200x200, maintaining aspect ratio)
+                if( width > 200 || height > 200 ){
+                    imageScaleToFit( img, 200, 200 );
+                }
+
+                // Ensure it's exactly 200x200 by cropping from center
+                var currentWidth = imageGetWidth( img );
+                var currentHeight = imageGetHeight( img );
+
+                if( currentWidth != 200 || currentHeight != 200 ){
+                    var cropX = max( 0, floor( ( currentWidth - 200 ) / 2 ) );
+                    var cropY = max( 0, floor( ( currentHeight - 200 ) / 2 ) );
+                    imageCrop( img, cropX, cropY, min( 200, currentWidth ), min( 200, currentHeight ) );
+                }
+
+                // Convert to PNG for consistent format (supports transparency, lossless)
+                // Write to byte array and convert to base64
+                var baos = createObject( "java", "java.io.ByteArrayOutputStream" ).init();
+
+                // Write the image as PNG to the byte array output stream
+                var ImageIO = createObject( "java", "javax.imageio.ImageIO" );
+                var bufferedImage = imageGetBufferedImage( img );
+                ImageIO.write( bufferedImage, "png", baos );
+
+                // Convert to base64 and create data URI
+                var processedBase64 = toBase64( baos.toByteArray() );
+                variables.avatar = "data:image/png;base64," & processedBase64;
+
+            } catch( any e ){
+                // Log the full error for debugging
+                writeLog( file="application", text="Avatar processing error: #e.message# - Detail: #e.detail#" );
+
+                throw(
+                    type = "ValidationException",
+                    message = "Failed to process avatar image: #e.message# #e.detail#",
+                    extendedInfo = serializeJSON( { "avatar": ["Failed to process image: #e.message#"] } )
+                );
+            }
+        }
         return this;
     }
 

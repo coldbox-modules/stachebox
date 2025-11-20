@@ -13,6 +13,13 @@ component {
 					} )
 					.toHandler( "API" );
 
+		// User avatar endpoint
+		route( "/api/v1/users/:id/avatar" )
+			.withAction( {
+				"GET" : "avatar"
+			} )
+			.toHandler( "api.v1.Users" );
+
 		apiResources(
 			resource = "/api/v1/users",
 			handler = "api.v1.Users"

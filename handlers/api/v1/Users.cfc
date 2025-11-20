@@ -18,12 +18,31 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 	}
 
+	// ( GET ) /api/v1/users/:id/avatar - Returns user avatar
+	function avatar( event, rc, prc ){
+
+		var user = getInstance( "User@stachebox" ).getOrFail( rc.id );
+		var userMemento = user.getMemento( includes = "avatar" );
+
+		prc.response.setData({
+			"id": user.getId(),
+			"avatar": userMemento.avatar ?: javacast( "null", 0 )
+		});
+
+	}
+
 	// ( POST ) /api/v1/users
 	function create( event, rc, prc ) secured="StacheboxAdministrator"{
 		var user = getInstance( "User@stachebox" )
 									.new( rc )
 									.encryptPassword()
 									.validateOrFail();
+
+		// Process and validate avatar if provided
+		if( !isNull( user.getAvatar() ) && len( user.getAvatar() ) ){
+			user.processAvatar();
+		}
+
 		prc.response.setData(
 				user
 				.save()
@@ -38,6 +57,12 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 
 		if( event.valueExists( "password" ) && len( rc.password ) ){
 			user.encryptPassword();
+		}
+
+		// Process and validate avatar if provided
+		// Check if user has avatar after population (not just if it's in request)
+		if( !isNull( user.getAvatar() ) && len( user.getAvatar() ) ){
+			user.processAvatar();
 		}
 
 		prc.response.setData( user.save().getMemento() );

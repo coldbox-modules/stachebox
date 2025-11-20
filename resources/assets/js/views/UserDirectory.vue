@@ -37,7 +37,7 @@
 						<td class="px-6 py-4 whitespace-nowrap">
 							<div class="flex items-center">
 							<div class="flex-shrink-0 h-10 w-10">
-								<img class="h-10 w-10 rounded-full" :src="user.avatar" alt="">
+								<img class="h-10 w-10 rounded-full" :src="user.avatar || defaultAvatar" alt="">
 							</div>
 							<div class="ml-4">
 								<div class="text-sm font-medium text-gray-900">
@@ -94,7 +94,8 @@ export default {
 			usersData : undefined,
 			userFilters : {
 				allowLogin : true
-			}
+			},
+			defaultAvatar : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADIAMgDASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAcIBAUGAgEDCf/EAEYQAAEDAwICBAsHAgMGBwAAAAEAAgMEBQYHERIhMVFhcQgTFRYiQVWRobHRFDI1c4GS8P8"
 		}
 	},
 	computed :{
@@ -122,7 +123,30 @@ export default {
 	methods : {
 		fetchUsers(){
 			usersAPI.list( { "sortOrder" : "lastName DESC, firstName DESC" }, this.authToken )
-				.then( result => this.usersData = result.data )
+				.then( result => {
+					this.usersData = result.data;
+					// Fetch avatars for all users
+					if( this.users ){
+						this.users.forEach( user => {
+							this.fetchUserAvatar( user );
+						});
+					}
+				})
+		},
+		fetchUserAvatar( user ){
+			if( user && user.id && this.authToken ){
+				usersAPI.fetchAvatar( user.id, this.authToken )
+					.then( result => {
+						if( result.data && result.data.avatar ){
+							user.avatar = result.data.avatar;
+						} else {
+							user.avatar = this.defaultAvatar;
+						}
+					})
+					.catch( () => {
+						user.avatar = this.defaultAvatar;
+					});
+			}
 		}
 	},
 	created(){

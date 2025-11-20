@@ -33,7 +33,7 @@
         >
           <img
             class="h-full w-full object-cover"
-            :src="user.avatar"
+            :src="avatarSrc"
             alt="Your avatar"
           />
         </button>
@@ -71,6 +71,7 @@
 
 <script>
 import SearchForm from "@/components/search/SearchForm";
+import usersAPI from "@/api/users";
 import { mapState } from "vuex";
 
 export default {
@@ -91,15 +92,34 @@ export default {
 			searchFilters : {
 				search : "",
 				terms : []
-			}
+			},
+			userAvatar : null
 		}
 	},
 	computed : {
 		...mapState({
 			user : ( state ) => state.authUser,
+			authToken : ( state ) => state.authToken,
 			baseHref : ( state ) => state.globals.stachebox.baseHref,
 			internalSecurityEnabled : ( state ) => state.globals.stachebox.internalSecurity
-		})
+		}),
+		avatarSrc(){
+			return this.userAvatar || "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADIAMgDASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAcIBAUGAgEDCf/EAEYQAAEDAwICBAsHAgMGBwAAAAEAAgMEBQYHERIhMVFhcQgTFRYiQVSRobHRFDI1c4GS8P8";
+		}
+	},
+	watch : {
+		user : {
+			immediate : true,
+			handler( newUser ){
+				if( newUser && newUser.id ){
+					this.fetchUserAvatar();
+				}
+			}
+		},
+		// Watch for store changes to trigger avatar refresh
+		'$store.state.avatarRefreshTrigger'(){
+			this.fetchUserAvatar();
+		}
 	},
 	mounted(){
 		if( this.$route.params.search ){
@@ -113,6 +133,20 @@ export default {
 		}
 	},
 	methods : {
+		fetchUserAvatar(){
+			if( this.user && this.user.id && this.authToken ){
+				usersAPI.fetchAvatar( this.user.id, this.authToken )
+					.then( result => {
+						if( result.data && result.data.avatar ){
+							this.userAvatar = result.data.avatar;
+						}
+					})
+					.catch( () => {
+						// If avatar fetch fails, use default
+						this.userAvatar = null;
+					});
+			}
+		},
 		logout(){
 			this.$store.dispatch( "logout" )
 						.finally(

@@ -132,7 +132,7 @@
 								<div class="relative z-10 block h-200 w-200 rounded-full overflow-hidden shadow">
 									<img
 										class="h-full w-full object-cover"
-										:src="user.avatar"
+										:src="user.avatar || defaultAvatar"
 										:alt="$t( 'Your avatar' )"
 									/>
 								</div>
@@ -235,6 +235,26 @@
 						</div>
 					</div>
 				</div>
+				<div class="rounded-md bg-red-50 p-4 mb-5 fade-slow" v-if="avatarError">
+					<div class="flex">
+						<div class="flex-shrink-0">
+							<fa-icon class="h-5 w-5 text-red-400" icon="exclamation-circle"/>
+						</div>
+						<div class="ml-3">
+							<p class="text-sm font-medium text-red-800">
+								{{ avatarError }}
+							</p>
+						</div>
+						<div class="ml-auto pl-3">
+							<div class="-mx-1.5 -my-1.5">
+								<button type="button" @click="avatarError=null" class="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-50 focus:ring-red-600">
+									<span class="sr-only">{{ $t( "Dismiss" ) }}</span>
+									<fa-icon class="h5 w5" icon="times"/>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="flex justify-end">
 					<button
 						type="button"
@@ -311,9 +331,11 @@ export default {
 			user : null,
 			isSaving : false,
 			saveSuccess : false,
+			avatarError : null,
 			validation : {
 				errors : []
-			}
+			},
+			defaultAvatar : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADIAMgDASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAcIBAUGAgEDCf/EAEYQAAEDAwICBAsHAgMGBwAAAAEAAgMEBQYHERIhMVFhcQgTFRYiQVSRobHRFDI1c4GS8P8"
 		};
 	},
 	computed : {
@@ -342,7 +364,23 @@ export default {
 			this.user.allowLogin = !this.user.allowLogin
 		},
 		fetchUser(){
-			usersAPI.fetch( this.$route.params.id, {}, this.authToken ).then( result => this.user = result.data )
+			usersAPI.fetch( this.$route.params.id, {}, this.authToken )
+				.then( result => {
+					this.user = result.data;
+					// Set default avatar first
+					this.user.avatar = this.defaultAvatar;
+					// Fetch avatar separately
+					return usersAPI.fetchAvatar( this.$route.params.id, this.authToken );
+				})
+				.then( result => {
+					if( result.data && result.data.avatar ){
+						this.user.avatar = result.data.avatar;
+					}
+				})
+				.catch( (error) => {
+					console.log( 'Avatar fetch failed, using default:', error );
+					// Default avatar already set above
+				});
 		},
 		saveUser(){
 			var self = this;
@@ -357,11 +395,19 @@ export default {
 				.then(
 					result => {
 						if( self.user.id ){
-							self.user = result.data
+							// Preserve the avatar since it's not returned in the response
+							const currentAvatar = self.user.avatar;
+							self.user = result.data;
+							self.user.avatar = currentAvatar;
 							self.saveSuccess = true;
 							setTimeout(() => {
 								self.saveSuccess = false;
 							}, 6000);
+
+							// If editing own profile, trigger header avatar refresh
+							if( self.authUser && self.authUser.id === self.user.id ){
+								self.$store.commit('triggerAvatarRefresh');
+							}
 						} else {
 							self.$router.push( `/users/edit/${result.data.id}` )
 						}
@@ -385,6 +431,24 @@ export default {
 
 			if (event.target.files[0]) {
 				const file = event.target.files[0];
+
+				// Clear any previous errors
+				this.avatarError = null;
+
+				// Validate file type
+				const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+				if (!validTypes.includes(file.type)) {
+					this.avatarError = this.$t('Please upload a valid image file (JPEG, PNG, GIF, or WebP)');
+					return;
+				}
+
+				// Validate file size (5MB max)
+				const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+				if (file.size > maxSize) {
+					this.avatarError = this.$t('Image file is too large. Maximum size is 5MB');
+					return;
+				}
+
 				const reader = new FileReader();
 				var dimensions;
 				reader.onload = function(e) {

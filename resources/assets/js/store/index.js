@@ -18,6 +18,7 @@ export default createStore({
 		authUser : null,
 		navAggregations : null,
 		beatsEnabled : true,
+		avatarRefreshTrigger : 0,
 		globals : window ? window.globalData : {}
 	},
 	getters:{
@@ -44,6 +45,9 @@ export default createStore({
 		},
 		setBeatsEnabled : ( state, value ) => {
 			state.beatsEnabled = value;
+		},
+		triggerAvatarRefresh : ( state ) => {
+			state.avatarRefreshTrigger++;
 		}
 	},
 	actions: {
@@ -82,7 +86,7 @@ export default createStore({
 				} );
 			}
 			return new Promise( ( resolve, reject ) => {
-				// if( !context.state.authId ) reject();
+				// Fetch user by ID from API
 				usersAPI.fetch( context.state.authId, params, context.state.authToken )
 						.then( ( response ) => {
 							context.state.authUser = response.data;
