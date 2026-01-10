@@ -33,7 +33,7 @@
         >
           <img
             class="h-full w-full object-cover"
-            :src="user.avatar"
+            :src="userAvatar"
             alt="Your avatar"
           />
         </button>
@@ -98,8 +98,12 @@ export default {
 		...mapState({
 			user : ( state ) => state.authUser,
 			baseHref : ( state ) => state.globals.stachebox.baseHref,
-			internalSecurityEnabled : ( state ) => state.globals.stachebox.internalSecurity
-		})
+			internalSecurityEnabled : ( state ) => state.globals.stachebox.internalSecurity,
+			defaultAvatar : ( state ) => state.defaultAvatar
+		}),
+		userAvatar(){
+			return this.user?.avatar || this.defaultAvatar;
+		}
 	},
 	mounted(){
 		if( this.$route.params.search ){

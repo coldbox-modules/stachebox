@@ -11,6 +11,9 @@ dayjs.extend( utc );
 dayjs.extend( timezone );
 dayjs.tz.setDefault( dayjs.tz.guess() );
 
+// Default avatar as a simple gray silhouette SVG
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='100' fill='%23e5e7eb'/%3E%3Ccircle cx='100' cy='80' r='35' fill='%239ca3af'/%3E%3Cellipse cx='100' cy='170' rx='55' ry='45' fill='%239ca3af'/%3E%3C/svg%3E";
+
 export default createStore({
 	state: {
 		authId: null,
@@ -18,7 +21,8 @@ export default createStore({
 		authUser : null,
 		navAggregations : null,
 		beatsEnabled : true,
-		globals : window ? window.globalData : {}
+		globals : window ? window.globalData : {},
+		defaultAvatar : DEFAULT_AVATAR
 	},
 	getters:{
 		hasPermission: ( state,getters ) => ( permission ) =>{
