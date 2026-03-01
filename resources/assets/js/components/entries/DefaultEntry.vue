@@ -35,7 +35,7 @@
 					</tr>
 					<tr>
 						<th class="w-1/3 align-top py-1">{{ $t( "Occurred At" ) }}:</th>
-						<td class="w-2/3 py-1">{{ dayjs( entry[ '@timestamp' ] ).local().format('YYYY-MM-DD HH:mm:ss') }}</td>
+						<td class="w-2/3 py-1">{{ dayjs( entry[ '@timestamp' ] ).local().format( dateFormats.detailFormat ) }}</td>
 					</tr>
 					<tr v-if="entry.log.category">
 						<th class="w-1/3 align-top py-1">{{ $t( "Category" ) }}:</th>
@@ -87,7 +87,7 @@
 							</tr>
 							<tr v-if="entry.event.created">
 								<th class="w-1/3 align-top py-1">{{ $t( "Occurrence Time" ) }}:</th>
-								<td class="w-2/3 py-1">{{dayjs( entry.event.created ).local().format('YYYY-MM-DD HH:mm:ss')}}</td>
+								<td class="w-2/3 py-1">{{dayjs( entry.event.created ).local().format( dateFormats.detailFormat )}}</td>
 							</tr>
 							<tr v-if="entry.event.route">
 								<th class="w-1/3 align-top py-1">{{ $t( "Route" ) }}:</th>
@@ -298,6 +298,7 @@
 	</div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import udf from "@/util/udf";
 import Prism from "prismjs";
 import 'prismjs/components/prism-javascript';
@@ -330,6 +331,7 @@ export default {
 		}
 	},
 	computed : {
+		...mapGetters( [ "dateFormats" ] ),
 		occurrenceParams : function(){
 			let params = {
 				"stachebox.signature" : this.entry.stachebox.signature,

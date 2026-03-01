@@ -61,7 +61,7 @@
 					style="width: 175px"
 					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
-				{{ dayjs( entry['@timestamp' ] ).format('MM/DD/YYYY HH:mm') }}
+				{{ dayjs( entry['@timestamp' ] ).format( dateFormats.listFormat ) }}
 				</td>
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
@@ -118,6 +118,7 @@
 
 </template>
 <script>
+import { mapGetters } from "vuex";
 import ConfirmationButton from "@/components/ConfirmationButton";
 import Pagination from "@/components/Pagination";
 import EntryListFilters from "@/components/entries/EntryListFilters";
@@ -181,6 +182,7 @@ export default {
 		};
 	},
 	computed : {
+		...mapGetters( [ "dateFormats" ] ),
 		currentColspan(){
 			let colspan = 4;
 			if( this.displayOccurrences ) colspan++;

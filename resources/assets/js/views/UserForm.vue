@@ -101,6 +101,29 @@
 								</div>
 							</div>
 
+							<div class="sm:col-span-4">
+								<label
+									for="dateFormat"
+									class="block text-sm font-medium text-gray-700"
+								>
+									{{ $t( "Date Format" ) }}
+								</label>
+								<div class="mt-1">
+									<select
+										name="dateFormat"
+										id="dateFormat"
+										class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-none"
+										v-model="user.dateFormat"
+									>
+										<option
+											v-for="( format, key ) in dateFormatOptions"
+											:key="key"
+											:value="key"
+										>{{ format.label }}</option>
+									</select>
+								</div>
+							</div>
+
 							<div class="sm:col-span-4 items-center" v-if="hasPermission( 'Administer:Users' )">
 								<toggle-switch :isActive="user.allowLogin" @toggle="toggleLogin"></toggle-switch>
 								<span class="ml-3">
@@ -277,6 +300,7 @@
 </template>
 <script>
 import usersAPI from "@/api/users";
+import { DATE_FORMATS } from "@/util/dateFormats";
 const canvasProcessor = require( "canvas_image_processing" );
 import Dialog from "@/components/Dialog";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -324,6 +348,9 @@ export default {
 		...mapGetters({
 			hasPermission : "hasPermission"
 		}),
+		dateFormatOptions(){
+			return DATE_FORMATS;
+		},
 		isPasswordVerified(){
 			return this.user.password === this.user.confirmPassword;
 		},
@@ -358,6 +385,9 @@ export default {
 					result => {
 						if( self.user.id ){
 							self.user = result.data
+							if( self.user.id === self.authUser.id ){
+								self.$store.dispatch( "fetchAuthUser" );
+							}
 							self.saveSuccess = true;
 							setTimeout(() => {
 								self.saveSuccess = false;
@@ -455,7 +485,8 @@ export default {
 				"firstName": "",
 				"middleName": "",
 				"title": "",
-				"email": ""
+				"email": "",
+				"dateFormat": "MM/DD/YYYY"
 			}
 		}
 	}

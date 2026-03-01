@@ -3,6 +3,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import VueJwtDecode from "vue-jwt-decode";
 import { createStore } from "vuex";
+import { getDateFormats } from "../util/dateFormats";
 import authAPI from "../api/authentication";
 import beatsAPI from "../api/beats";
 import logsAPI from "../api/logs";
@@ -28,6 +29,7 @@ export default createStore({
 		hasPermission: ( state,getters ) => ( permission ) =>{
 			return state.authUser && state.authUser.isAdministrator;
 		},
+		dateFormats : ( state ) => getDateFormats( state.authUser && state.authUser.dateFormat ? state.authUser.dateFormat : "MM/DD/YYYY" ),
 		orderedApplications : ( state, getters ) =>  state.navAggregations && state.navAggregations.applications
 														? Object.keys( state.navAggregations.applications ).sort( ( a, b ) => a.localeCompare( b ) )
 														: null

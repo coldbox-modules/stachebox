@@ -28,7 +28,7 @@
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { BarChart } from 'vue-chart-3';
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import ColorScheme from "color-scheme";
 import Tab from "@/components/Tab";
 import Tabs from "@/components/Tabs";
@@ -99,6 +99,7 @@ export default {
 						? this.$route.params.environment ? state.navAggregations.environments[this.$route.params.environment].applications[ this.application ] : state.navAggregations.applications[ this.application ] : null;
 			}
 		}),
+		...mapGetters( [ "dateFormats" ] ),
 		hourlyData(){
 			if( !this.aggregations ) return;
 
@@ -118,7 +119,7 @@ export default {
 
 			for( var i = 0; i <= this.hourRange; i++ ){
 				var thisHour = hourStart.clone().add( i, "hours" );
-				chartData.labels.push( thisHour.format( "M/D " ) + thisHour.format( "hA" ) + "-" + thisHour.clone().add( 1, "hour" ).format( "hA" )   );
+				chartData.labels.push( thisHour.format( this.dateFormats.chartShort + " " ) + thisHour.format( this.dateFormats.hourFormat ) + " - " + thisHour.clone().add( 1, "hour" ).format( this.dateFormats.hourFormat )   );
 				let hourKey = thisHour.format( "YYYY-MM-DDTHH:mm:ss.SSSZ" );
 				chartData.datasets[ 0 ].data.push( aggs[ hourKey ] ? aggs[ hourKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
@@ -145,7 +146,7 @@ export default {
 
 			for( var i = 0; i <= this.dayRange; i++ ){
 				var thisDay = dayStart.clone().add( i, "days" );
-				chartData.labels.push( thisDay.format( "ddd M/D" ) );
+				chartData.labels.push( thisDay.format( this.dateFormats.chartDaily ) );
 				let dayKey = thisDay.format( "YYYY-MM-DDTHH:mm:ss.SSSZ" );
 				chartData.datasets[ 0 ].data.push( aggs[ dayKey ] ? aggs[ dayKey ].count : 0 );
 				chartData.datasets[ 0 ].backgroundColor.push( this.chartColors[ i ] );
