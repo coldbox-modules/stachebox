@@ -18,7 +18,7 @@
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						{{ $t( "Type" ) }}
+						{{ $t( "Type / Level" ) }}
 					</th>
 					<th
 						v-if="displayOccurrences"
@@ -68,7 +68,8 @@
 					style="width: 150px"
 					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
-					{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}
+					<div>{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}</div>
+					<div v-if="entry.log.level" class="text-xs text-gray-400">{{ entry.log.level }}</div>
 				</td>
 				<td
 					v-if="displayOccurrences"
