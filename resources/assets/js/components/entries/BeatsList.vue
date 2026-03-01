@@ -49,7 +49,7 @@
 						style="width: 175px"
 						@click="$router.push( `/beats/entry/${entry.id}` )"
 					>
-					{{ dayjs( entry['@timestamp' ] ).local().format('MM/DD/YYYY HH:mm') }}
+					{{ dayjs( entry['@timestamp' ] ).local().format( dateFormats.listFormat ) }}
 					</td>
 					<td
 						class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
@@ -109,6 +109,7 @@
 
 </template>
 <script>
+import { mapGetters } from "vuex";
 import Pagination from "@/components/Pagination";
 import BeatsListFilters from "@/components/entries/BeatsListFilters";
 import ConfirmationButton from "@/components/ConfirmationButton";
@@ -160,7 +161,7 @@ export default {
 		};
 	},
 	computed : {
-
+		...mapGetters( [ "dateFormats" ] ),
 		currentColspan(){
 			let colspan = 4;
 			if( this.displayDataset ) colspan++;

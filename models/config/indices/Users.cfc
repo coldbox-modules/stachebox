@@ -20,6 +20,7 @@ component accessors="true"{
                     "email": { "type": "keyword" },
 					"title": { "type": "keyword" },
 					"avatar" : { "type" : "binary" },
+					"dateFormat" : { "type" : "keyword" },
                     "password": {
                         "type": "text",
                         "index": false

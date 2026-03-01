@@ -18,7 +18,7 @@
 					<th
 						class="px-2 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase"
 					>
-						{{ $t( "Type" ) }}
+						{{ $t( "Type / Level" ) }}
 					</th>
 					<th
 						v-if="displayOccurrences"
@@ -61,14 +61,15 @@
 					style="width: 175px"
 					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
-				{{ dayjs( entry['@timestamp' ] ).format('MM/DD/YYYY HH:mm') }}
+				{{ dayjs( entry['@timestamp' ] ).format( dateFormats.listFormat ) }}
 				</td>
 				<td
 					class="px-3 py-2 border-b border-gray-200 text-sm text-gray-500"
 					style="width: 150px"
 					@click="$router.push( { name: 'LogEntry', params: { id: entry.id, search : $route.params.search } } )"
 				>
-					{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}
+					<div>{{entry.error.type ? entry.error.type.toTitleCase() : ( entry.log.level || "unknown" ) }}</div>
+					<div v-if="entry.log.level" class="text-xs text-gray-400">{{ entry.log.level }}</div>
 				</td>
 				<td
 					v-if="displayOccurrences"
@@ -118,6 +119,7 @@
 
 </template>
 <script>
+import { mapGetters } from "vuex";
 import ConfirmationButton from "@/components/ConfirmationButton";
 import Pagination from "@/components/Pagination";
 import EntryListFilters from "@/components/entries/EntryListFilters";
@@ -181,6 +183,7 @@ export default {
 		};
 	},
 	computed : {
+		...mapGetters( [ "dateFormats" ] ),
 		currentColspan(){
 			let colspan = 4;
 			if( this.displayOccurrences ) colspan++;

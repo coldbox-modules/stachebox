@@ -13,7 +13,7 @@ component extends="BaseAPIHandler" secured="StacheboxUser"{
 	function show( event, rc, prc ){
 
 		prc.response.setData(
-			getInstance( "User@stachebox" ).getOrFail( rc.id ).getMemento()
+			getInstance( "User@stachebox" ).getOrFail( rc.id ).getMemento( includes="avatar" )
 		);
 
 	}

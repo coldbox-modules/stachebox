@@ -15,6 +15,7 @@ component
     property name="isAdministrator" type="boolean" default="false";
 	property name="allowLogin" type="boolean" default="true";
 	property name="avatar" type="string" default="";
+	property name="dateFormat" type="string" default="MM/DD/YYYY";
 
 	// memento default excluded properties
     property name="password" type="string" default="";
@@ -58,7 +59,8 @@ component
             "isApproved",
 			"isAdministrator",
 			"avatar",
-			"allowLogin"
+			"allowLogin",
+			"dateFormat"
 		],
         "defaults" :{
             "id" : ""

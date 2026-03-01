@@ -54,15 +54,32 @@
 		<p class="mt-4 text-gray-400">{{ $t( "Loading log data. Please wait..." ) }}</p>
 	</div>
 
-    <div class="mt-8"></div>
+    <div class="flex items-center justify-end mt-4 mb-2" v-if="orderedApplications">
+      <span class="inline-flex rounded-md shadow-sm">
+        <button
+          type="button"
+          @click="chartView = 'per-app'"
+          :class="chartView === 'per-app' ? 'bg-cyan-600 text-white' : 'bg-white text-gray-700 hover:text-gray-500'"
+          class="px-4 py-2 text-sm font-medium border border-gray-300 rounded-l-md focus:outline-none"
+        >{{ $t( "Per App" ) }}</button>
+        <button
+          type="button"
+          @click="chartView = 'unified'"
+          :class="chartView === 'unified' ? 'bg-cyan-600 text-white' : 'bg-white text-gray-700 hover:text-gray-500'"
+          class="-ml-px px-4 py-2 text-sm font-medium border border-gray-300 rounded-r-md focus:outline-none"
+        >{{ $t( "Unified" ) }}</button>
+      </span>
+    </div>
 
-    <div class="flex flex-col mt-8" v-if="orderedApplications">
+    <div class="flex flex-col" v-if="orderedApplications">
       <div class="-my-2 py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 
         <div
           class="align-middle inline-block min-w-full"
         >
+			<unified-snapshot v-if="chartView === 'unified'"></unified-snapshot>
 			<template
+				v-else
 				v-for="(application, index) in orderedApplications"
 				:key="`application-${application}`"
 			>
@@ -78,9 +95,21 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import ApplicationSnapshot from "./ApplicationSnapshot";
+import UnifiedSnapshot from "./UnifiedSnapshot";
 export default {
   components : {
-	  ApplicationSnapshot
+	  ApplicationSnapshot,
+	  UnifiedSnapshot
+  },
+  data(){
+	  return {
+		  chartView: localStorage.getItem( "stachebox.chartView" ) || "per-app"
+	  }
+  },
+  watch: {
+	  chartView( val ){
+		  localStorage.setItem( "stachebox.chartView", val );
+	  }
   },
   computed : {
 	  ...mapState( {
