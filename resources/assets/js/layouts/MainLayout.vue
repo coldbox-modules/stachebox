@@ -2,9 +2,9 @@
 	<div>
 		<Header v-on:toggle-sidebar="sidebarIsOpen = !sidebarIsOpen" :sidebarOpen="sidebarIsOpen" />
 		<div class="flex h-screen bg-gray-200 font-roboto">
-			<Sidebar :isOpen="sidebarIsOpen" />
+			<Sidebar :isOpen="sidebarIsOpen" @close="sidebarIsOpen = false" />
 
-			<div class="flex-1 flex flex-col">
+			<div class="flex-1 flex flex-col min-w-0">
 				<main
 					class="flex-1 bg-gray-200"
 				>
@@ -27,7 +27,7 @@ export default {
 	},
 	data() {
 		return {
-			sidebarIsOpen: true
+			sidebarIsOpen: window.innerWidth >= 1024
 		};
 	}
 };

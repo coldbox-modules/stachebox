@@ -1,8 +1,13 @@
 <template>
-  <div class="flex transform z-30" :class="isOpen ? 'opacity-100' : 'opacity-0 hidden'">
+  <div class="flex transform z-30" :class="isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto'">
+    <div
+      v-if="isOpen"
+      @click="$emit( 'close' )"
+      class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+    ></div>
     <div
       :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-      class="fixed z-30 inset-y-0 left-0 transition duration-300 transform bg-gray-800 overflow-y-auto overflow-x-auto lg:translate-x-0 lg:static lg:inset-0"
+      class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-800 overflow-y-auto overflow-x-hidden lg:translate-x-0 lg:static lg:inset-0"
     >
       <nav class="mt-10 text-sm">
 		<h2
@@ -230,6 +235,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 export default{
+	emits: [ "close" ],
 	props:{
 		isOpen : {
 			type: Boolean,
@@ -257,6 +263,11 @@ export default{
 		})
 	},
 	watch : {
+		$route(){
+			if( window.innerWidth < 1024 ){
+				this.$emit( "close" );
+			}
+		},
 		beatsAggregations : {
 			handler( newVal ){
 				if( newVal && !newVal.datasets && !newVal.inputTypes ){

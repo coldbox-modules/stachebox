@@ -65,6 +65,7 @@ export default {
 		}
 	},
 	data(){
+		var isMobile = window.innerWidth < 640;
 		return {
 			hourRange : 24,
 			dayRange : 7,
@@ -72,6 +73,15 @@ export default {
 			chartOptions : {
 				responsive: true,
 				maintainAspectRatio: false,
+				scales: isMobile ? {
+					x: {
+						ticks: {
+							maxTicksLimit: 8,
+							minRotation: 90,
+							maxRotation: 90
+						}
+					}
+				} : {},
 				plugins: {
 					legend: {
 						display: false
