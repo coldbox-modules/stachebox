@@ -63,17 +63,22 @@ export default {
 			return {
 				responsive: true,
 				maintainAspectRatio: false,
-				scales: {
-					x: {
-						stacked: true,
-						ticks: {
-							maxTicksLimit: 8,
-							minRotation: 90,
-							maxRotation: 90
-						}
+				scales: this.isMobile
+					? {
+						x: {
+							stacked: true,
+							ticks: {
+								maxTicksLimit: 8,
+								minRotation: 90,
+								maxRotation: 90
+							}
+						},
+						y: { stacked: true }
+					}
+					: {
+						x: { stacked: true },
+						y: { stacked: true }
 					},
-					y: { stacked: true }
-				},
 				plugins: {
 					legend: this.isMobile
 						? { display: false }
