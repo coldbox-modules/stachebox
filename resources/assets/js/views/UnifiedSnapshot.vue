@@ -3,12 +3,18 @@
 		<h3 class="text-gray-500 text-xl font-medium pb-2">{{ $t( "All Applications" ) }}</h3>
 		<tabs class="mt-2">
 			<tab :name="$t( 'Past 24 Hours' )" class="bg-white">
-				<BarChart v-if="hourlyData" style="max-height:350px" :chartData="hourlyData" :options="chartOptions"></BarChart>
+				<BarChart v-if="hourlyData" :height="chartHeight" :chartData="hourlyData" :options="chartOptions"></BarChart>
 			</tab>
 			<tab :name="$t( 'Past 7 Days' )" class="bg-white">
-				<BarChart v-if="dailyData" style="max-height:350px" :chartData="dailyData" :options="chartOptions"></BarChart>
+				<BarChart v-if="dailyData" :height="chartHeight" :chartData="dailyData" :options="chartOptions"></BarChart>
 			</tab>
 		</tabs>
+		<div v-if="isMobile && orderedApplications" class="flex flex-wrap gap-x-4 gap-y-1 mt-3 px-2">
+			<span v-for="app in orderedApplications" :key="app" class="flex items-center text-xs text-gray-600">
+				<span class="inline-block w-3 h-3 rounded-sm mr-1" :style="{ backgroundColor: appColors[ app ] }"></span>
+				{{ app }}
+			</span>
+		</div>
 	</div>
 </template>
 <script>
@@ -30,19 +36,7 @@ export default {
 			hourRange : 24,
 			dayRange : 7,
 			chartColors: null,
-			chartOptions : {
-				responsive: true,
-				maintainAspectRatio: false,
-				scales: {
-					x: { stacked: true },
-					y: { stacked: true }
-				},
-				plugins: {
-					legend: {
-						display: true
-					}
-				}
-			}
+			isMobile: window.innerWidth < 640
 		}
 	},
 	beforeMount(){
@@ -62,6 +56,39 @@ export default {
 			applications : state => state.navAggregations ? state.navAggregations.applications : null
 		}),
 		...mapGetters( [ "orderedApplications", "dateFormats" ] ),
+		chartHeight(){
+			return this.isMobile ? 350 : 400;
+		},
+		chartOptions(){
+			return {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					x: {
+						stacked: true,
+						ticks: {
+							maxTicksLimit: 8,
+							minRotation: 90,
+							maxRotation: 90
+						}
+					},
+					y: { stacked: true }
+				},
+				plugins: {
+					legend: this.isMobile
+						? { display: false }
+						: {
+							display: true,
+							position: "bottom",
+							labels: {
+								boxWidth: 12,
+								padding: 8,
+								font: { size: 11 }
+							}
+						}
+				}
+			};
+		},
 		appColors(){
 			if( !this.orderedApplications || !this.chartColors ) return {};
 			var colors = {};

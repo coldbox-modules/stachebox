@@ -1,49 +1,34 @@
 <template>
   <div>
-    <div class="mt-4 sm:hidden" v-if="aggregations">
-      <div class="flex flex-wrap -mx-6">
-        <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
-          <div
-            class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white"
-          >
-            <div class="p-3 rounded-full bg-cyan-600 bg-opacity-75">
-				<fa-icon class="text-white h-9" size="2x" icon="list" fixed-width />
-            </div>
-
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">{{aggregations.logCount}}</h4>
-              <div class="text-gray-500">Log Entries</div>
-            </div>
+    <div class="mt-4" v-if="aggregations">
+      <div class="grid grid-cols-3 gap-2 sm:gap-6">
+        <div class="flex flex-col items-center px-2 py-3 sm:flex-row sm:px-5 sm:py-6 shadow-sm rounded-md bg-white text-center sm:text-left">
+          <div class="p-2 sm:p-3 rounded-full bg-cyan-600 bg-opacity-75 mb-1 sm:mb-0">
+            <fa-icon class="text-white" size="lg" icon="list" fixed-width />
+          </div>
+          <div class="sm:mx-5">
+            <h4 class="text-lg sm:text-2xl font-semibold text-gray-700">{{aggregations.logCount.toLocaleString()}}</h4>
+            <div class="text-xs sm:text-base text-gray-500">{{ $t( "Log Entries" ) }}</div>
           </div>
         </div>
 
-		<div class="w-full px-6 sm:w-1/2 xl:w-1/3">
-          <div
-            class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white"
-          >
-            <div class="p-3 rounded-full bg-red-600 bg-opacity-75">
-				<fa-icon class="text-white h-9" size="2x" icon="server" fixed-width />
-            </div>
-
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">{{applicationCount}}</h4>
-              <div class="text-gray-500">{{ $t( "Applications" ) }}</div>
-            </div>
+        <div class="flex flex-col items-center px-2 py-3 sm:flex-row sm:px-5 sm:py-6 shadow-sm rounded-md bg-white text-center sm:text-left">
+          <div class="p-2 sm:p-3 rounded-full bg-red-600 bg-opacity-75 mb-1 sm:mb-0">
+            <fa-icon class="text-white" size="lg" icon="server" fixed-width />
+          </div>
+          <div class="sm:mx-5">
+            <h4 class="text-lg sm:text-2xl font-semibold text-gray-700">{{applicationCount}}</h4>
+            <div class="text-xs sm:text-base text-gray-500">{{ $t( "Applications" ) }}</div>
           </div>
         </div>
 
-		<div class="w-full px-6 sm:w-1/2 xl:w-1/3">
-          <div
-            class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white"
-          >
-            <div class="p-3 rounded-full bg-indigo-600 bg-opacity-75">
-				<fa-icon class="text-white h-9" size="2x" icon="code" fixed-width />
-            </div>
-
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">{{typeCount}}</h4>
-              <div class="text-gray-500">{{ $t( "Log Types" ) }}</div>
-            </div>
+        <div class="flex flex-col items-center px-2 py-3 sm:flex-row sm:px-5 sm:py-6 shadow-sm rounded-md bg-white text-center sm:text-left">
+          <div class="p-2 sm:p-3 rounded-full bg-indigo-600 bg-opacity-75 mb-1 sm:mb-0">
+            <fa-icon class="text-white" size="lg" icon="code" fixed-width />
+          </div>
+          <div class="sm:mx-5">
+            <h4 class="text-lg sm:text-2xl font-semibold text-gray-700">{{typeCount}}</h4>
+            <div class="text-xs sm:text-base text-gray-500">{{ $t( "Log Types" ) }}</div>
           </div>
         </div>
       </div>
@@ -72,10 +57,10 @@
     </div>
 
     <div class="flex flex-col" v-if="orderedApplications">
-      <div class="-my-2 py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div class="py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 
         <div
-          class="align-middle inline-block min-w-full"
+          class="align-middle inline-block w-full"
         >
 			<unified-snapshot v-if="chartView === 'unified'"></unified-snapshot>
 			<template
